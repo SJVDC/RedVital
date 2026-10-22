@@ -1,0 +1,1810 @@
+% =====================================================================
+%  RedVital — Herramientas, Políticas y Lineamientos — V4.0
+%  Arkhé Software S.A.S.
+%  Compilar con pdfLaTeX (Overleaf: pdfLaTeX). Requiere dos compilaciones
+%  para resolver índice, referencias cruzadas y número total de páginas.
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+
+% ---------- Codificación e idioma ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage{lmodern}
+
+% ---------- Página ----------
+\usepackage[a4paper,top=2.7cm,bottom=2.7cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{fancyhdr}
+\setlength{\headheight}{14pt}
+\usepackage{lastpage}
+
+% ---------- Tablas ----------
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage[table]{xcolor}
+\usepackage{ragged2e}
+
+% ---------- Gráficos ----------
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc}
+
+% ---------- Varios ----------
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+
+% =====================================================================
+%  Identidad visual
+% =====================================================================
+\definecolor{vinotinto}{RGB}{139,26,36}
+\definecolor{vinoclaro}{RGB}{190,90,95}
+\definecolor{grisTexto}{RGB}{90,90,90}
+
+\definecolor{ringAdoptar}{RGB}{139,26,36}
+\definecolor{ringProbar}{RGB}{200,120,40}
+\definecolor{ringEvaluar}{RGB}{70,110,150}
+\definecolor{ringEvitar}{RGB}{120,120,120}
+
+\newcommand{\adoptar}{\textcolor{ringAdoptar}{\textbf{Adoptar}}}
+\newcommand{\probar}{\textcolor{ringProbar}{\textbf{Probar}}}
+\newcommand{\evaluar}{\textcolor{ringEvaluar}{\textbf{Evaluar}}}
+\newcommand{\evitar}{\textcolor{ringEvitar}{\textbf{Evitar}}}
+
+% Marca de entrada nueva o modificada en esta versión
+\newcommand{\nueva}{\textsuperscript{\textcolor{vinotinto}{\scriptsize\bfseries N}}}
+\newcommand{\modif}{\textsuperscript{\textcolor{ringProbar}{\scriptsize\bfseries M}}}
+
+% ---------- Encabezado y pie ----------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\textcolor{grisTexto}{RedVital — Herramientas, Políticas y Lineamientos V4.0}}
+\fancyhead[R]{\footnotesize\textcolor{grisTexto}{Arkhé Software S.A.S.}}
+\fancyfoot[C]{\footnotesize\textcolor{grisTexto}{Página \thepage{} de \pageref{LastPage}}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{vinotinto}\leaders\hrule height \headrulewidth\hfill}}
+
+% ---------- Títulos ----------
+\titleformat{\section}{\normalfont\Large\bfseries\color{vinotinto}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries\color{vinotinto}}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\normalfont\normalsize\bfseries}{\thesubsubsection}{0.6em}{}
+
+\setlist[itemize]{leftmargin=1.2em,itemsep=2.5pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=1.5em,itemsep=2.5pt,topsep=4pt}
+
+\captionsetup{font=small,labelfont={bf,color=vinotinto}}
+
+% ---------------------------------------------------------------------
+%  Tipos de columna. La caja de texto útil es de 16 cm; la suma de los
+%  anchos declarados más 2*6pt por columna no debe superarla.
+% ---------------------------------------------------------------------
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{C}[1]{>{\Centering\arraybackslash}p{#1}}
+\newcolumntype{M}[1]{>{\ttfamily\small\RaggedRight\arraybackslash}p{#1}}
+
+\renewcommand{\arraystretch}{1.28}
+
+% Punto de corte invisible, para partir identificadores largos en
+% tipografía monoespaciada, que no se dividen por guiones.
+\newcommand{\bk}{\discretionary{}{}{}}
+
+% Pie de continuación para tablas largas
+\newcommand{\contnota}[1]{\midrule \multicolumn{#1}{r}{\footnotesize\itshape Continúa en la página siguiente}\\}
+
+\begin{document}
+
+% =====================================================================
+%  PORTADA
+% =====================================================================
+\begin{titlepage}
+\centering
+\thispagestyle{empty}
+\vspace*{1.8cm}
+
+% \includegraphics[width=0.15\textwidth]{isotipo-redvital.png}\\[1.1cm]
+
+{\Huge\bfseries\color{vinotinto} REDVITAL}\\[0.5cm]
+{\large\color{vinotinto} Plataforma Nacional para la Gestión Integral del Ciclo de Vida\\ de la Donación de Sangre}\\[1.7cm]
+
+{\color{vinotinto}\rule{0.45\textwidth}{1.2pt}}\\[1.7cm]
+
+{\LARGE\bfseries HERRAMIENTAS, POLÍTICAS}\\[0.4cm]
+{\LARGE\bfseries Y LINEAMIENTOS}\\[2.0cm]
+
+{\large\bfseries Arkhé Software S.A.S.}\\[0.3cm]
+{\itshape De la raíz a la red}\\[1.9cm]
+
+\begin{tabular}{r l}
+\textbf{Curso:} & Arquitectura de Software Empresarial \\
+\textbf{Cliente:} & Profesor de la asignatura, en el rol simulado de \\
+ & Ministerio de Salud y Protección Social \\
+\textbf{Entrega:} & Review Sprint 3 y Planning Sprint 4 — Semana 10 \\
+\textbf{Versión:} & 4.0 \\
+\textbf{Estado:} & Para aprobación \\
+\textbf{Fecha:} & 6 de octubre de 2026 \\
+\textbf{Clasificación:} & Uso interno del proyecto \\
+\end{tabular}
+
+\vfill
+{\small\color{grisTexto} Pontificia Universidad Javeriana — Bogotá, Colombia}
+\end{titlepage}
+
+% =====================================================================
+%  CONTROL DE VERSIONES
+% =====================================================================
+\section*{Control de versiones}
+\addcontentsline{toc}{section}{Control de versiones}
+
+\begin{longtable}{L{1.6cm} L{2.0cm} L{2.0cm} L{8.2cm}}
+\toprule
+\textbf{Versión} & \textbf{Fecha} & \textbf{Autor} & \textbf{Descripción del cambio} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Versión} & \textbf{Fecha} & \textbf{Autor} & \textbf{Descripción del cambio} \\
+\midrule
+\endhead
+\contnota{4}
+\endfoot
+\bottomrule
+\endlastfoot
+1.0 & 16/08/2026 & Equipo Arkhé & Versión inicial. Catálogo de herramientas, plantillas de documentación y políticas por fase y de DevOps. \\
+2.0 & 29/08/2026 & Equipo Arkhé & Alineación con las restricciones de diseño RD-01 a RD-08. Arquitectura distribuida de servicios de grano grueso. Incorporación del stack .NET y del API Gateway. Adopción de GitFlow y de organización multi-repositorio. Nuevas secciones de contenerización, observabilidad y gestión del backlog. \\
+2.1 & 29/08/2026 & Equipo Arkhé & Las restricciones de diseño pasan a sección propia con regla de precedencia. Se incorporan glosario, referencias, plan de adopción, definición de listo y gobierno del documento. \\
+2.2 & 30/08/2026 & Equipo Arkhé & Auditoría de vigencia del instrumental. Se unifica el criterio de versión entre las dos plataformas de servidor y se ajustan las líneas adoptadas a las que tienen soporte de seguridad vigente. El catálogo queda en 73 entradas. \\
+3.0 & 22/09/2026 & Equipo Arkhé & Incorporación de ADR-007 a ADR-016. Descomposición en cinco servicios de ADR-014, proxy de borde Caddy (ADR-015), Grype, Gitleaks, bandeja de salida expuesta por contrato, Trivy en \emph{Evitar}, Gatling e imágenes de ejecución mínimas. El catálogo queda en 81 entradas. \\
+4.0 & 06/10/2026 & Equipo Arkhé & Incorporación de ADR-017 (arquitectura de microservicios), ADR-018 (comunicación híbrida HTTP más Apache Kafka con bandeja de salida transaccional) y ADR-019 (Apache APISIX como API Gateway, que reemplaza a ADR-007), aprobados en Mesa de Arquitectura. \textbf{Entran} dieciséis entradas (82 a 97): Spring for Apache Kafka (82), cliente Confluent.Kafka para .NET (83), complementos propios de APISIX en Lua en \emph{Probar} (84), Apache Kafka 4.3 en modo KRaft (85), Apache APISIX 3.19 en modo autónomo (86), Kafbat UI (87), exportador JMX de Prometheus para el broker (88), Apicurio Registry (89) y Kafka Connect con Debezium (90) en \emph{Evaluar}, Confluent Schema Registry y Confluent Platform en \emph{Evitar} (91), comunicación híbrida por naturaleza de la interacción (92), contratos de eventos con AsyncAPI y JSON Schema (93), consumidores idempotentes (94), reintento no bloqueante con tema de mensajes muertos (95), y en \emph{Evitar} la solicitud-respuesta sobre Kafka (96) y Kafka como fuente de verdad (97). \textbf{Cambian de anillo}: YARP (11) a \emph{Evitar}, por ADR-019; la ejecución asíncrona con reintento de Spring (23) a \emph{Evitar}, sustituida por la entrada 82; RabbitMQ (38) a \emph{Evitar}, por ADR-018; Testcontainers (69) a \emph{Adoptar}, porque su disparador se activó. \textbf{Se redefinen} la entrada 58, que pasa a nombrar la arquitectura de microservicios por contexto acotado, y la 78, que conserva la bandeja de salida transaccional pero retira su exposición por contrato HTTP a favor del publicador hacia Kafka. Se actualizan las entradas 7, 8, 10, 12, 27, 28, 29, 31, 34, 36, 37, 41, 61, 65, 70, 74 y 81. CP-01 se reformula para admitir infraestructura adicional cuando un ADR acepta su costo de forma explícita. Contenerización: trece contenedores en Desarrollo y quince en QA, más el trabajo efímero de inicialización de Kafka. Requisito de memoria de la máquina de QA revisado a 10~GiB. Seis riesgos nuevos (RT-12 a RT-17). Nuevo Anexo \ref{anx:coherencia} con los hallazgos de coherencia entre ADR y documentos controlados. El catálogo queda en 97 entradas. Las entradas nuevas se marcan con \nueva{} y las modificadas con \modif. \\
+\end{longtable}
+
+\section*{Aprobaciones}
+\addcontentsline{toc}{section}{Aprobaciones}
+
+\begin{longtable}{L{4.2cm} L{4.8cm} L{4.6cm}}
+\toprule
+\textbf{Rol} & \textbf{Responsable} & \textbf{Firma / Fecha} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Product Owner & Alexander Aponte & \\
+Scrum Master / Project Manager & Carlos Santiago Pinzón & \\
+Arquitecta de Software & Sara & \\
+QA / Tester & Tomás & \\
+DevOps & Veli & \\
+Desarrollador & Sebastián & \\
+Desarrollador & Damián & \\
+\end{longtable}
+
+\vspace{0.2cm}
+{\small La aprobación de la Arquitecta de Software y del DevOps es obligatoria: son los dos roles cuyo trabajo queda normado de forma directa por este documento. La del Product Owner acredita que las restricciones del cliente quedaron transcritas sin alteración.}
+
+\newpage
+
+% =====================================================================
+%  ÍNDICES
+% =====================================================================
+\tableofcontents
+\newpage
+\listoffigures
+\vspace{0.6cm}
+\listoftables
+\newpage
+
+% =====================================================================
+%  1. INTRODUCCIÓN
+% =====================================================================
+\section{Introducción}
+
+\subsection{Propósito}
+
+Este documento define el conjunto de herramientas, plantillas, políticas y lineamientos que rigen el desarrollo del proyecto RedVital. Su propósito es que cualquier integrante del equipo, o alguien que se incorpore después, sepa con qué se trabaja, por qué se eligió cada cosa, y bajo qué reglas se produce y se entrega el software.
+
+El documento se organiza en seis partes:
+
+\begin{enumerate}
+\item \textbf{Restricciones de diseño} (Sección \ref{sec:restricciones}): las restricciones del cliente, las normativas y las condiciones del proyecto que acotan toda elección posterior.
+\item \textbf{Tech Radar} (Sección \ref{sec:radar}): catálogo de herramientas y prácticas con anillo, uso y justificación.
+\item \textbf{Plan de adopción} (Sección \ref{sec:adopcion}): en qué sprint entra cada elemento del catálogo y qué riesgos trae.
+\item \textbf{Plantillas de documentación} (Sección \ref{sec:plantillas}): formatos estándar de los artefactos que produce el equipo.
+\item \textbf{Políticas por fase y de DevOps} (Secciones \ref{sec:fases} y \ref{sec:devops}): reglas de trabajo, control de versiones, revisión, contenerización, mensajería de eventos, integración continua, observabilidad y seguridad operativa.
+\item \textbf{Gestión del backlog y gobierno} (Secciones \ref{sec:backlog} y \ref{sec:gobierno}): cómo se administra el trabajo, de dónde salen los indicadores y cómo cambia este documento.
+\end{enumerate}
+
+\subsection{Qué cambia en esta versión}
+
+La versión 4.0 registra las consecuencias sobre el instrumental de tres decisiones aprobadas en la Mesa de Arquitectura del Sprint 3, y corrige la forma en que el resto del corpus representa la comunicación entre servicios.
+
+\begin{itemize}
+\item \textbf{ADR-017} formaliza el estilo: RedVital es una arquitectura de \emph{microservicios} delimitados por contexto acotado. La granularidad no cambia ---siguen siendo los cinco servicios de ADR-014--- y la descomposición de grano fino sigue en \emph{Evitar}.
+\item \textbf{ADR-018} define cómo se comunican: HTTP \emph{solo} cuando quien llama necesita la respuesta para continuar; eventos en Apache Kafka para los hechos del dominio; y bandeja de salida transaccional para publicar esos eventos sin perderlos. Es una estrategia \emph{híbrida}, no un reemplazo total de HTTP.
+\item \textbf{ADR-019} reemplaza a ADR-007: el API Gateway pasa de YARP a Apache APISIX.
+\end{itemize}
+
+\noindent\textbf{Precisión necesaria sobre las dependencias.} Kafka no elimina las dependencias entre servicios; las cambia de naturaleza. Un productor deja de depender de que el consumidor esté disponible ---desaparece el acoplamiento temporal---, pero productor y consumidor pasan a depender del mismo \emph{contrato de evento} y de la plataforma de eventos. Por eso esta versión no retira las flechas de los diagramas: establece cómo se dibujan (Sección \ref{sec:fases}, Fase 2) y cómo se versiona el contrato que las sustituye (entrada 93).
+
+\subsection{Alcance y relación con otros documentos}
+
+Este artefacto no especifica \emph{qué} construye el sistema, eso corresponde al SRS, ni \emph{cómo} se estructura internamente, eso corresponde al SAD y al SDD. Define únicamente el instrumental de trabajo y las reglas de producción.
+
+Cuando una decisión de este documento tiene consecuencias estructurales, se remite al Registro de Decisión Arquitectónica correspondiente, que es el artefacto donde esa decisión se delibera y se sustenta. La relación es de una sola dirección: el ADR decide, este documento registra la consecuencia sobre el instrumental. Un cambio de anillo nunca se acuerda aquí; se acuerda en la Mesa de Arquitectura y aquí se anota.
+
+\begin{longtable}{L{3.6cm} L{11.0cm}}
+\caption{Relación con los demás artefactos del proyecto.}\label{tab:relacion}\\
+\toprule
+\textbf{Artefacto} & \textbf{Qué define, y qué toma de este documento} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Artefacto} & \textbf{Qué define, y qué toma de este documento} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+Documento de Proyecto & Alcance, cronograma, equipo, presupuesto y riesgos de gestión. Toma de aquí el rubro de licencias, que este documento reduce a cero, y el de infraestructura, que este documento reduce a la máquina virtual institucional. \\
+SRS & Requerimientos funcionales y no funcionales, usuarios y matriz de acceso. Comparte con este documento las restricciones de la Sección \ref{sec:restricciones}, que deben aparecer idénticas en ambos. \\
+SAD / SDD & Arquitectura, vistas 4+1, modelo C4 y escenarios de calidad. Toma de aquí las tecnologías en anillo Adoptar ---no puede usar ninguna que no esté en el catálogo--- y la convención para representar eventos en los diagramas. \\
+DD & Modelo de datos y contratos. Toma de aquí el formato de los contratos síncronos (OpenAPI, entrada 65) y de los contratos de eventos (AsyncAPI, entrada 93); define el contenido de cada evento. \\
+Infraestructura & Redes, puertos, imágenes, límites y secretos. Toma de aquí las piezas de infraestructura permitidas y sus políticas de contenerización y seguridad; es la fuente de toda cifra de configuración. \\
+ADR & Deliberación y sustento de cada decisión estructural. Es la fuente; este documento es la consecuencia. \\
+Backlog & Trabajo comprometido. Toma de aquí la plantilla de historia, la definición de listo y la definición de terminado. \\
+\end{longtable}
+
+\subsection{Audiencia y uso}
+
+Está dirigido a los siete integrantes del equipo y al cliente. Se consulta en tres momentos concretos: antes de incorporar una dependencia o una herramienta, antes de abrir una rama, y antes de dar por terminada una historia. Fuera de esos tres momentos no hace falta leerlo entero.
+
+\subsection{Definiciones, acrónimos y abreviaturas}
+
+\begin{longtable}{L{3.6cm} L{11.0cm}}
+\caption{Glosario de términos y acrónimos empleados en este documento.}\label{tab:glosario}\\
+\toprule
+\textbf{Término} & \textbf{Definición} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Término} & \textbf{Definición} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+ACME & \emph{Automatic Certificate Management Environment}. Protocolo con el que el proxy de borde obtiene y renueva certificados de una autoridad pública sin intervención manual. \\
+ADR & \emph{Architecture Decision Record}. Registro estructurado de una decisión arquitectónica, su contexto, sus alternativas y sus consecuencias. \\
+Anillo & Nivel de compromiso del equipo con una entrada del Tech Radar: Adoptar, Probar, Evaluar o Evitar. \\
+APISIX & Apache APISIX. API Gateway de código abierto sobre NGINX y OpenResty, configurado por archivo en modo autónomo, sin base de datos de configuración (ADR-019). \\
+AsyncAPI & Especificación estándar para describir de forma legible por máquina los canales, mensajes y esquemas de una interfaz orientada a eventos. Es a los eventos lo que OpenAPI es a las API síncronas. \\
+Bandeja de salida & \emph{Transactional Outbox}. Tabla del servicio productor donde el evento se escribe en la misma transacción que el hecho que lo origina; un publicador interno del mismo servicio la lee y la publica en Kafka (ADR-018). \\
+Broker & Proceso de Kafka que almacena los temas y atiende a productores y consumidores. RedVital opera un único broker. \\
+Consumidor idempotente & Consumidor que produce el mismo efecto si recibe un evento una vez o varias. Requisito de toda entrega «al menos una vez». \\
+Contexto acotado & \emph{Bounded context}. Frontera dentro de la cual un modelo de dominio es coherente y un término tiene un único significado. Define dónde se corta un servicio. \\
+CP & Condición del Proyecto. Restricción originada en el equipo, el tiempo o el presupuesto, no en el cliente. \\
+Cuadrante & Categoría a la que pertenece una entrada del Tech Radar: lenguajes, datos, gestión o prácticas. \\
+DLT & \emph{Dead Letter Topic}. Tema al que se envía un evento que no pudo procesarse tras agotar los reintentos, para revisión manual. \\
+DoD & \emph{Definition of Done}. Condiciones que debe cumplir una historia para considerarse terminada. \\
+DoR & \emph{Definition of Ready}. Condiciones que debe cumplir una historia para poder entrar a un sprint. \\
+EOL & \emph{End of Life}. Fecha a partir de la cual una versión deja de recibir parches de seguridad gratuitos. \\
+Evento de dominio & Registro inmutable de un hecho que ya ocurrió en un contexto, por ejemplo una donación completada. Se nombra en pasado y no pide nada a nadie. \\
+GHCR & \emph{GitHub Container Registry}. Registro de imágenes de contenedor de la organización. \\
+GitFlow & Estrategia de ramificación con ramas de larga vida, de publicación y de corrección urgente. \\
+Grupo de consumidores & Conjunto de instancias de un mismo servicio que se reparten las particiones de un tema; cada evento lo procesa una sola instancia del grupo. \\
+HU & Historia de usuario. Unidad de trabajo del backlog. \\
+INVEST & Criterios de calidad de una historia: independiente, negociable, valiosa, estimable, pequeña y verificable. \\
+JWKS & \emph{JSON Web Key Set}. Conjunto de claves públicas que publica el emisor de un token para que otros lo validen sin consultarlo. \\
+JWT & \emph{JSON Web Token}. Token firmado que transporta la identidad, el rol y la jurisdicción del usuario. \\
+Jurisdicción & Ámbito territorial sobre el que un usuario tiene visibilidad de datos. \\
+KRaft & Modo de operación de Kafka sin ZooKeeper, en el que el propio broker gestiona sus metadatos. Desde la versión 4.0 es el único modo. \\
+LTS & \emph{Long Term Support}. Versión de una plataforma con ventana de soporte extendida. \\
+MoSCoW & Priorización del alcance en \emph{Must}, \emph{Should}, \emph{Could} y \emph{Won't}. \\
+Offset & Posición de un evento dentro de una partición. El consumidor la confirma después de procesar el evento. \\
+OpenAPI & Especificación estándar para describir una interfaz REST de forma legible por máquina. \\
+ORM & \emph{Object-Relational Mapping}. Capa que traduce entre objetos del lenguaje y tablas relacionales. \\
+Partición & División ordenada de un tema. El orden de los eventos solo se garantiza dentro de una misma partición, y por eso la clave de partición se elige por entidad. \\
+PR & \emph{Pull Request}. Solicitud de fusión de una rama, sujeta a revisión y a verificación automática. \\
+RD & Restricción de Diseño. Restricción impuesta por el cliente sobre cómo debe construirse la solución. \\
+RF / RNF & Requerimiento Funcional / Requerimiento No Funcional, definidos en el SRS. \\
+RN & Restricción Normativa. Restricción originada en el marco legal colombiano o en una norma técnica. No confundir con las reglas de negocio invariantes del SAD, que se identifican con el prefijo RNI. \\
+SAD / SDD & \emph{Software Architecture Document} / \emph{Software Design Document}. \\
+SASL/SCRAM & Mecanismo de autenticación con usuario y credencial con que cada servicio se conecta al broker. \\
+SRS & \emph{Software Requirements Specification}. Especificación de requerimientos. \\
+Tamizaje & Conjunto de pruebas que determinan si la sangre donada es apta para transfusión. \\
+Tema & \emph{Topic}. Canal con nombre de Kafka en el que se publican los eventos de un mismo tipo. \\
+Unidad & Ejemplar individual de un componente sanguíneo, trazable de forma única. \\
+Unidad no apta & Unidad que no puede transfundirse y debe seguir el protocolo de disposición final. \\
+WCAG & \emph{Web Content Accessibility Guidelines}. Criterios de accesibilidad para contenido web. \\
+Zona de confianza & Agrupación de componentes con el mismo nivel de exposición, separada de las demás por una red de contenedores propia. ADR-014 define cinco: borde, presentación, aplicación, datos y observabilidad. \\
+\end{longtable}
+
+\subsection{Referencias}
+
+\begin{longtable}{L{1.3cm} L{13.3cm}}
+\caption{Normas, estándares y fuentes que este documento aplica.}\label{tab:referencias}\\
+\toprule
+\textbf{Ref.} & \textbf{Fuente} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Ref.} & \textbf{Fuente} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+{[}1{]} & Congreso de la República de Colombia. Ley 1581 de 2012, por la cual se dictan disposiciones generales para la protección de datos personales. \\
+{[}2{]} & Presidencia de la República de Colombia. Decreto 1571 de 1993, por el cual se reglamenta el funcionamiento de bancos de sangre. \\
+{[}3{]} & Ministerio de Salud de Colombia. Resolución 901 de 1996 y normas modificatorias. \\
+{[}4{]} & ISO/IEC 25010:2023. \emph{Systems and software engineering — SQuaRE — Product quality model.} \\
+{[}5{]} & ISO/IEC/IEEE 29148:2018. \emph{Requirements engineering.} \\
+{[}6{]} & ISO/IEC/IEEE 42010:2022. \emph{Architecture description.} Fundamento del uso de vistas y de los ADR. \\
+{[}7{]} & ISO/IEC/IEEE 15289:2019. \emph{Content of life-cycle information items.} \\
+{[}8{]} & Schwaber, K. y Sutherland, J. \emph{The Scrum Guide}, edición 2020. \\
+{[}9{]} & Driessen, V. \emph{A successful Git branching model} (GitFlow), 2010. \\
+{[}10{]} & Brown, S. \emph{The C4 model for visualising software architecture.} \\
+{[}11{]} & Kruchten, P. \emph{Architectural Blueprints — The 4+1 View Model of Software Architecture.} IEEE Software, 1995. \\
+{[}12{]} & Evans, E. \emph{Domain-Driven Design}, 2003. Origen del concepto de contexto acotado. \\
+{[}13{]} & Preston-Werner, T. \emph{Semantic Versioning 2.0.0.} \\
+{[}14{]} & \emph{Conventional Commits 1.0.0.} Convención de mensajes de commit. \\
+{[}15{]} & Wiggins, A. \emph{The Twelve-Factor App.} \\
+{[}16{]} & W3C. \emph{Web Content Accessibility Guidelines (WCAG) 2.2}, nivel AA. \\
+{[}17{]} & OpenAPI Initiative. \emph{OpenAPI Specification 3.1.} \\
+{[}18{]} & Thoughtworks. \emph{Build your own Technology Radar.} Método de los cuadrantes y anillos. \\
+{[}19{]} & Wake, B. \emph{INVEST in Good Stories, and SMART Tasks}, 2003. \\
+{[}20{]} & OWASP. \emph{Application Security Verification Standard} y \emph{Top Ten}. \\
+{[}21{]} & VMware Tanzu. \emph{Spring Boot support policy and release calendar.} \\
+{[}22{]} & Oracle. \emph{Java SE Support Roadmap.} \\
+{[}23{]} & Eclipse Adoptium. \emph{Temurin Support.} \\
+{[}24{]} & Microsoft. \emph{.NET and .NET Core Support Policy.} \\
+{[}25{]} & Apache Software Foundation. \emph{Apache Kafka — Downloads, Supported releases} (kafka.apache.org/community/downloads). Fuente de la versión 4.3.1 y de la política de tres versiones al año. Consultado el 06/10/2026. \\
+{[}26{]} & Apache Software Foundation. \emph{Apache APISIX — Downloads} y documentación de los complementos \texttt{openid-connect} y \texttt{limit-count} (apisix.apache.org). Fuente de la versión 3.19.0 del 28/09/2026. Consultado el 06/10/2026. \\
+{[}27{]} & AsyncAPI Initiative. \emph{AsyncAPI Specification 3.0.} \\
+{[}28{]} & Richardson, C. \emph{Microservices Patterns}, 2018. Patrones de bandeja de salida transaccional y consumidor idempotente. \\
+\end{longtable}
+
+% =====================================================================
+%  2. RESTRICCIONES
+% =====================================================================
+\section{Restricciones de diseño}
+\label{sec:restricciones}
+
+La elección de herramientas no es libre. Responde a tres fuentes, en este orden de prelación: las restricciones de diseño impuestas por el cliente, el marco normativo colombiano y las condiciones reales del proyecto. Ninguna herramienta entra al catálogo de la Sección \ref{sec:radar} sin que pueda rastrearse hasta al menos una de ellas, y ninguna restricción queda sin instrumento que la satisfaga. Esa doble verificación es el Anexo \ref{anx:matriz}.
+
+Las ocho restricciones del cliente, RD-01 a RD-08, son idénticas a las del contexto maestro del proyecto y a las del SRS, y así deben permanecer. Ante divergencia en una restricción del cliente, la fuente de verdad es el contexto maestro y este documento se corrige, no al revés.
+
+\subsection{Restricciones del cliente}
+
+El cliente formuló ocho restricciones de diseño, identificadas con el prefijo RD. Son de obligatorio cumplimiento y no admiten negociación técnica: una alternativa que las incumpla queda descartada aunque sea superior en todo lo demás.
+
+\begin{longtable}{L{1.2cm} L{6.0cm} L{7.0cm}}
+\caption{Restricciones de diseño impuestas por el cliente (RD-01 a RD-08).}\label{tab:rd}\\
+\toprule
+\textbf{ID} & \textbf{Restricción} & \textbf{Exigencia técnica derivada} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{ID} & \textbf{Restricción} & \textbf{Exigencia técnica derivada} \\
+\midrule
+\endhead
+\contnota{3}
+\endfoot
+\bottomrule
+\endlastfoot
+RD-01 & La solución debe ser distribuida. Queda explícitamente prohibido el monolito modular. Distribuido no equivale a microservicios: el equipo debe sustentar el estilo que elija. & Servicios desplegables de forma independiente, comunicados por contrato ---síncrono o de evento--- y sin base de datos compartida. El estilo elegido, microservicios por contexto acotado, queda sustentado en ADR-017, y su comunicación en ADR-018. \\
+RD-02 & El stack incluye como mínimo un componente en Java y como mínimo uno en .NET. & Dos plataformas de ejecución simultáneas, cada una con su cadena de construcción, su marco de pruebas, su instrumentación de métricas y su cliente de Kafka. \\
+RD-03 & Todo contenerizado. & Una imagen de contenedor por componente ejecutable, incluidos el broker de eventos y el gateway, orquestación local reproducible y registro de imágenes. \\
+RD-04 & Documentación técnica en Markdown con Mermaid. & Los diagramas viven en el repositorio como texto versionable, no como imágenes exportadas. Los contratos de eventos son archivos de texto versionados junto al código. \\
+RD-05 & Control de versiones con GitFlow. & Ramas de larga vida, ramas de publicación y de corrección urgente, con reglas de fusión explícitas y protección de rama configurada. \\
+RD-06 & Múltiples repositorios bajo una organización de GitHub. & Versionado independiente por repositorio y trazabilidad de una historia que toca varios de ellos. \\
+RD-07 & Todo el trabajo, técnico y funcional, va al backlog. & Herramienta de backlog capaz de contener historias técnicas, de infraestructura y de gestión, no solo funcionalidad de usuario. \\
+RD-08 & La seguridad es atributo de calidad de primer orden: el sistema maneja datos personales y sensibles. & Autenticación y autorización centralizadas en el borde, filtrado fino por jurisdicción en cada servicio, bitácora de auditoría, ausencia de secretos en el repositorio, autenticación y autorización también en la plataforma de eventos, y plataformas de ejecución con soporte de seguridad vigente. \\
+\end{longtable}
+
+\subsection{Restricciones normativas y del dominio}
+
+\begin{longtable}{L{1.2cm} L{3.6cm} L{9.4cm}}
+\caption{Restricciones normativas y del dominio (RN-01 a RN-04).}\label{tab:rn}\\
+\toprule
+\textbf{ID} & \textbf{Norma} & \textbf{Restricción que impone sobre las herramientas} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{ID} & \textbf{Norma} & \textbf{Restricción que impone sobre las herramientas} \\
+\midrule
+\endhead
+\contnota{3}
+\endfoot
+\bottomrule
+\endlastfoot
+RN-01 & Ley 1581 de 2012 {[}1{]} & Los datos de salud son sensibles. Ninguna herramienta puede almacenar, registrar ni transmitir la causa clínica de una unidad no apta. Condiciona qué se escribe en las bitácoras, qué se envía a la recolección de métricas, qué puede desagregar un tablero y \textbf{qué viaja en un evento}: Kafka conserva lo publicado durante su periodo de retención, de modo que un dato personal publicado sin necesidad deja de poder suprimirse a petición del titular. \\
+RN-02 & Decreto 1571 de 1993 {[}2{]} & La donación no puede remunerarse. Ninguna integración con pasarelas de pago, monederos o programas de puntos canjeables entra al catálogo. \\
+RN-03 & Resolución 901 de 1996 y modificatorias {[}3{]} & Define captación, tamizaje, almacenamiento y disposición final. El modelo de datos y sus migraciones deben reflejar esos estados sin pérdida de trazabilidad, lo que exige base de datos transaccional y migraciones versionadas y reversibles. La trazabilidad vive en la base del servicio propietario, no en el registro de eventos (entrada 97). \\
+RN-04 & ISO/IEC 25010:2023 {[}4{]} & Marco de referencia de los atributos de calidad, en su revisión de 2023 con nueve características. \\
+\end{longtable}
+
+\subsection{Condiciones del proyecto}
+
+\begin{longtable}{L{1.2cm} L{4.4cm} L{8.6cm}}
+\caption{Condiciones del proyecto que acotan la selección (CP-01 a CP-04).}\label{tab:cp}\\
+\toprule
+\textbf{ID} & \textbf{Condición} & \textbf{Consecuencia sobre la selección} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{ID} & \textbf{Condición} & \textbf{Consecuencia sobre la selección} \\
+\midrule
+\endhead
+\contnota{3}
+\endfoot
+\bottomrule
+\endlastfoot
+CP-01 & Horizonte de cinco sprints de dos semanas & Tecnologías conocidas por el equipo o de curva de aprendizaje corta. \textbf{\modif{} Toda pieza de infraestructura adicional exige un ADR que acepte su costo de aprendizaje y de operación de forma explícita}, y entra en su configuración mínima viable. Es el caso de Kafka (ADR-018) y de APISIX (ADR-019). \\
+CP-02 & Equipo de siete integrantes de perfil junior, con nueve horas semanales cada uno & Se prefiere una pieza autónoma sobre una pieza potente que requiera un plano de control, una base de datos propia o un operador dedicado. Capacidad estimada: 126 horas por sprint para todo el equipo. \\
+CP-03 & Presupuesto de desembolso cero & Toda herramienta en nivel gratuito, licencia de código abierto o licencia educativa. Se verifica que la edición gratuita conserve las funciones que el proyecto necesita; no basta con que exista. \\
+CP-04 & Datos exclusivamente sintéticos & No se requieren controles de anonimización. A cambio, se exige que el origen sintético sea evidente en la propia demostración. \\
+\end{longtable}
+
+\subsection{Regla de precedencia entre restricciones}
+
+Cuando dos restricciones apuntan en direcciones distintas, se resuelve en este orden y se deja constancia del descarte:
+
+\begin{enumerate}
+\item \textbf{RN sobre todo lo demás.} Ninguna conveniencia técnica ni de plazo justifica incumplir la ley.
+\item \textbf{RD sobre CP.} Una restricción del cliente no se relaja porque sea incómoda para el equipo; si resulta inviable, se escala al cliente por el Product Owner, no se ignora.
+\item \textbf{CP como criterio de desempate} entre alternativas que ya cumplen RN y RD.
+\end{enumerate}
+
+Esta regla se aplica tres veces en el catálogo. Una plataforma de despliegue que no acepte una imagen de contenedor propia incumple RD-03 y queda descartada: por esa razón Vercel está en anillo \evitar{} en la entrada 43. Una plataforma de ejecución sin parches de seguridad vigentes incumple RD-08: por esa razón la línea 3.x de Spring Boot queda fuera del catálogo.
+
+\vspace{0.2cm}
+\noindent\textbf{Aplicación nueva en esta versión.} Kafka y APISIX no los exige ninguna restricción del cliente, y ambos chocan con CP-01 y CP-02. La Mesa los aprobó sabiendo ese costo, que es exactamente lo que el orden de precedencia permite: CP desempata, no veta. Lo que sí impone CP-02 es la \emph{forma} de adopción. Por eso el catálogo adopta el paquete mínimo ---un solo broker, sin Kafka Connect, sin registro de esquemas desplegado, interfaz de administración sin ruta pública--- y deja las piezas que añadirían contenedores en anillo \evaluar{} con disparador declarado (entradas 89 y 90).
+
+% =====================================================================
+%  3. TECH RADAR
+% =====================================================================
+\section{Tech Radar}
+\label{sec:radar}
+
+\subsection{Metodología}
+
+El Tech Radar clasifica cada entrada en dos dimensiones: el \textbf{cuadrante}, que indica a qué categoría pertenece, y el \textbf{anillo}, que indica qué nivel de compromiso tiene el equipo con ella. El método es el propuesto por Thoughtworks {[}18{]}, adaptado a un proyecto de alcance cerrado.
+
+\begin{longtable}{L{2.4cm} L{12.2cm}}
+\caption{Significado de los cuatro anillos.}\label{tab:anillos}\\
+\toprule
+\textbf{Anillo} & \textbf{Significado} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Anillo} & \textbf{Significado} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+\adoptar{} & Decisión tomada. Es el estándar del proyecto y se usa sin requerir justificación adicional. Aparecerá en el SAD y en el SDD como tecnología del sistema. \\
+\probar{} & Se usará en un alcance acotado durante el proyecto. Se evalúa su desempeño antes de generalizar. La promoción o el retiro se registran en el control de versiones de este documento. \\
+\evaluar{} & De interés, pero sin compromiso. Solo se incorpora si un requerimiento lo hace necesario, y mediante ADR. Cada entrada de este anillo tiene escrito el disparador concreto que la activaría, y ese disparador debe ser alcanzable sin violar una restricción de la Sección \ref{sec:restricciones}. \\
+\evitar{} & Descartado de forma explícita para este proyecto, con justificación documentada. Aparece en el radar precisamente para que nadie lo reintroduzca por desconocimiento. \\
+\end{longtable}
+
+\vspace{0.2cm}
+Los cuatro cuadrantes son: Lenguajes y Frameworks, Datos e Infraestructura, Gestión y Colaboración, y Técnicas y Prácticas.
+
+\vspace{0.2cm}
+\noindent\textbf{Regla de ubicación.} Una entrada del radar nombra una tecnología o una práctica, no una decisión puntual. Si lo que se quiere registrar es a quién le corresponde una responsabilidad dentro del sistema, eso es un ADR, no una entrada de catálogo. Los lenguajes, marcos, bibliotecas y cadenas de construcción van al primer cuadrante; los productos que se despliegan como servidor ---una base de datos, un broker, un gateway--- van al segundo.
+
+\vspace{0.2cm}
+\noindent\textbf{Regla de agrupación.} Una entrada puede reunir varias herramientas cuando comparten una única decisión y una única justificación. Cuando la decisión sobre cada herramienta sería distinta, se separan en entradas independientes.
+
+\vspace{0.2cm}
+\noindent\textbf{Regla de vigencia.} Ninguna entrada en anillo \adoptar{} puede estar fuera de su ventana de soporte de seguridad. Es la aplicación directa de RD-08 sobre el instrumental, y se verifica al cierre de cada sprint junto con el registro de riesgos.
+
+\vspace{0.2cm}
+\noindent\textbf{Regla de numeración.} El número de una entrada es estable: no cambia cuando la entrada cambia de anillo, y las entradas nuevas toman el siguiente número disponible. Los ADR y los demás documentos citan las entradas por número, y renumerar el catálogo rompería esas referencias.
+
+\vspace{0.2cm}
+\noindent\textbf{Regla de movimiento.} Una entrada solo cambia de anillo mediante una nota en el control de versiones de este documento, y solo después de que la Mesa de Arquitectura lo haya acordado. Una entrada que llega a \evitar{} no se elimina del catálogo: permanece con su justificación.
+
+\vspace{0.2cm}
+\noindent\textbf{Regla de incorporación.} Toda herramienta que no esté en el catálogo y que alguien necesite usar exige, como mínimo, una entrada nueva aprobada en Mesa de Arquitectura; si tiene consecuencias estructurales, además un ADR. No se incorpora una dependencia y se documenta después.
+
+\subsection{Radar visual}
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[scale=0.78]
+\draw[fill=vinotinto!7, draw=vinotinto!30] (0,0) circle (3.65);
+\draw[draw=vinotinto!30] (0,0) circle (4.55);
+\draw[draw=vinotinto!30] (0,0) circle (5.45);
+\draw[draw=vinotinto!30] (0,0) circle (6.35);
+\draw[draw=vinotinto!55, thick] (-6.8,0) -- (6.8,0);
+\draw[draw=vinotinto!55, thick] (0,-6.8) -- (0,6.8);
+\node[align=center, font=\small\bfseries, text=vinotinto] at (-3.8,7.2) {Lenguajes y Frameworks};
+\node[align=center, font=\small\bfseries, text=vinotinto] at (3.8,7.2) {Datos e Infraestructura};
+\node[align=center, font=\small\bfseries, text=vinotinto] at (-3.8,-7.2) {Técnicas y Prácticas};
+\node[align=center, font=\small\bfseries, text=vinotinto] at (3.8,-7.2) {Gestión y Colaboración};
+\tikzset{
+  pA/.style={circle, fill=ringAdoptar, text=white, inner sep=0pt, minimum size=4.3mm, font=\tiny\bfseries},
+  pP/.style={circle, fill=ringProbar,  text=white, inner sep=0pt, minimum size=4.3mm, font=\tiny\bfseries},
+  pE/.style={circle, fill=ringEvaluar, text=white, inner sep=0pt, minimum size=4.3mm, font=\tiny\bfseries},
+  pX/.style={circle, fill=ringEvitar,  text=white, inner sep=0pt, minimum size=4.3mm, font=\tiny\bfseries}
+}
+\node[pA] at (105.0:1.20) {1};
+\node[pA] at (135.0:1.20) {2};
+\node[pA] at (165.0:1.20) {3};
+\node[pA] at (105.0:1.75) {4};
+\node[pA] at (125.0:1.75) {5};
+\node[pA] at (145.0:1.75) {6};
+\node[pA] at (165.0:1.75) {7};
+\node[pA] at (105.0:2.30) {8};
+\node[pA] at (120.0:2.30) {9};
+\node[pA] at (135.0:2.30) {10};
+\node[pA] at (150.0:2.30) {12};
+\node[pA] at (165.0:2.30) {13};
+\node[pA] at (105.0:2.85) {14};
+\node[pA] at (117.0:2.85) {15};
+\node[pA] at (129.0:2.85) {16};
+\node[pA] at (141.0:2.85) {17};
+\node[pA] at (153.0:2.85) {18};
+\node[pA] at (165.0:2.85) {19};
+\node[pA] at (105.0:3.35) {20};
+\node[pA] at (117.0:3.35) {21};
+\node[pA] at (129.0:3.35) {22};
+\node[pA] at (141.0:3.35) {80};
+\node[pA] at (153.0:3.35) {82};
+\node[pA] at (165.0:3.35) {83};
+\node[pP] at (135.0:4.10) {84};
+\node[pE] at (135.0:5.00) {24};
+\node[pX] at (98.0:5.90) {11};
+\node[pX] at (135.0:5.90) {23};
+\node[pX] at (172.0:5.90) {25};
+\node[pA] at (15.0:1.20) {26};
+\node[pA] at (45.0:1.20) {27};
+\node[pA] at (75.0:1.20) {28};
+\node[pA] at (15.0:1.75) {29};
+\node[pA] at (35.0:1.75) {30};
+\node[pA] at (55.0:1.75) {31};
+\node[pA] at (75.0:1.75) {32};
+\node[pA] at (15.0:2.30) {33};
+\node[pA] at (35.0:2.30) {34};
+\node[pA] at (55.0:2.30) {74};
+\node[pA] at (75.0:2.30) {81};
+\node[pA] at (15.0:2.85) {85};
+\node[pA] at (35.0:2.85) {86};
+\node[pA] at (55.0:2.85) {87};
+\node[pA] at (75.0:2.85) {88};
+\node[pE] at (8.0:5.00) {35};
+\node[pE] at (22.8:5.00) {36};
+\node[pE] at (37.6:5.00) {37};
+\node[pE] at (52.4:5.00) {75};
+\node[pE] at (67.2:5.00) {89};
+\node[pE] at (82.0:5.00) {90};
+\node[pX] at (8.0:5.90) {38};
+\node[pX] at (18.6:5.90) {39};
+\node[pX] at (29.1:5.90) {40};
+\node[pX] at (39.7:5.90) {41};
+\node[pX] at (50.3:5.90) {42};
+\node[pX] at (60.9:5.90) {43};
+\node[pX] at (71.4:5.90) {44};
+\node[pX] at (82.0:5.90) {91};
+\node[pA] at (285.0:1.20) {45};
+\node[pA] at (315.0:1.20) {46};
+\node[pA] at (345.0:1.20) {47};
+\node[pA] at (285.0:1.75) {48};
+\node[pA] at (305.0:1.75) {49};
+\node[pA] at (325.0:1.75) {50};
+\node[pA] at (345.0:1.75) {76};
+\node[pA] at (315.0:2.30) {77};
+\node[pE] at (315.0:5.00) {51};
+\node[pX] at (278.0:5.90) {52};
+\node[pX] at (315.0:5.90) {79};
+\node[pX] at (352.0:5.90) {53};
+\node[pA] at (195.0:1.20) {54};
+\node[pA] at (225.0:1.20) {55};
+\node[pA] at (255.0:1.20) {56};
+\node[pA] at (195.0:1.75) {57};
+\node[pA] at (215.0:1.75) {58};
+\node[pA] at (235.0:1.75) {59};
+\node[pA] at (255.0:1.75) {60};
+\node[pA] at (195.0:2.30) {61};
+\node[pA] at (210.0:2.30) {62};
+\node[pA] at (225.0:2.30) {63};
+\node[pA] at (240.0:2.30) {64};
+\node[pA] at (255.0:2.30) {65};
+\node[pA] at (195.0:2.85) {66};
+\node[pA] at (215.0:2.85) {67};
+\node[pA] at (235.0:2.85) {69};
+\node[pA] at (255.0:2.85) {78};
+\node[pA] at (195.0:3.35) {92};
+\node[pA] at (215.0:3.35) {93};
+\node[pA] at (235.0:3.35) {94};
+\node[pA] at (255.0:3.35) {95};
+\node[pP] at (225.0:4.10) {68};
+\node[pE] at (225.0:5.00) {70};
+\node[pX] at (188.0:5.90) {71};
+\node[pX] at (206.5:5.90) {72};
+\node[pX] at (225.0:5.90) {73};
+\node[pX] at (243.5:5.90) {96};
+\node[pX] at (262.0:5.90) {97};
+% Leyenda
+\node[pA] at (-5.6,-8.1) {}; \node[anchor=west, font=\scriptsize] at (-5.35,-8.1) {Adoptar (67)};
+\node[pP] at (-2.5,-8.1) {}; \node[anchor=west, font=\scriptsize] at (-2.25,-8.1) {Probar (2)};
+\node[pE] at (0.5,-8.1)  {}; \node[anchor=west, font=\scriptsize] at (0.75,-8.1)  {Evaluar (9)};
+\node[pX] at (3.5,-8.1)  {}; \node[anchor=west, font=\scriptsize] at (3.75,-8.1)  {Evitar (19)};
+\end{tikzpicture}
+\caption{Tech Radar de RedVital, versión 4.0. Cada punto es una entrada del catálogo; la numeración corresponde a las tablas de las secciones \ref{sec:q1} a \ref{sec:q4}. Cuanto más cerca del centro, mayor es el compromiso del equipo con esa entrada.}
+\label{fig:radar}
+\end{figure}
+
+\newpage
+
+% ---------------------------------------------------------------
+\subsection{Cuadrante 1 — Lenguajes y Frameworks}
+\label{sec:q1}
+
+\begin{longtable}{L{0.8cm} L{2.6cm} L{1.6cm} L{4.1cm} L{4.5cm}}
+\caption{Catálogo del cuadrante Lenguajes y Frameworks (entradas 1 a 25, 80 y 82 a 84).}\label{tab:q1}\\
+\toprule
+\textbf{\#} & \textbf{Herramienta} & \textbf{Anillo} & \textbf{Descripción y uso} & \textbf{Justificación} \\
+\midrule
+\endfirsthead
+\multicolumn{5}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{\#} & \textbf{Herramienta} & \textbf{Anillo} & \textbf{Descripción y uso} & \textbf{Justificación} \\
+\midrule
+\endhead
+\contnota{5}
+\endfoot
+\bottomrule
+\endlastfoot
+
+1 & Java 25 (LTS), distribución Eclipse Temurin & \adoptar{} & Lenguaje del Servicio de Donación y del trabajador de Notificaciones. & Registrado en ADR-009. Versión de soporte extendido vigente: Oracle declara soporte principal hasta septiembre de 2030 y Temurin publica actualizaciones hasta septiembre de 2031. Imagen de construcción oficial de Temurin 25; la de ejecución lleva un entorno reducido con \texttt{jlink} sobre \emph{distroless} (entrada 81). Satisface la mitad Java de RD-02. \\
+
+2 & Spring Boot 4.1 & \adoptar{} & Framework del Servicio de Donación y del trabajador de Notificaciones. & Registrado en ADR-009. Línea con soporte de código abierto vigente hasta el 31 de julio de 2027. La línea 3.x salió de soporte el 30 de junio de 2026. Determina además la versión de Spring for Apache Kafka (entrada 82). \\
+
+3 & Spring Data JPA / Hibernate & \adoptar{} & Mapeo objeto-relacional del Servicio de Donación. & Su soporte de herencia y polimorfismo habilita el modelo de dominio genérico (RNF-05, RI-01). La versión la determina la entrada 2. \\
+
+4 & Spring Security & \adoptar{} & Validación del token y autorización dentro del Servicio de Donación, como servidor de recursos (ADR-008). & El gateway resuelve la compuerta; el servicio resuelve el filtrado fino por jurisdicción. RNF-02 exige los dos niveles. \\
+
+5 & Spring Scheduler & \adoptar{} & Tareas programadas del Servicio de Donación: vencimiento, escalamiento (ADR-013) y el publicador de la bandeja de salida (entrada 78). & Cubre RNF-08, RF-15 y el ciclo de ADR-013 sin infraestructura externa. El publicador de la bandeja reutiliza el mismo mecanismo y el mismo bloqueo consultivo, de modo que no entra componente nuevo. \\
+
+6 & Maven & \adoptar{} & Cadena de construcción del Servicio de Donación y del trabajador. & Archivo de construcción declarativo y convención mayoritaria del ecosistema Spring (CP-02). \\
+
+7\modif & .NET 10 (LTS) / C\# & \adoptar{} & Lenguaje de los servicios de Identidad, Institucional y Campañas. & Soporte hasta el 10 de noviembre de 2028. Satisface la mitad .NET de RD-02. Con ADR-019 el gateway deja de ser .NET: la plataforma queda en tres componentes, lo que reduce la exposición de RA-03. \\
+
+8\modif & ASP.NET Core 10 & \adoptar{} & Framework de los servicios de Identidad, Institucional y Campañas. & Su modelo de autorización basado en políticas expresa la regla territorial de RNF-02 en un solo lugar e incluye la validación de JWT contra claves públicas (ADR-008). La limitación de tasa deja de usarse aquí: pasa al gateway (entrada 86). \\
+
+9 & Entity Framework Core 10 & \adoptar{} & Mapeo objeto-relacional y migraciones de los servicios .NET. & Opción por defecto del ecosistema .NET. \\
+
+10\modif & SDK de .NET y NuGet & \adoptar{} & Cadena de construcción y dependencias de los tres servicios .NET. & Cadena única de la plataforma. Se fija la versión mayor del SDK para que la construcción sea reproducible. \\
+
+11\modif & YARP & \evitar{} & Biblioteca de proxy inverso sobre ASP.NET Core, usada como gateway hasta la versión 3.0. & \textbf{Reemplazada por ADR-019.} La Mesa la descartó porque es un conjunto de herramientas para construir un gateway y no un gateway listo: la compuerta, la limitación de tasa y la entrega de denegaciones había que programarlas. Se conserva en el catálogo para que no se reintroduzca sin revisar ADR-019. \\
+
+12\modif & Instrumentación de métricas: Micrometer con Actuator, y OpenTelemetry para .NET & \adoptar{} & Exposición de métricas de cada servicio, incluidas las de sus clientes de Kafka. & Micrometer expone de serie las métricas de productor y consumidor de Spring for Apache Kafka, entre ellas el retraso del consumidor. En .NET las estadísticas del cliente (entrada 83) se publican por el mismo canal de OpenTelemetry. Así el retraso de consumo se mide sin contenedor adicional. \\
+
+13 & TypeScript 5.7 & \adoptar{} & Lenguaje de la Aplicación Web. & Tipado que reduce errores de integración contra los contratos de cuatro servicios. \\
+
+14 & React 19 & \adoptar{} & Biblioteca de interfaz. & Experiencia previa del equipo (CP-01) y reutilización entre los siete perfiles. \\
+
+15 & Vite 6 & \adoptar{} & Servidor de desarrollo y empaquetador de la Aplicación Web. & Mínimo necesario para compilar JSX y resolver módulos. ADR-006. \\
+
+16 & React Router 7 & \adoptar{} & Enrutamiento de la Aplicación Web. & Navegación diferenciada por rol: una entrada de menú que no corresponde al rol no se dibuja. ADR-006. \\
+
+17 & Tailwind CSS 4 & \adoptar{} & Estilos por utilidades. & Validado sobre el prototipo de alta fidelidad y registrado en ADR-006. \\
+
+18 & Radix UI (primitivos) & \adoptar{} & Primitivos accesibles sin estilos propios. & Manejo de teclado y accesibilidad sin imponer identidad visual. Contribuye a la entrada 66. \\
+
+19 & Node.js 24 (LTS) y npm & \adoptar{} & Entorno de la cadena de construcción de la Aplicación Web y de la validación de contratos AsyncAPI (entrada 93). & Se fija la versión mayor para que la construcción sea reproducible. \\
+
+20 & Análisis estático: Checkstyle y SpotBugs, analizadores de .NET, ESLint & \adoptar{} & Verificación automática de estilo y defectos en cada Pull Request. & Analizadores nativos de cada plataforma, sin servicio externo (CP-03). \\
+
+21 & Verificación de accesibilidad: complemento para ESLint y auditoría de navegador & \adoptar{} & Detección automática de defectos de accesibilidad. & Costo marginal nulo sobre la entrada 20. \\
+
+22 & Marcos de prueba: JUnit 5 con Mockito, xUnit y Vitest & \adoptar{} & Pruebas unitarias y de integración. & Opciones por defecto de sus tres ecosistemas. Las pruebas de integración con Kafka y PostgreSQL reales usan la entrada 69. \\
+
+23\modif & Ejecución asíncrona con reintento (Spring) & \evitar{} & Reintento de espera creciente dentro del trabajador de Notificaciones, sobre la bandeja expuesta por HTTP. & \textbf{Sustituida por la entrada 82.} Con ADR-018 el trabajador consume eventos de Kafka, y el reintento pasa a ser el no bloqueante de Spring for Apache Kafka con tema de mensajes muertos (entrada 95). Mantener los dos mecanismos produciría dos políticas de reintento para el mismo aviso. \\
+
+24 & Generación del cliente TypeScript desde el contrato OpenAPI & \evaluar{} & Derivación automática de tipos de la Aplicación Web desde la especificación de cada servicio. & Disparador: la primera desincronización entre un contrato y el código de la Aplicación Web. \\
+
+25 & Suites de interfaz con tema propio y gestores de estado global (MUI, Ant Design, Redux) & \evitar{} & Bibliotecas con identidad visual propia y almacenes de estado centralizados. & Descartado en ADR-006. \\
+
+80 & Gatling & \adoptar{} & Generación de carga para EC-07, EC-08, EC-15, EC-16 y EC-26 contra la pila de medición. & Edición comunitaria gratuita, simulaciones en Java, ejecución con Maven sin servicio externo. \\
+
+82\nueva & Spring for Apache Kafka & \adoptar{} & Productor (el publicador de la bandeja de salida) y consumidor de eventos en el Servicio de Donación y en el trabajador de Notificaciones. & Es el cliente que Spring Boot 4.1 gestiona y versiona, de modo que su versión no se elige por separado. Trae de serie lo que ADR-018 exige a los consumidores: reintento no bloqueante con temas de reintento, tema de mensajes muertos, deserialización tolerante a mensajes mal formados y métricas por Micrometer. Usa los clientes de Kafka 4.x y solo opera en modo KRaft, que es el de la entrada 85. \\
+
+83\nueva & Confluent.Kafka (cliente .NET sobre librdkafka) & \adoptar{} & Productor y consumidor de eventos en los servicios .NET que publiquen o consuman hechos del dominio; el primer caso previsto es Campañas como consumidor (ADR-018). & Licencia Apache 2.0 y paquete NuGet con destino .NET 10. Es el cliente de referencia de la plataforma; las alternativas en .NET son envoltorios sobre él. El nombre del proveedor no implica usar su plataforma comercial: se usa solo el cliente (entrada 91). A diferencia de Spring, no trae temas de reintento: la plantilla común .NET (DS-07) incorpora el consumidor idempotente y el envío al tema de mensajes muertos para que no se escriba tres veces. \\
+
+84\nueva & Complementos propios de APISIX en Lua & \probar{} & Lógica de entrada que los complementos estándar de APISIX no resuelvan: compuerta por ruta y rol derivada de la matriz de ADR-011, clave de la escala autenticada por la reivindicación \texttt{sub} y entrega de denegaciones a Identidad (ADR-016). & Lua es un tercer lenguaje en el proyecto, contrario a CP-01, y por eso no se adopta por defecto. La pregunta abierta es concreta: \emph{¿alcanzan los complementos estándar ---\texttt{openid-connect}, \texttt{limit-count}, \texttt{http-logger} y su combinación--- para las cinco responsabilidades de ADR-007, que ADR-019 hereda?} Se responde en la prueba de concepto T-410 rehecha sobre APISIX, en la primera semana del Sprint 4. Si la respuesta es sí, la entrada pasa a \evitar{}; si no, a \adoptar{} con el código acotado a un solo complemento revisado por dos personas. \\
+
+\end{longtable}
+
+% ---------------------------------------------------------------
+\subsection{Cuadrante 2 — Datos e Infraestructura}
+\label{sec:q2}
+
+\begin{longtable}{L{0.8cm} L{2.6cm} L{1.6cm} L{4.1cm} L{4.5cm}}
+\caption{Catálogo del cuadrante Datos e Infraestructura (entradas 26 a 44, 74, 75, 81 y 85 a 91).}\label{tab:q2}\\
+\toprule
+\textbf{\#} & \textbf{Herramienta} & \textbf{Anillo} & \textbf{Descripción y uso} & \textbf{Justificación} \\
+\midrule
+\endfirsthead
+\multicolumn{5}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{\#} & \textbf{Herramienta} & \textbf{Anillo} & \textbf{Descripción y uso} & \textbf{Justificación} \\
+\midrule
+\endhead
+\contnota{5}
+\endfoot
+\bottomrule
+\endlastfoot
+
+26 & PostgreSQL 16 & \adoptar{} & Base de datos relacional. Cuatro instancias, una por servicio con base. Cada servicio productor de eventos aloja allí su bandeja de salida (entrada 78). & El dominio exige garantías transaccionales (RN-03), y la bandeja de salida solo es confiable si comparte transacción con el hecho. Tres roles por base. Soporte hasta noviembre de 2028. ADR-005 y ADR-014. \\
+
+27\modif & Docker con imágenes multietapa & \adoptar{} & Empaquetado de los cinco servicios, la Aplicación Web y los trabajos de migración, respaldo y restauración. El proxy de borde, el gateway, el broker y las bases usan imágenes oficiales. & RD-03 lo exige. Con ADR-019 el gateway deja de ser imagen propia: corre la imagen oficial de APISIX con su configuración montada en solo lectura. Las imágenes propias quedan en cinco. \\
+
+28\modif & Docker Compose & \adoptar{} & Orquestación del sistema completo en Desarrollo y en QA. & Levanta con un solo comando los trece contenedores de Desarrollo y los quince de QA, más los trabajos efímeros, con el mismo archivo y las diferencias como variables. El atributo de versión en la raíz se omite. \\
+
+29\modif & Tokens JWT con publicación de claves (JWKS) & \adoptar{} & Formato del token de acceso, firmado con RS256. Identidad publica sus claves y el gateway y los servicios validan sin consultarlo en cada petición: el gateway con el complemento \texttt{openid-connect} de APISIX en modo solo portador, y los servicios con ASP.NET Core 10 y Spring Security. & Registrado en ADR-008. \textbf{Consecuencia de ADR-019:} el complemento de APISIX localiza las claves a partir de un documento de descubrimiento OpenID, de modo que Identidad debe publicar \texttt{/.well-known/\bk openid-\bk configuration} además de las claves. Es una operación pequeña, pero no existía y se registra para que no aparezca en la prueba de concepto. \\
+
+30 & Migraciones versionadas: Flyway y EF Core Migrations & \adoptar{} & Versionado del esquema por un trabajo efímero por base. Incluye las tablas de bandeja de salida y de eventos procesados. & Migraciones en dos tiempos, expansión y contracción, para que revertir un despliegue nunca exija deshacer una migración. RN-03. \\
+
+31\modif & Prometheus & \adoptar{} & Recolección de métricas en QA: gateway, cinco servicios y broker. & Raspa solo destinos declarados por nombre. El broker se raspa a través de la entrada 88. Es el instrumento de RNF-04 y de las medidas de retraso de consumo y antigüedad de la bandeja. \\
+
+32 & Grafana & \adoptar{} & Tableros y alertas en QA. & Solo por el proxy de borde en \texttt{/grafana/}, con usuarios nominales y tableros aprovisionados de solo lectura. Ningún tablero desagrega hasta un donante identificable (RN-01). \\
+
+33 & GitHub Container Registry & \adoptar{} & Registro de las imágenes propias. & Incluido en la organización que exige RD-06. \\
+
+34\modif & Máquina virtual institucional con Docker Compose & \adoptar{} & Anfitrión del ambiente de QA, que es también el de demostración. & Cumple RD-03, CP-03 y CP-01 a la vez. \textbf{Requisito revisado:} con el broker, la suma de límites de memoria de QA pasa de 4.544 a 5.568~MiB; aplicando el margen del 50\,\% para EC-16 y 1~GiB para el sistema, la máquina necesita \textbf{10~GiB}, no 8. Riesgo RT-12. \\
+
+35 & Agregación de registros (Loki con recolector) & \evaluar{} & Recolección centralizada de la salida de los contenedores. & Disparador: un defecto que exija correlacionar registros de dos o más servicios y que el identificador de correlación no resuelva en el plazo de EC-20. Ese disparador es más probable con eventos; se revisa al cierre del Sprint 4. \\
+
+36\modif & Keycloak & \evaluar{} & Proveedor de identidad completo. & Disparador: que el cliente exija federación con un proveedor externo. APISIX se integra con él de forma nativa, lo que abarata un eventual cambio, pero no justifica su contenedor y su base hoy (CP-02). \\
+
+37\modif & Redis & \evaluar{} & Almacenamiento en memoria. & Disparadores: que la concurrencia de la reserva de cupo no se resuelva en base de datos, o que se despliegue más de una réplica de APISIX y la cuota de tasa deba ser global (ADR-019). \\
+
+38\modif & RabbitMQ & \evitar{} & Intermediario de mensajería por colas. & \textbf{Evaluado y no seleccionado en ADR-018.} Cubre bien colas de trabajo y avisos, pero no conserva el registro de eventos ni permite incorporar consumidores sin cambiar la topología de colas. Tener dos intermediarios no está justificado. \\
+
+39 & Render y Railway & \evitar{} & Plataformas de despliegue gestionado. & Render limita a una base gratuita y RedVital necesita cuatro; Railway no tiene nivel gratuito permanente. Incompatibilidad estructural con CP-03. \\
+
+40 & Traefik & \evitar{} & Proxy inverso con descubrimiento automático. & Su validación de token pertenece a la edición comercial. Como borde, ADR-015 elige la entrada 74. \\
+
+41\modif & Kong Gateway (edición libre) y Ocelot & \evitar{} & Alternativas de API Gateway. & Kong dejó de publicar imágenes preconstruidas de su edición libre desde la versión 3.10, y ADR-019 añade que sus funciones de gestión avanzadas son de pago. Ocelot perdió sentido además al dejar el gateway de ser .NET. \\
+
+42\modif & Kubernetes & \evitar{} & Orquestador de contenedores en clúster. & RD-03 exige contenerización, no orquestación en clúster. ADR-019 menciona competencias en Kubernetes como consecuencia de APISIX; no aplican aquí, porque APISIX corre en modo autónomo dentro de Compose. \\
+
+43 & Vercel & \evitar{} & Plataforma de despliegue de frontend. & No parte de una imagen propia (RD-03). \\
+
+44 & Bases de datos NoSQL documentales & \evitar{} & Almacenamiento no relacional. & ADR-005: el modelo de trazabilidad es relacional y transaccional. \\
+
+74\modif & Caddy 2 & \adoptar{} & Proxy de borde de la Zona 1: TLS, redirección, cabeceras de seguridad, cuerpo máximo de 1~MiB y reparto hacia la Aplicación Web, el gateway y, en QA, Grafana. & ADR-015. No limita la tasa, que es función de la entrada 86. No tiene ruta hacia el broker ni hacia su interfaz de administración. \\
+
+75 & nginx & \evaluar{} & Proxy inverso alternativo para la Zona 1. & Disparador: que el borde necesite limitación de tasa propia o balanceo que Caddy no resuelva. \\
+
+81\modif & Imágenes de ejecución mínimas: ASP.NET Core \emph{chiseled} y \emph{distroless} con Java reducido & \adoptar{} & Base de ejecución de las cinco imágenes propias: los tres servicios .NET en \emph{chiseled} y Donación y Notificaciones en \emph{distroless} con \texttt{jlink}. & Sin intérprete de órdenes ni gestor de paquetes (RD-08). Las imágenes oficiales de APISIX y de Kafka sí los traen; se tratan como las demás imágenes de terceros, con el riesgo aceptado RIF-02 de Infraestructura. \\
+
+85\nueva & Apache Kafka 4.3, modo KRaft, un broker & \adoptar{} & Plataforma de eventos de ADR-018. Un único nodo que actúa a la vez como broker y controlador, con la imagen oficial \texttt{apache/kafka} fijada a la versión 4.3.1 y por resumen. Temas creados por un trabajo efímero de inicialización, nunca de forma automática. & ADR-018. Licencia Apache 2.0 e imagen oficial del proyecto (RD-03, CP-03). Desde la versión 4.0 Kafka solo opera en KRaft, sin ZooKeeper, lo que deja una sola pieza que operar (CP-02). Vigencia: el proyecto apunta a tres versiones al año y mantiene correcciones para las versiones soportadas; a la fecha lo son 4.3, 4.2 y 4.1 {[}25{]}. Un broker no tolera su propia caída; se acepta porque la bandeja de salida retiene los eventos mientras el broker no está, de modo que su caída retrasa avisos pero no pierde hechos ni bloquea operaciones. \\
+
+86\nueva & Apache APISIX 3.19, modo autónomo & \adoptar{} & API Gateway. Recibe del proxy de borde las rutas \texttt{/api/*} y aplica validación del token, compuerta por ruta y rol, limitación de tasa en dos escalas, correlación y plazo hacia el servicio destino. Configuración declarativa en un archivo versionado en \texttt{redvital-gateway}, montado en solo lectura; la API de administración queda deshabilitada. & ADR-019. Licencia Apache 2.0 sin edición de pago. El modo autónomo no requiere etcd, de modo que no añade contenedor (CP-02). Los complementos estándar cubren validación JWT contra JWKS (\texttt{openid-connect}), tasa por variable de la petición (\texttt{limit-count}), registro por lotes (\texttt{http-logger}) y métricas para Prometheus {[}26{]}. Lo que no cubran se resuelve en la entrada 84. Vigencia: el proyecto publica versiones menores con frecuencia ---la 3.19.0 salió el 28 de septiembre de 2026--- y su página de descargas solo presenta como vigente la más reciente; por eso se fija la versión exacta y su vigencia se verifica en cada cierre de sprint (RT-15). \\
+
+87\nueva & Kafbat UI & \adoptar{} & Interfaz web para inspeccionar temas, mensajes, grupos de consumidores y su retraso. Siempre en Desarrollo; en QA solo bajo demanda, con un perfil de Compose propio y acceso por túnel SSH, sin ruta en el proxy de borde. & Licencia Apache 2.0 y continuación mantenida del proyecto de interfaz para Kafka que quedó sin mantenimiento. Reduce la curva de aprendizaje de Kafka (RT-13): permite ver lo que hay en un tema sin escribir un consumidor. No se publica por el borde porque muestra el contenido de los eventos. \\
+
+88\nueva & Exportador JMX de Prometheus como agente Java del broker & \adoptar{} & Expone las métricas internas del broker ---salud, particiones sin réplica suficiente, peticiones--- en un puerto que solo raspa Prometheus. & Licencia Apache 2.0. Corre como agente dentro del proceso del broker, de modo que no añade contenedor. El retraso de consumo no sale de aquí sino de los propios consumidores (entrada 12), que es donde se origina. \\
+
+89\nueva & Apicurio Registry & \evaluar{} & Registro de esquemas de eventos con validación de compatibilidad en tiempo de publicación. & Disparador: que un mismo tipo de evento llegue a tener tres o más consumidores, o que se rompa un consumidor por un cambio de esquema que la validación en la integración continua (entrada 93) no detectó. Licencia Apache 2.0, pero añade un contenedor con almacenamiento propio sobre una máquina ya ajustada (RT-12). \\
+
+90\nueva & Kafka Connect con Debezium (captura de cambios) & \evaluar{} & Publicación de la bandeja de salida leyendo el registro de transacciones de PostgreSQL en lugar de sondear la tabla. & Disparador: que el publicador por sondeo (entrada 78) no cumpla la medida de EC-11 o cargue la base de forma medible. Añadiría un trabajador de Connect, del orden de 1~GiB de memoria, y configuración de replicación lógica en las bases. Es la evolución natural del patrón, no su punto de partida. \\
+
+91\nueva & Confluent Schema Registry y Confluent Platform & \evitar{} & Distribución comercial de Kafka y su registro de esquemas. & Descartados por licencia: el registro de esquemas y los componentes de la plataforma se distribuyen bajo una licencia comunitaria propia del proveedor, no aprobada como de código abierto, contraria a la política de licencias de la Fase 3. Si se activa el disparador de la entrada 89, la alternativa es Apicurio. El cliente .NET de la entrada 83 sí es Apache 2.0 y no se ve afectado. \\
+
+\end{longtable}
+
+% ---------------------------------------------------------------
+\subsection{Cuadrante 3 — Gestión y Colaboración}
+\label{sec:q3}
+
+\begin{longtable}{L{0.8cm} L{2.6cm} L{1.6cm} L{4.1cm} L{4.5cm}}
+\caption{Catálogo del cuadrante Gestión y Colaboración (entradas 45 a 53, 76, 77 y 79). Sin cambios en esta versión.}\label{tab:q3}\\
+\toprule
+\textbf{\#} & \textbf{Herramienta} & \textbf{Anillo} & \textbf{Descripción y uso} & \textbf{Justificación} \\
+\midrule
+\endfirsthead
+\multicolumn{5}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{\#} & \textbf{Herramienta} & \textbf{Anillo} & \textbf{Descripción y uso} & \textbf{Justificación} \\
+\midrule
+\endhead
+\contnota{5}
+\endfoot
+\bottomrule
+\endlastfoot
+
+45 & GitHub: organización, repositorios, Issues y Projects & \adoptar{} & Código en múltiples repositorios, backlog y revisión por Pull Request. & RD-06 y RD-07. Trazabilidad automática entre historia, rama y fusión. \\
+
+46 & GitHub Actions & \adoptar{} & Integración continua y publicación de imágenes. & Un flujo por repositorio, coherente con RD-01. Minutos finitos en repositorios privados (RT-01). \\
+
+47 & Alertas de dependencias vulnerables y actualización automatizada & \adoptar{} & Revisión continua de dependencias en los nueve repositorios. & RD-08; gratuito en la plataforma adoptada. Cubre también los clientes de Kafka. \\
+
+48 & Markdown con Mermaid & \adoptar{} & Documentación técnica y diagramas, incluidos los de flujo de eventos. & RD-04. \\
+
+49 & Overleaf (\LaTeX{}) & \adoptar{} & Redacción de los documentos formales entregables. & Convive con la entrada 48: Markdown para lo vivo, \LaTeX{} para lo fechado y firmado. \\
+
+50 & Figma & \adoptar{} & Diseño de interfaces y mockups. & Licencia educativa (CP-03); los diagramas técnicos van en Mermaid. \\
+
+51 & MkDocs Material con GitHub Pages & \evaluar{} & Publicación de la documentación Markdown como sitio. & Disparador: que el volumen de documentación haga incómoda su lectura en el repositorio. \\
+
+52 & Jira y Confluence & \evitar{} & Gestión de backlog comercial. & Romperían la trazabilidad automática historia-rama-PR. \\
+
+53 & Draw.io y Structurizr & \evitar{} & Diagramación técnica alternativa. & Conflicto con RD-04. \\
+
+76 & Grype & \adoptar{} & Escaneo de vulnerabilidades de cada imagen, propias y de terceros, incluidas las de APISIX y Kafka. & Licencia Apache 2.0, binario fijado y verificado. Falla ante severidad alta o crítica con corrección publicada. \\
+
+77 & Gitleaks & \adoptar{} & Detección de secretos en cada Pull Request, incluidas credenciales de Kafka. & Licencia MIT. Bloquea la fusión. \\
+
+79 & Trivy & \evitar{} & Escáner alternativo. & Compromiso de cadena de suministro de marzo de 2026 (CVE-2026-33634). \\
+
+\end{longtable}
+
+% ---------------------------------------------------------------
+\subsection{Cuadrante 4 — Técnicas y Prácticas}
+\label{sec:q4}
+
+\begin{longtable}{L{0.8cm} L{2.6cm} L{1.6cm} L{4.1cm} L{4.5cm}}
+\caption{Catálogo del cuadrante Técnicas y Prácticas (entradas 54 a 73, 78 y 92 a 97).}\label{tab:q4}\\
+\toprule
+\textbf{\#} & \textbf{Práctica} & \textbf{Anillo} & \textbf{Descripción y uso} & \textbf{Justificación} \\
+\midrule
+\endfirsthead
+\multicolumn{5}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{\#} & \textbf{Práctica} & \textbf{Anillo} & \textbf{Descripción y uso} & \textbf{Justificación} \\
+\midrule
+\endhead
+\contnota{5}
+\endfoot
+\bottomrule
+\endlastfoot
+
+54 & Scrum & \adoptar{} & Marco de trabajo del equipo {[}8{]}. & Exigido por el curso. \\
+
+55 & GitFlow & \adoptar{} & Estrategia de ramificación (Sección \ref{sec:gitflow}). & RD-05. \\
+
+56 & Conventional Commits & \adoptar{} & Formato del mensaje de commit {[}14{]}. & Historial legible y notas de versión derivables. \\
+
+57\modif & Versionado semántico & \adoptar{} & Numeración de cada repositorio, de cada contrato síncrono y de cada contrato de evento {[}13{]}. & Con nueve repositorios, la versión debe comunicar si un cambio rompe a quien consume; vale igual para un esquema de evento. \\
+
+58\modif & Arquitectura de microservicios por contexto acotado & \adoptar{} & Cinco servicios desplegables de forma independiente, uno por contexto acotado, con base propia y comunicación solo por contrato {[}12{]}. & Formalizada en ADR-017, que cierra la cuestión que ADR-003 dejó abierta y sustenta el estilo como pide RD-01. La granularidad es la de ADR-014; la descomposición más fina sigue en \evitar{} (entrada 72). \\
+
+59 & Contenerización integral & \adoptar{} & Todo componente ejecutable como imagen. & RD-03. \\
+
+60 & Aplicación de doce factores & \adoptar{} & Configuración por variable de entorno y paridad entre ambientes {[}15{]}. & Hace utilizable la misma imagen en todos los ambientes, incluida la dirección del broker y sus credenciales. \\
+
+61\modif & Modelo C4 & \adoptar{} & Documentación de la arquitectura en niveles, escrita en Mermaid {[}10{]}. & Desde esta versión, el broker de eventos es un contenedor más del nivel 2, y las relaciones de evento se dibujan según la convención de la Fase 2 (Sección \ref{sec:fases}). \\
+
+62 & Vistas 4+1 & \adoptar{} & Organización del documento de arquitectura {[}11{]}. & Exigida por la estructura del SDD del curso. \\
+
+63 & Registro de Decisión Arquitectónica & \adoptar{} & Registro de cada decisión relevante {[}6{]}. & Trazabilidad del porqué. \\
+
+64 & MoSCoW & \adoptar{} & Priorización del alcance. & Hace explícito qué se corta primero. \\
+
+65\modif & Contratos OpenAPI versionados & \adoptar{} & Especificación de la interfaz \emph{síncrona} de cada servicio {[}17{]}. & El contrato de evento tiene su propio formato (entrada 93). Un servicio que publica y expone API tiene los dos contratos en su repositorio. \\
+
+66 & Accesibilidad WCAG 2.2 nivel AA & \adoptar{} & Criterio de aceptación de toda pantalla {[}16{]}. & RN-04 y RNF-03. \\
+
+67 & Registro de riesgos & \adoptar{} & Lista viva de riesgos revisada en cada cierre de sprint. & Sección \ref{sec:riesgos}. \\
+
+68 & Pruebas automatizadas orientadas al riesgo & \probar{} & Estrategia de cobertura. & Se priorizan RNF-01 y RNF-02 y, desde esta versión, la entrega duplicada y la caída del broker. Se revisa al cierre del Sprint 4. \\
+
+69\modif & Testcontainers (Java y .NET) & \adoptar{} & Pruebas de integración contra PostgreSQL y Kafka reales en contenedores efímeros. & \textbf{Su disparador se activó.} La bandeja de salida, el publicador y los consumidores idempotentes solo se prueban de forma creíble contra un broker y una base reales; un sustituto en memoria no reproduce la entrega duplicada ni el reequilibrio de un grupo de consumidores. Encaja con RD-03 y tiene módulos para PostgreSQL y Kafka en las dos plataformas. \\
+
+70\modif & Pruebas de contrato (Pact) & \evaluar{} & Verificación automatizada de que consumidor y proveedor siguen entendiéndose, también para mensajes. & Disparador: una desincronización entre dos servicios pese a los contratos OpenAPI y AsyncAPI. La alternativa adoptada es la validación de compatibilidad de la entrada 93. \\
+
+71 & Monolito modular & \evitar{} & Aplicación única con módulos internos. & Prohibido por RD-01. \\
+
+72\modif & Microservicios de grano fino & \evitar{} & Un servicio por módulo funcional o por entidad. & ADR-017 adopta microservicios, pero no esta granularidad: ADR-014 la descartó (opción D) porque parte la atomicidad del flujo núcleo y multiplica contratos y bases por encima de CP-02. La entrada sigue para que «microservicios» no se lea como «un servicio por módulo». \\
+
+73 & Desarrollo sobre rama única & \evitar{} & Integración directa sobre una sola rama. & RD-05 fija GitFlow. \\
+
+78\modif & Bandeja de salida transaccional (\emph{Transactional Outbox}) con publicador hacia Kafka & \adoptar{} & El servicio productor escribe el evento en su tabla de bandeja, en la misma transacción que el hecho. Un publicador del mismo servicio (entrada 5) la lee en orden, publica en Kafka con productor idempotente y marca lo publicado. & Exigida por ADR-018. Impide los dos fallos de la escritura doble: un hecho confirmado cuyo evento se pierde, y un evento publicado de un hecho que se revirtió. \textbf{Cambia respecto de la versión 3.0}: la bandeja ya no se expone por contrato HTTP al trabajador de Notificaciones; las operaciones \texttt{/internal/v1/bandeja} y la arista 13 de ADR-014 se retiran. El estado de entrega del aviso pasa a ser responsabilidad del consumidor. \\
+
+92\nueva & Comunicación híbrida según la naturaleza de la interacción & \adoptar{} & Toda interacción entre servicios se clasifica antes de diseñarse: HTTP si quien llama necesita la respuesta para continuar; evento si comunica un hecho ya ocurrido; bandeja de salida si ese hecho debe publicarse sin pérdida. La integración por base de datos está prohibida. & Es la regla central de ADR-018. Se registra como práctica porque se aplica en cada historia y en cada revisión, no una sola vez. La tabla de clasificación de la Sección \ref{sec:eventos} es la que se usa en la revisión. \\
+
+93\nueva & Contratos de eventos versionados con AsyncAPI 3.0 y JSON Schema & \adoptar{} & Cada tipo de evento tiene un contrato en el repositorio del servicio productor: tema, clave de partición, esquema del mensaje y versión. La integración continua valida el archivo y comprueba que el cambio es compatible con la versión anterior. & Sin contrato, el desacople de Kafka se convierte en acoplamiento invisible: el consumidor depende de una forma que nadie declaró. AsyncAPI es el equivalente de OpenAPI para eventos {[}27{]}, es texto versionable (RD-04) y se valida con su herramienta de línea de órdenes, de licencia Apache 2.0, sobre la entrada 19. Se prefiere a un registro de esquemas desplegado (entrada 89) porque no añade contenedores. \\
+
+94\nueva & Consumidores idempotentes con registro de eventos procesados & \adoptar{} & Todo consumidor registra el identificador de cada evento procesado en su propia base, en la misma transacción que su efecto, y descarta el que ya vio. Los consumidores sin base, como Notificaciones, deduplican por la clave del evento ante el canal de salida. & Kafka entrega «al menos una vez» y la bandeja puede publicar dos veces tras un reinicio. ADR-018 lo exige. Es la versión para eventos de la idempotencia que DS-10 ya aplica a las peticiones {[}28{]}. \\
+
+95\nueva & Reintento no bloqueante y tema de mensajes muertos & \adoptar{} & Un evento que falla se reintenta en temas de reintento con espera creciente, sin detener el resto de la partición; agotados los intentos, va a su tema de mensajes muertos, visible en un tablero y con alerta. & Sustituye la política de reintento de la bandeja expuesta (entrada 23) y conserva la garantía de EC-11: ningún aviso se descarta en silencio. \\
+
+96\nueva & Solicitud-respuesta sobre Kafka & \evitar{} & Usar temas de petición y de respuesta para consultas que necesitan resultado inmediato. & ADR-018 reserva HTTP para esos casos. Llevar una consulta a Kafka añade latencia, correlación manual y un plazo de espera que ya resuelve el cliente HTTP con su degradación de 3 segundos (DS-05), sin ganar desacople: quien espera la respuesta sigue dependiendo de quien la da. Se registra porque «todo por Kafka» es la simplificación más tentadora. \\
+
+97\nueva & Kafka como fuente de verdad (\emph{event sourcing}) & \evitar{} & Reconstruir el estado de las entidades a partir del registro de eventos. & La trazabilidad de la unidad vive en \texttt{evento\_\allowbreak{}unidad}, en la base de Donación, con inmutabilidad impuesta por permisos (RN-03, ADR-005). Kafka distribuye hechos con retención acotada; no es un almacén de registros. La reproducción de eventos que ADR-018 valora sirve para reconstruir proyecciones, no el estado de referencia. \\
+
+\end{longtable}
+
+\subsection{Resumen del catálogo}
+
+\begin{longtable}{L{5.6cm} C{2.0cm} C{2.0cm} C{2.0cm} C{2.0cm}}
+\caption{Distribución de las 97 entradas por cuadrante y anillo.}\label{tab:distribucion}\\
+\toprule
+\textbf{Cuadrante} & \textbf{Adoptar} & \textbf{Probar} & \textbf{Evaluar} & \textbf{Evitar} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Lenguajes y Frameworks & 24 & 1 & 1 & 3 \\
+Datos e Infraestructura & 15 & 0 & 6 & 8 \\
+Gestión y Colaboración & 8 & 0 & 1 & 3 \\
+Técnicas y Prácticas & 20 & 1 & 1 & 5 \\
+\midrule
+\textbf{Total} & \textbf{67} & \textbf{2} & \textbf{9} & \textbf{19} \\
+\end{longtable}
+
+\vspace{0.2cm}
+El anillo \emph{Probar} sigue con dos entradas, pero cambia una de ellas: sale la ejecución asíncrona con reintento (23), resuelta, y entra la pregunta sobre los complementos en Lua (84), que tiene fecha de respuesta. El anillo \emph{Evitar} crece de trece a diecinueve, y conviene leer por qué: cuatro de las seis entradas nuevas en él ---YARP, RabbitMQ, la solicitud-respuesta sobre Kafka y Kafka como fuente de verdad--- existen para que la adopción de Kafka y de APISIX no se extienda más allá de lo que los ADR decidieron.
+
+% =====================================================================
+%  4. PLAN DE ADOPCIÓN
+% =====================================================================
+\section{Plan de adopción}
+\label{sec:adopcion}
+
+Un catálogo dice qué se usa; no dice cuándo. Con 67 entradas en anillo \emph{Adoptar}, dos plataformas de ejecución, una plataforma de eventos y una capacidad de 126 horas por sprint, el orden de incorporación es tan determinante como la selección.
+
+\subsection{Cronograma del proyecto}
+
+\begin{longtable}{C{1.5cm} C{1.3cm} L{3.8cm} L{6.6cm}}
+\caption{Cronograma de entregas y ubicación de los sprints.}\label{tab:cronograma}\\
+\toprule
+\textbf{Semana} & \textbf{Sprint} & \textbf{Hito} & \textbf{Entregables} \\
+\midrule
+\endfirsthead
+\multicolumn{4}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Semana} & \textbf{Sprint} & \textbf{Hito} & \textbf{Entregables} \\
+\midrule
+\endhead
+\contnota{4}
+\endfoot
+\bottomrule
+\endlastfoot
+3 & — & Lanzamiento & Documento de Proyecto V1 \\
+4 & — & Herramientas y Planning Sprint 1 & Documento de Proyecto V2, Herramientas V1, SRS V1, Backlog V1 \\
+6 & 1 & Review Sprint 1 y Planning Sprint 2 & SAD V1, DD V1, prototipos, Herramientas V2.2, SRS V2, Backlog V2 \\
+8 & 2 & Review Sprint 2 y Planning Sprint 3 & SDD V1, prueba de concepto con su ADR, Infraestructura V1, Herramientas V3 \\
+10 & 3 & Review Sprint 3 y Planning Sprint 4 & Despliegue en QA, informe de pruebas, actualización de documentos y arquitectura, incremento de valor: SRS V4, Backlog V4, SAD V3, DD V3, Infraestructura V2, SDD V2, TD V1. Herramientas V4 acompaña como fuente del catálogo. \\
+12 & 4 & Review Sprint 4 y Planning Sprint 5 & Segundo incremento de valor (15\,\% de la nota) \\
+14 & 5 & Review Sprint 5 y Lanzamiento & Acta de cierre \\
+16 & — & Cierre & Versión final (25\,\% de la nota) \\
+\end{longtable}
+
+\vspace{0.2cm}
+\noindent\textbf{Nota de gestión.} El cronograma del curso no exige una versión de este documento en la Semana 10. Se emite igualmente porque el SDD y el Documento de Infraestructura declaran no usar nada fuera del catálogo: sin Kafka y APISIX aquí, esos documentos quedarían en falta ante el cliente. El esfuerzo de la entrega debe concentrarse en SAD V3, SDD V2, DD V3 e Infraestructura V2, que son los que se califican y donde el cambio de arquitectura se ve (Anexo \ref{anx:coherencia}).
+
+\subsection{Adopción por sprint}
+
+Cada entrada del catálogo entra en un sprint concreto. Estar adoptada significa que está decidida, no que esté disponible desde el primer día.
+
+\begin{longtable}{L{2.0cm} L{4.8cm} L{2.8cm} L{4.0cm}}
+\caption{Plan de incorporación del catálogo, sprint por sprint.}\label{tab:adopcion}\\
+\toprule
+\textbf{Sprint} & \textbf{Qué se incorpora} & \textbf{Entradas} & \textbf{Criterio de cierre} \\
+\midrule
+\endfirsthead
+\multicolumn{4}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Sprint} & \textbf{Qué se incorpora} & \textbf{Entradas} & \textbf{Criterio de cierre} \\
+\midrule
+\endhead
+\contnota{4}
+\endfoot
+\bottomrule
+\endlastfoot
+1 — Fundación del método & Organización y repositorios, GitFlow, backlog, documentación en Markdown y Mermaid, primeros ADR, prototipo de la Aplicación Web. & 13--19, 21, 25, 45, 48--50, 54--57, 61--64, 66, 67 & Cerrado. \\
+2 — Esqueleto ejecutable & Cinco servicios, Aplicación Web y borde contenerizados; bases con sus roles y migraciones; cadenas de construcción; integración continua con secretos y escaneo; endurecimiento y redes por zona. & 1--3, 6--10, 20, 26--28, 30, 33, 46, 58--60, 65, 74, 76, 77, 78 (forma de la versión 3.0), 81 & Cerrado. \\
+3 — Primer incremento y seguridad & Gateway operativo, emisión y validación del token, autorización territorial, primeras pruebas automatizadas, despliegue en QA. & 4, 5, 22, 29, 34, 47, 68 y gateway (11 o 86, ver nota) & El escenario de RNF-02 se demuestra de extremo a extremo desde fuera de la red institucional. \\
+4 — Eventos, observabilidad y segundo incremento & Prueba de concepto del gateway sobre APISIX y resolución de la entrada 84. Broker Kafka y su trabajo de inicialización. Bandeja de salida con publicador en Donación; Notificaciones como consumidor. Contratos AsyncAPI de los eventos iniciales. Pruebas de integración con Testcontainers. Instrumentación, Prometheus, Grafana y primera campaña de carga. & 12, 31, 32, 69, 78, 80, 82, 83, 84, 85, 86, 87, 88, 92--95 & Un aviso nace como evento en la bandeja de Donación, llega a Notificaciones por Kafka y se entrega; con el broker detenido diez minutos, Donación sigue registrando donaciones y al volver el broker los avisos pendientes se entregan sin duplicados. La medida de EC-11 ---quinientos eventos drenados en quince minutos--- se verifica sobre Kafka. \\
+5 — Estabilización y cierre & No entra tecnología nueva. Se cierra el estado de las entradas en \emph{Probar} y \emph{Evaluar}. & Ninguna & Cada entrada en \emph{Probar} y \emph{Evaluar} queda resuelta, adoptada con su ADR o retirada con constancia de que su disparador no se activó. \\
+\end{longtable}
+
+\vspace{0.2cm}
+\noindent\textbf{Nota sobre el gateway en el Sprint 3.} ADR-019 se aprobó con el Sprint 3 en curso. Si el gateway ya se construyó sobre YARP, la demostración de la Semana 10 se hace con lo construido y se declara así ante el cliente, y la sustitución por APISIX entra como historia del Sprint 4 con su prueba de concepto al frente. Cambiar de gateway la semana previa a un Review, sin prueba de concepto, es el tipo de decisión que el riesgo RA-01 del SAD describe. Si el gateway aún no se había construido, se construye directamente sobre APISIX.
+
+\vspace{0.2cm}
+\noindent\textbf{Regla de carga.} En la versión 3.0 el sprint más cargado era el 2. Con ADR-018 lo pasa a ser el 4: concentra la plataforma de eventos, la observabilidad, la sustitución del gateway y el segundo incremento de valor. Antes del Planning del Sprint 4 se fija qué se recorta por categoría MoSCoW completa. El orden recomendado de recorte es: primero la campaña de carga (entrada 80), que puede ejecutarse en el Sprint 5 porque no introduce tecnología nueva; después los tableros de Grafana más allá de los de EC-11 y RNF-02. La bandeja con publicador y el consumidor de Notificaciones no se recortan: sin ellos los avisos dejan de funcionar, porque la bandeja expuesta por HTTP se retira.
+
+\subsection{Riesgos de adopción}
+\label{sec:riesgos}
+
+Los riesgos siguientes nacen de las decisiones de este documento, no del producto. Se administran con la entrada 67 y se revisan en cada cierre de sprint.
+
+\begin{longtable}{L{1.1cm} L{4.0cm} L{3.5cm} L{5.0cm}}
+\caption{Riesgos derivados del instrumental y de las políticas.}\label{tab:riesgos}\\
+\toprule
+\textbf{ID} & \textbf{Riesgo} & \textbf{Impacto si se materializa} & \textbf{Mitigación adoptada} \\
+\midrule
+\endfirsthead
+\multicolumn{4}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{ID} & \textbf{Riesgo} & \textbf{Impacto si se materializa} & \textbf{Mitigación adoptada} \\
+\midrule
+\endhead
+\contnota{4}
+\endfoot
+\bottomrule
+\endlastfoot
+RT-01 & Las cuotas gratuitas de integración continua y de almacenamiento de imágenes no alcanzan para nueve repositorios privados. & La cadena se detiene y bloquea toda fusión. & Publicar imagen solo al fusionar en \texttt{main}; conservar tres etiquetas por imagen. Las pruebas con Testcontainers consumen más minutos: se ejecutan en Pull Request solo en los repositorios que producen o consumen eventos. \\
+RT-02 & La máquina de QA no es alcanzable desde fuera de la red de la universidad. & El cliente no puede abrir la demostración. & Verificación de acceso externo como criterio de cierre; escalamiento al cliente por el Product Owner. \\
+RT-03 & La clave privada de firma del token se expone, o su rotación invalida sesiones. & Tokens falsificables o demostración interrumpida. & Clave solo en Identidad; rotación por sprint con solapamiento (ADR-008). \\
+RT-04 & GitFlow con equipo junior produce fusiones tardías y conflictos grandes. & Retrabajo al cierre de cada sprint. & Rama por historia, subida diaria, Pull Request de máximo 400 líneas. \\
+RT-05 & Dos plataformas de ejecución duplican el esfuerzo. & El instrumental consume la capacidad del producto. & Reparto por contexto acotado y plantilla común .NET. Con ADR-019 la plataforma .NET baja de cuatro a tres componentes. \\
+RT-06 & Las métricas de flujo se calculan a mano y dejan de actualizarse. & El Informe de Evaluación pierde su base cuantitativa. & Tabla versionada con actualización diaria. \\
+RT-07 & La observabilidad compite en capacidad con el segundo incremento. & Se entrega el instrumental y no el producto, o al revés. & Instrumentación lista desde el Sprint 2; regla de carga del Sprint 4. \\
+RT-08 & La capacidad propuesta supera a la disponible. & Compromiso incumplido. & MoSCoW obligatoria; recorte por categoría completa. \\
+RT-09 & Una plataforma adoptada sale de su ventana de soporte sin que nadie lo note. & Base sin parches, contra RD-08. & Regla de vigencia verificada en cada cierre de sprint. \\
+RT-10 & Una acción o binario de terceros de la cadena se compromete. & Credenciales en manos de un tercero. & Acciones fijadas por commit y binarios verificados por suma de comprobación. \\
+RT-11 & Los contenedores de QA superan la memoria de la máquina o la puesta en marcha supera diez minutos. & El sistema no arranca en la demostración. & Imágenes precompiladas, límites por contenedor, medición en cada cierre de sprint. \\
+RT-12\nueva & Con el broker, la suma de límites de memoria de QA sube a 5.568~MiB, y la máquina de 8~GiB no conserva el margen del 50\,\% para EC-16. En Desarrollo, el consumo en reposo puede superar los 4~GB de EC-27. & Reinicios por memoria durante la carga o en la demostración; EC-27 incumplido. & Solicitar la máquina de QA con 10~GiB. Mientras tanto, límite del broker en 1~GiB con montículo de 512~MiB, y medir en reposo (T-411) antes de aceptar ninguna pieza más. Las entradas 89 y 90 no se activan sin esa medición. \\
+RT-13\nueva & La curva de aprendizaje de Kafka ---temas, particiones, grupos, confirmación de posiciones, duplicados--- supera la capacidad de un equipo junior en un sprint. & Consumidores que pierden o duplican avisos; tiempo de depuración que consume el sprint. & Configuración mínima de un broker; temas creados por un único trabajo versionado; Kafbat UI para ver lo que pasa; consumidor idempotente en la plantilla común de cada plataforma, escrito una vez y revisado en pareja; Testcontainers para reproducir el duplicado en una prueba. \\
+RT-14\nueva & APISIX no realiza con sus complementos estándar alguna de las responsabilidades que ADR-019 hereda de ADR-007: compuerta derivada de la matriz de ADR-011, escala por sesión con clave \texttt{sub} o entrega de denegaciones a Identidad. & El gateway se construye con huecos de seguridad, o aparece código Lua sin plan. & Prueba de concepto T-410 rehecha sobre APISIX como primer trabajo del Sprint 4, con los diecinueve casos del SDD V1. La entrada 84 en \emph{Probar} acota el código propio a un complemento. Identidad publica su documento de descubrimiento OpenID (entrada 29). \\
+RT-15\nueva & APISIX publica versiones menores con frecuencia y no presenta una línea de soporte extendido vigente. & La versión fijada deja de recibir correcciones dentro del proyecto. & Versión exacta fijada por resumen; vigencia y avisos de seguridad del proyecto revisados en cada cierre de sprint; actualización de versión menor como historia del backlog cuando corresponda. \\
+RT-16\nueva & Un evento transporta datos personales o, peor, información clínica, y Kafka los retiene durante su periodo de retención. & Incumplimiento de RN-01; imposibilidad de suprimir el dato a petición del titular mientras no venza la retención. & Política de contenido de eventos de la Sección \ref{sec:eventos}: ninguna causa clínica en ningún caso, identificadores en lugar de datos personales, retención de siete días, contrato AsyncAPI revisado por la Arquitecta antes de implementar. \\
+RT-17\nueva & Los documentos controlados no se actualizan al mismo ritmo que los ADR y el cliente recibe en la Semana 10 diagramas con la bandeja expuesta por HTTP y el gateway YARP. & Incoherencia visible en la sustentación; contradicción con el punto 3 de la Definición de Hecho. & Lista de hallazgos con dueño y entrega del Anexo \ref{anx:coherencia}, revisada por el Scrum Master en el corte interno del martes de la Semana 10. \\
+\end{longtable}
+
+% =====================================================================
+%  5. PLANTILLAS
+% =====================================================================
+\section{Plantillas para la documentación}
+\label{sec:plantillas}
+
+Todo artefacto del proyecto se produce con una de las plantillas siguientes. El objetivo es que la documentación sea comparable entre sprints y que ningún integrante tenga que decidir el formato cada vez.
+
+\vspace{0.2cm}
+\noindent\textbf{Formato de origen.} Los artefactos técnicos vivos ---ADR, historias, documentación de arquitectura, diagramas y contratos--- se escriben en Markdown con Mermaid, OpenAPI o AsyncAPI dentro del repositorio correspondiente, conforme a RD-04. Los entregables formales al cliente se componen en \LaTeX{}. Cuando un contenido existe en ambos formatos, la fuente de verdad es la versión en el repositorio.
+
+\subsection{Plantilla de Registro de Decisión Arquitectónica}
+
+\begin{longtable}{L{4.6cm} L{10.0cm}}
+\caption{Campos obligatorios de un ADR.}\label{tab:adr}\\
+\toprule
+\textbf{Campo} & \textbf{Contenido} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Campo} & \textbf{Contenido} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+Identificador y título & ADR-nnn, con tres dígitos, y frase corta que resume la decisión. El nombre del archivo repite el identificador. \\
+Estado & \emph{Uno solo} de: Propuesta, Aceptada, Rechazada o Reemplazada por ADR-nnn. Si reemplaza o enmienda a otro ADR, se indica cuál y qué sección. \\
+Contexto & Problema o necesidad que obliga a decidir. \\
+Restricciones aplicables & Identificadores RD, RN o CP que acotan la decisión. \\
+Opciones consideradas & Mínimo dos, con su descarte razonado. \\
+Compromiso evaluado & Qué se gana y qué se sacrifica con la opción elegida. \\
+Decisión & Opción seleccionada. Si reemplaza a un ADR anterior, declara qué responsabilidades hereda y cuáles retira. \\
+Justificación & Razón concreta para este proyecto, no argumento general de la industria. \\
+Vigencia de lo elegido & Ventana de soporte de la tecnología seleccionada, cuando aplique. \\
+Consecuencias & Implicaciones y riesgos aceptados, con las entradas del Tech Radar que nacen, cambian de anillo o se retiran, y los documentos controlados que deben actualizarse. \\
+Responsable y fecha de revisión & Quién implementa y cuándo se revisa la vigencia de la decisión. \\
+\end{longtable}
+
+\subsection{Plantilla de Historia de Usuario}
+
+\begin{longtable}{L{4.6cm} L{10.0cm}}
+\caption{Campos obligatorios de una historia del backlog.}\label{tab:hu}\\
+\toprule
+\textbf{Campo} & \textbf{Contenido} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Campo} & \textbf{Contenido} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+Identificador & HU-nnn. \\
+Épica asociada & Épica del backlog; las funcionales corresponden uno a uno con los módulos del SRS. \\
+Clase & Épica / Característica / Historia / Historia técnica / Tarea / Investigación / Defecto. \\
+Enunciado & Como [rol], quiero [acción], para [beneficio]. En historias técnicas, la capacidad habilitada y su beneficio para el proyecto. \\
+Criterios de aceptación & Condiciones verificables por alguien distinto del autor. \\
+Prioridad & MoSCoW. \\
+Estimación & Puntos de historia. \\
+Componente & Servicio de Identidad, Servicio Institucional, Servicio de Campañas, Servicio de Donación, trabajador de Notificaciones, Gateway (APISIX), Plataforma de eventos (Kafka), Aplicación Web, Infraestructura o Documentación. \\
+Eventos & Eventos que la historia publica o consume, con la versión de su contrato AsyncAPI. Vacío si no toca eventos. \\
+Requerimiento origen & RF o RNF del SRS, o RD en las historias técnicas. \\
+\end{longtable}
+
+\vspace{0.2cm}
+\noindent Toda historia cumple INVEST {[}19{]} antes de considerarse lista. Conforme a RD-07, el trabajo técnico y de gestión también se representa como historia y se estima.
+
+\subsection{Plantilla de registro de riesgos}
+
+\begin{longtable}{L{4.6cm} L{10.0cm}}
+\caption{Campos del registro de riesgos del proyecto.}\label{tab:riesgoplantilla}\\
+\toprule
+\textbf{Campo} & \textbf{Contenido} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Campo} & \textbf{Contenido} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+Identificador y enunciado & R-nnn y descripción del riesgo en forma de condición. \\
+Categoría & Técnico / de gestión / de alcance / externo. \\
+Probabilidad e impacto & Escala de 1 a 5 en cada eje. \\
+Disparador & Señal observable de que el riesgo se materializa. \\
+Mitigación & Acción con su historia asociada en el backlog. \\
+Plan de contingencia & Qué se hace si ocurre de todas formas. \\
+Responsable y estado & Quién lo vigila y en qué estado está. \\
+\end{longtable}
+
+\subsection{Estructura del Documento de Diseño de Software}
+
+Los documentos técnicos siguen la estructura definida en el curso, compatible con {[}7{]}: portada y controles; introducción; requerimientos con atributos de calidad conforme a ISO/IEC 25010:2023; definiciones de arquitectura con vistas 4+1, tecnologías, patrones y estándares; modelos del sistema con C4 y modelo de datos; interfaz de usuario.
+
+\subsection{Otras plantillas vigentes}
+
+\begin{longtable}{L{4.6cm} L{10.0cm}}
+\caption{Plantillas complementarias y su uso.}\label{tab:otrasplantillas}\\
+\toprule
+\textbf{Plantilla} & \textbf{Uso} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Plantilla} & \textbf{Uso} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+Acta de Mesa de Arquitectura & Registro de la sesión semanal de decisiones, incluidos los ADR producidos. \\
+Informe de Evaluación de Sprint & Indicadores, métricas de flujo, riesgos, plan del sprint siguiente y verificación de vigencia del catálogo. \\
+Marco de indicadores & Indicadores del proyecto, rúbrica y métricas ágiles. \\
+Contrato de servicio (OpenAPI) & Interfaz síncrona de un servicio: rutas, esquemas, códigos de error y versión. En el repositorio del proveedor. \\
+Contrato de evento (AsyncAPI)\nueva & Por cada tipo de evento: nombre del tema, productor, clave de partición, cabeceras obligatorias, esquema JSON del mensaje con sus campos y su significado, versión, retención, y declaración expresa de que no contiene causa clínica ni datos personales distintos de identificadores. En el repositorio del productor. \\
+Ficha de imagen de contenedor & Imagen base con versión fijada, etiquetas, puertos, variables, secretos y punto de salud. \\
+Plan y reporte de pruebas & Alcance, casos, datos sintéticos y resultado. Obligatorios RNF-01, RNF-02 y, desde esta versión, los casos de entrega duplicada y de broker detenido. \\
+\end{longtable}
+
+% =====================================================================
+%  6. POLÍTICAS POR FASE
+% =====================================================================
+\section{Políticas y lineamientos por fase del proyecto}
+\label{sec:fases}
+
+\subsection{Fase 1 — Iniciación y formulación}
+
+\begin{itemize}
+\item Toda solicitud de aclaración al cliente se canaliza exclusivamente a través del Product Owner y se consolida por lotes.
+\item Cuando una ambigüedad no pueda resolverse a tiempo, se documenta como supuesto explícito, marcado como pendiente de validación.
+\item Ningún requerimiento entra a la línea base sin priorización MoSCoW asignada.
+\item Toda restricción del cliente se registra con identificador propio y se rastrea hasta la decisión técnica que la satisface (Anexo \ref{anx:matriz}).
+\item Las restricciones de diseño se transcriben literalmente en el SRS y en este documento.
+\end{itemize}
+
+\subsection{Fase 2 — Diseño y arquitectura}
+
+\begin{itemize}
+\item Toda decisión arquitectónica relevante se delibera en la Mesa de Arquitectura y se registra como ADR. No se implementa una decisión no registrada.
+\item Todo ADR verifica su compatibilidad con RD-01 a RD-08, declara qué entradas del Tech Radar cambian y qué documentos controlados deben actualizarse. Un ADR aprobado sin esa lista no está terminado.
+\item Toda elección de plataforma declara su ventana de soporte.
+\item La frontera entre servicios se define por contexto acotado. Ningún dato pertenece a dos servicios a la vez.
+\item \textbf{Toda interacción entre servicios se clasifica antes de diseñarse}, con la tabla de la Sección \ref{sec:eventos}: solicitud-respuesta por HTTP, o evento por Kafka (entrada 92). Una interacción sin clasificar no se diseña.
+\item Todo contrato entre servicios ---OpenAPI para los síncronos, AsyncAPI para los eventos--- se especifica antes de implementar cualquiera de los dos extremos.
+\item Toda capacidad transversal tiene un servicio dueño declarado.
+\item La seguridad se considera durante el diseño. Toda historia que trate datos de donante, \emph{o que publique un evento sobre ellos}, pasa por revisión de confidencialidad antes de iniciar desarrollo.
+\item La accesibilidad se define junto con la pantalla.
+\end{itemize}
+
+\subsubsection*{Representación de la comunicación en los diagramas}
+
+Esta convención resuelve la incoherencia que motivó esta versión: los diagramas dibujaban todas las relaciones como flechas directas entre servicios, cuando parte de ellas pasan a ser eventos. Rige para el SAD, el SDD, el DD, el Documento de Infraestructura y los gemelos Mermaid.
+
+\begin{longtable}{L{4.2cm} L{10.4cm}}
+\caption{Convención para representar la comunicación entre servicios en los diagramas.}\label{tab:convencion}\\
+\toprule
+\textbf{Elemento} & \textbf{Cómo se dibuja} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Elemento} & \textbf{Cómo se dibuja} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+Plataforma de eventos & Un contenedor propio, «Kafka · broker de eventos», en el nivel 2 de C4 y en la vista física, dentro de su zona y su red. No se dibuja como una línea ni como una nube. \\
+Evento & Dos flechas discontinuas: del productor al broker, etiquetada con el nombre del evento que publica, y del broker a cada consumidor, etiquetada con el mismo nombre. \textbf{Nunca} una flecha directa entre productor y consumidor de un evento: esa flecha es la dependencia temporal que ADR-018 elimina, y dibujarla la reintroduce en la lectura. \\
+Solicitud-respuesta & Flecha continua del llamador al llamado, etiquetada con la operación y el plazo de 3~s. Las que quedan son legítimas y se conservan: ADR-018 no elimina la necesidad de consultar. \\
+Bandeja de salida & En los diagramas de componentes y de secuencia, la tabla de bandeja y el publicador se dibujan dentro del servicio productor; el evento sale hacia el broker desde el publicador, no desde el caso de uso. \\
+Leyenda & Todo diagrama con eventos incluye la leyenda «continua: HTTP con respuesta; discontinua: evento por Kafka». \\
+\end{longtable}
+
+\subsection{Fase 3 — Construcción}
+
+\begin{itemize}
+\item El código se escribe en inglés; la documentación funcional, en español. Los identificadores del dominio conservan el término del dominio. Los nombres de evento siguen la forma \texttt{<entidad>.<hecho en participio>} en inglés, como los fija ADR-018, y su contrato declara el término del dominio al que corresponden.
+\item Ninguna credencial, clave o dato sensible se versiona en el repositorio, incluidas las credenciales de Kafka.
+\item Ningún servicio accede a la base de otro. Toda interacción pasa por la API publicada del servicio propietario o por un evento que él publica.
+\item \textbf{Ningún servicio publica en Kafka desde dentro de su transacción de negocio ni después de ella como segundo paso.} Todo evento sale por la bandeja de salida (entrada 78). La escritura doble ---confirmar en la base y luego publicar--- está prohibida aunque «casi nunca falle».
+\item Todo consumidor es idempotente (entrada 94) y confirma la posición del evento solo después de haber aplicado su efecto.
+\item Todo componente ejecutable se entrega con su imagen de contenedor.
+\item Ninguna dependencia se incorpora sin uso efectivo, ni con licencia que no sea de código abierto o permisiva compatible con el uso académico. Las licencias comunitarias propias de un proveedor, no aprobadas como de código abierto, se tratan como no compatibles (entrada 91).
+\item Toda herramienta fuera del Tech Radar exige una entrada nueva aprobada en Mesa; si tiene consecuencias estructurales, además un ADR.
+\item El registro de auditoría es obligatorio en toda operación que cambie el estado de una unidad y en todo intento de acceso denegado. La auditoría no se delega en Kafka: se escribe en la base, en la misma transacción (ADR-016).
+\item Ninguna funcionalidad, ningún registro y \textbf{ningún evento} expone la causa clínica de una unidad no apta.
+\item Ningún mecanismo de reconocimiento al donante tiene contraprestación económica (RN-02).
+\item Todos los datos son sintéticos y evidentemente sintéticos.
+\item Ninguna interfaz usa emoji como iconografía funcional ni transmite información únicamente por color.
+\end{itemize}
+
+\subsection{Fase 4 — Pruebas}
+
+\begin{itemize}
+\item RNF-01 y RNF-02 tienen caso de prueba obligatorio.
+\item Las pruebas se ejecutan sobre datos sintéticos.
+\item Las pruebas de integración se ejecutan contra servicios, bases y broker en contenedor (entrada 69), no contra sustitutos en memoria.
+\item Todo consumidor tiene, como mínimo, una prueba que le entrega el mismo evento dos veces y comprueba un único efecto, y una que le entrega un mensaje que no cumple el esquema y comprueba que termina en el tema de mensajes muertos sin detener la partición.
+\item Todo productor tiene una prueba con el broker detenido que comprueba que la operación de negocio se confirma y el evento queda pendiente en la bandeja.
+\item Todo cambio en un contrato ---OpenAPI o AsyncAPI--- exige verificar los consumidores antes de fusionar el cambio en el proveedor.
+\item Toda pantalla nueva se verifica con los instrumentos de la entrada 21.
+\item Todo defecto encontrado se registra en el backlog.
+\end{itemize}
+
+\subsection{Fase 5 — Estabilización y entrega}
+
+\begin{itemize}
+\item El corte interno es el martes. La entrega oficial, el jueves.
+\item Ninguna funcionalidad nueva se incorpora después del corte interno.
+\item Toda entrega se acompaña de la etiqueta de versión de cada repositorio y de las imágenes publicadas.
+\item La documentación se actualiza antes de la entrega, y el Scrum Master verifica en el corte interno que los documentos controlados no contradigan a los ADR aprobados en el sprint (Anexo \ref{anx:coherencia}).
+\item Se revisa el registro de riesgos, la vigencia de las entradas en \emph{Adoptar} y el estado de las de \emph{Probar} y \emph{Evaluar}.
+\end{itemize}
+
+% =====================================================================
+%  7. DEVOPS
+% =====================================================================
+\section{Políticas y lineamientos de DevOps}
+\label{sec:devops}
+
+\subsection{Organización de repositorios}
+
+Conforme a RD-06, el proyecto se distribuye en nueve repositorios bajo una única organización de GitHub. La plataforma de eventos no añade repositorio: su configuración vive en \texttt{redvital-infra} y cada contrato de evento en el repositorio de su productor.
+
+\begin{longtable}{M{5.0cm} L{9.4cm}}
+\caption{Repositorios de la organización y su responsabilidad.}\label{tab:repos}\\
+\toprule
+\textbf{\normalfont\sffamily\bfseries Repositorio} & {\normalfont\bfseries Contenido y responsabilidad} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape\normalfont Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{\normalfont\sffamily\bfseries Repositorio} & {\normalfont\bfseries Contenido y responsabilidad} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+redvital-docs & {\normalfont Documentación técnica, ADR, modelos C4 en Mermaid, requerimientos y registro de riesgos. Única fuente de verdad documental.} \\
+redvital-web & {\normalfont Aplicación Web (TypeScript / React).} \\
+redvital-gateway & {\normalfont \modif{} Configuración declarativa de APISIX: rutas, complementos, umbrales y, si la entrada 84 se adopta, el complemento propio en Lua con sus pruebas. Ya no contiene código .NET ni produce imagen propia.} \\
+redvital-\bk identidad-\bk service & {\normalfont Servicio de Identidad (.NET): usuarios, roles, jurisdicción, sesiones, tokens, publicación de claves y documento de descubrimiento OpenID, y su contrato OpenAPI.} \\
+redvital-\bk institucional-\bk service & {\normalfont Servicio Institucional (.NET) y su contrato OpenAPI.} \\
+redvital-\bk campanas-\bk service & {\normalfont Servicio de Campañas (.NET), su contrato OpenAPI y, como consumidor, la referencia a los contratos de eventos que consume.} \\
+redvital-\bk donacion-\bk service & {\normalfont Servicio de Donación (Java), con su bandeja de salida y su publicador, su contrato OpenAPI y los contratos AsyncAPI de los eventos que publica.} \\
+redvital-\bk notificaciones-\bk worker & {\normalfont Trabajador de Notificaciones (Java). Consumidor de eventos; sin base de datos ni rutas públicas.} \\
+redvital-infra & {\normalfont Archivo de orquestación, configuración del proxy de borde y del broker, trabajo de inicialización de temas, credenciales y permisos de Kafka (sin secretos), recolección de métricas y tableros.} \\
+\end{longtable}
+
+\vspace{0.2cm}
+\noindent\textbf{Reglas transversales.} Toda historia que toque más de un repositorio se registra una sola vez en el backlog y se referencia desde cada Pull Request involucrado. Un cambio de contrato de evento que afecta a consumidores en otros repositorios se registra como una sola historia, liderada por el productor.
+
+\subsection{Control de versiones y estrategia de ramificación}
+\label{sec:gitflow}
+
+Se adopta GitFlow en todos los repositorios, conforme a RD-05.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[scale=1.0, every node/.style={font=\scriptsize}]
+\foreach \y/\nombre/\col in {4/main/vinotinto, 3/release/vinoclaro, 2/develop/ringEvaluar, 1/feature/ringProbar, 0/hotfix/ringEvitar} {
+  \draw[draw=\col!60, line width=1.1pt] (0,\y) -- (12,\y);
+  \node[anchor=east, text=\col] at (-0.15,\y) {\texttt{\nombre}};
+}
+\fill[vinotinto] (1,4) circle (2.4pt);
+\fill[vinotinto] (8,4) circle (2.4pt);
+\fill[vinotinto] (11,4) circle (2.4pt);
+\fill[vinoclaro] (6.5,3) circle (2.4pt);
+\fill[vinoclaro] (8,3) circle (2.4pt);
+\fill[ringEvaluar] (1.6,2) circle (2.4pt);
+\fill[ringEvaluar] (5,2) circle (2.4pt);
+\fill[ringEvaluar] (8.6,2) circle (2.4pt);
+\fill[ringEvaluar] (11.4,2) circle (2.4pt);
+\fill[ringProbar] (2.6,1) circle (2.4pt);
+\fill[ringProbar] (5,1) circle (2.4pt);
+\fill[ringEvitar] (9.6,0) circle (2.4pt);
+\fill[ringEvitar] (10.6,0) circle (2.4pt);
+\draw[-{Stealth}, vinotinto!70] (1,4) -- (1.6,2);
+\draw[-{Stealth}, ringEvaluar!80] (1.6,2) -- (2.6,1);
+\draw[-{Stealth}, ringProbar!85] (5,1) -- (5,2);
+\draw[-{Stealth}, ringEvaluar!80] (5,2) -- (6.5,3);
+\draw[-{Stealth}, vinoclaro!85] (8,3) -- (8,4);
+\draw[-{Stealth}, vinoclaro!85] (8,3) -- (8.6,2);
+\draw[-{Stealth}, vinotinto!70] (8,4) -- (9.6,0);
+\draw[-{Stealth}, ringEvitar!85] (10.6,0) -- (11,4);
+\draw[-{Stealth}, ringEvitar!85] (10.6,0) -- (11.4,2);
+\node[anchor=south, text=vinotinto] at (8,4.15) {\texttt{v1.0.0}};
+\node[anchor=south, text=vinotinto] at (11,4.15) {\texttt{v1.0.1}};
+\end{tikzpicture}
+\caption{Flujo de ramas adoptado. Las funcionalidades nacen de \texttt{develop}, las publicaciones se estabilizan en \texttt{release} y se etiquetan en \texttt{main}, y las correcciones urgentes retornan a las dos ramas de larga vida.}
+\label{fig:gitflow}
+\end{figure}
+
+\begin{longtable}{M{4.0cm} L{10.4cm}}
+\caption{Reglas por rama.}\label{tab:ramas}\\
+\toprule
+{\normalfont\bfseries Rama} & {\normalfont\bfseries Lineamiento} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape\normalfont Tabla \thetable{} — continuación}\\
+\toprule
+{\normalfont\bfseries Rama} & {\normalfont\bfseries Lineamiento} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+main & {\normalfont Refleja lo entregado. Solo recibe fusiones desde \texttt{release} o \texttt{hotfix}, etiquetadas con versión semántica. Protegida.} \\
+develop & {\normalfont Rama de integración. Debe permanecer construible. Protegida.} \\
+feature/\bk HU-nnn-\bk descripcion-\bk corta & {\normalfont Una rama por historia. Nace de \texttt{develop} y retorna por Pull Request.} \\
+release/x.y.0 & {\normalfont Estabilización del sprint desde el corte interno. Solo correcciones.} \\
+hotfix/x.y.z & {\normalfont Corrección urgente sobre lo entregado, fusionada a \texttt{main} y a \texttt{develop}.} \\
+\end{longtable}
+
+\begin{longtable}{L{3.4cm} L{11.2cm}}
+\caption{Convenciones de commit, versionado y frecuencia.}\label{tab:commits}\\
+\toprule
+\textbf{Elemento} & \textbf{Lineamiento} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Elemento} & \textbf{Lineamiento} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+Mensajes de commit & Conventional Commits {[}14{]}. Tipos admitidos: \texttt{feat}, \texttt{fix}, \texttt{docs}, \texttt{refactor}, \texttt{test}, \texttt{chore}, \texttt{build}, \texttt{ci}. \\
+Referencia al backlog & Todo commit y todo Pull Request referencia el identificador de la historia. \\
+Versionado & Semántico, por repositorio. Sube la versión mayor del servicio cuando cambia su contrato síncrono de forma incompatible, y la versión mayor del \emph{evento} cuando cambia su esquema de forma incompatible; en ese caso el productor publica las dos versiones mientras exista un consumidor de la anterior. \\
+Frecuencia & Se sube trabajo al repositorio al menos una vez al día. \\
+\end{longtable}
+
+\subsection{Revisión de código}
+\label{sec:revision}
+
+\begin{itemize}
+\item Todo cambio ingresa a \texttt{develop} o a \texttt{main} mediante Pull Request, aprobado por alguien distinto del autor.
+\item Un Pull Request no supera aproximadamente 400 líneas modificadas.
+\item Un Pull Request que modifique un contrato ---OpenAPI o AsyncAPI--- requiere además la revisión de un integrante del frente responsable del otro extremo.
+\item La revisión se responde dentro del mismo día hábil. Un Pull Request en rojo no se fusiona.
+\item La revisión comprueba de forma explícita, antes que el estilo: que no se expone la causa clínica; que el filtrado por jurisdicción está presente; que no hay secretos; \textbf{que ningún evento se publica fuera de la bandeja de salida; y que todo consumidor nuevo es idempotente}.
+\end{itemize}
+
+\subsection{Contenerización}
+\label{sec:contenedores}
+
+El sistema tiene trece contenedores de larga vida en Desarrollo y quince en QA. Los trece de Desarrollo son el proxy de borde, la Aplicación Web, el API Gateway (APISIX), los cinco servicios, las cuatro bases de datos y el broker de Kafka. QA añade Prometheus y Grafana. Son efímeros los cuatro trabajos de migración, el trabajo de inicialización de Kafka y, en QA, los de respaldo y restauración. Kafbat UI es opcional y no se cuenta: corre siempre en Desarrollo y en QA solo bajo demanda. Las cifras exactas de configuración pertenecen al Documento de Infraestructura V2.
+
+\begin{longtable}{L{3.9cm} L{10.7cm}}
+\caption{Lineamientos de contenerización.}\label{tab:contenedores}\\
+\toprule
+\textbf{Elemento} & \textbf{Lineamiento} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Elemento} & \textbf{Lineamiento} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+Cobertura & Todo componente ejecutable tiene imagen. Ninguno corre como proceso suelto. \\
+Construcción & Imágenes propias multietapa, sin compiladores, gestores de paquetes, intérprete de órdenes ni código fuente en ejecución (entrada 81). Las imágenes oficiales de Caddy, APISIX, Kafka, PostgreSQL, Prometheus y Grafana se usan como las publica su proyecto, fijadas por resumen, y la presencia de su intérprete queda como riesgo aceptado. \\
+Imagen base & Versión mayor y menor fijadas, y las de terceros además por resumen. Nunca la etiqueta móvil de última versión. \\
+Endurecimiento & Usuario no privilegiado, raíz de solo lectura, capacidades retiradas, sin escalada de privilegios y límites de CPU y memoria declarados. El broker y APISIX escriben solo en sus volúmenes y en \texttt{tmpfs} declarados. \\
+Redes & Una red por zona de confianza, conforme a ADR-014. El broker vive en una red interna propia de eventos, a la que se unen solo los servicios que publican o consumen y la interfaz de Kafbat; no comparte red con ninguna base ni con el borde. Su ubicación exacta entre las zonas la fija la revisión de ADR-014 y el Documento de Infraestructura V2 (Anexo \ref{anx:coherencia}). \\
+Puertos publicados & Solo el proxy de borde publica puertos al anfitrión. El broker, APISIX y Kafbat no publican ninguno. APISIX se configura para escuchar en 8080 y exponer métricas en 8081, conservando la convención de Infraestructura V1. \\
+Broker de eventos & Un nodo en modo KRaft con dos escuchas internas: una para clientes, autenticada, y otra para el controlador. Creación automática de temas deshabilitada. Factor de replicación 1, declarado como limitación de un solo nodo. Montículo de 512~MiB con límite de contenedor de 1~GiB. Volumen persistente en QA; en Desarrollo puede borrarse. \\
+Trabajo de inicialización de Kafka & Contenedor efímero, versionado en \texttt{redvital-infra}, que crea los temas con su número de particiones y retención, los temas de reintento y de mensajes muertos, las credenciales de cada servicio y sus permisos. Es idempotente: ejecutarlo dos veces no cambia nada. Los temas son configuración versionada, igual que las migraciones. \\
+Configuración & Toda configuración entra por variable de entorno {[}15{]}, incluidas la dirección del broker y el nombre de los temas. \\
+Secretos & Todo secreto llega como archivo en \texttt{/run/secrets}, incluidas las credenciales de Kafka de cada servicio. \\
+Orquestación & Un único archivo de Compose para Desarrollo y QA, con perfiles para la observabilidad de QA y para Kafbat UI. \\
+Arranque & Ningún servicio espera al broker para arrancar, en la línea de la enmienda ADR-014-E1. Los productores no lo necesitan para operar, porque la bandeja retiene los eventos; los consumidores reintentan la conexión sin terminar su proceso. El broker solo espera a su volumen, y el trabajo de inicialización espera al broker sano. \\
+\end{longtable}
+
+\subsection{Comunicación entre servicios y plataforma de eventos}
+\label{sec:eventos}
+
+\subsubsection*{Clasificación de las interacciones}
+
+La tabla aplica ADR-018 a las interacciones que hoy tiene RedVital. Es la que se usa en la revisión de diseño (entrada 92).
+
+\begin{longtable}{L{4.6cm} L{2.6cm} L{7.2cm}}
+\caption{Clasificación de las interacciones vigentes según ADR-018.}\label{tab:clasificacion}\\
+\toprule
+\textbf{Interacción} & \textbf{Mecanismo} & \textbf{Razón} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Interacción} & \textbf{Mecanismo} & \textbf{Razón} \\
+\midrule
+\endhead
+\contnota{3}
+\endfoot
+\bottomrule
+\endlastfoot
+Aplicación Web hacia cualquier servicio & HTTP por el gateway & Usuario esperando respuesta. \\
+Donación consulta la campaña al registrar una donación & HTTP, 3~s & Necesita la respuesta para registrar; degradación declarada. Es el ejemplo de ADR-018. \\
+Escalamiento de Donación consulta las instituciones del departamento & HTTP, 3~s & Necesita la lista para decidir (ADR-013). \\
+Validación de tokens y canje del token de servicio & HTTP & Consulta de claves con caché; no es un hecho del dominio. \\
+Consulta compuesta de la bitácora e indicadores de Institucional & HTTP, 3~s & Consulta de un usuario que espera la respuesta (ADR-016). \\
+Notificaciones resuelve contactos institucionales en Identidad & HTTP & Consulta en el momento de entregar. \\
+Avisos de Donación hacia Notificaciones & \textbf{Evento con bandeja} & Hecho ocurrido que no necesita respuesta. Reemplaza la arista 13 de ADR-014 y la bandeja expuesta por HTTP. \\
+Donación completada, unidad creada, cambio de estado de unidad, existencias bajo umbral & \textbf{Evento con bandeja} & Eventos iniciales de ADR-018. Su contenido lo define el DD V3. \\
+Campañas publicadas, hoy consultadas cada quince minutos por Donación & \emph{Candidato a evento} & Es un hecho de Campañas que Donación sondea. Publicarlo como evento eliminaría el sondeo; se propone a la Mesa con el DD V3, no se decide aquí. \\
+Denegaciones del gateway hacia la bitácora de Identidad & \emph{Pendiente} & La entrega asíncrona de ADR-016 estaba diseñada para YARP. Con APISIX hay dos vías: registro HTTP por lotes o publicación en Kafka consumida por Identidad. Decide la enmienda de ADR-016. \\
+Cualquier lectura de la base de otro servicio & Prohibida & K-04, ADR-005 y ADR-018. \\
+\end{longtable}
+
+\subsubsection*{Política de temas y mensajes}
+
+\begin{longtable}{L{3.9cm} L{10.7cm}}
+\caption{Lineamientos para temas, mensajes, productores y consumidores.}\label{tab:politicaeventos}\\
+\toprule
+\textbf{Elemento} & \textbf{Lineamiento} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Elemento} & \textbf{Lineamiento} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+Nombre del tema & \texttt{redvital.<contexto>.<evento>.v<mayor>}, por ejemplo \texttt{redvital.\allowbreak donacion.\allowbreak donation-completed.\allowbreak v1}. Los de reintento y de mensajes muertos añaden el sufijo del grupo consumidor. \\
+Particiones y clave & Tres particiones por tema. La clave es el identificador de la entidad afectada ---la unidad, la donación, la institución---, para que los eventos de una misma entidad conserven su orden. \\
+Retención & Siete días por defecto, suficientes para que un consumidor caído durante un fin de semana se ponga al día y para reproducir eventos en pruebas. Una retención mayor exige justificación en el contrato y revisión de RN-01. \\
+Cabeceras obligatorias & Identificador único del evento, tipo y versión del evento, identificador de correlación de la petición o del ciclo que lo originó, marca temporal en tiempo universal coordinado y servicio productor. El identificador de correlación es el mismo que propaga el gateway, de modo que EC-20 sigue una petición a través de un evento. \\
+Contenido & JSON validado contra el esquema del contrato. \textbf{Nunca} causa clínica ni veredicto de tamizaje más allá del booleano que ya expone el contrato síncrono. Los datos personales se sustituyen por identificadores; un consumidor que necesite un dato personal lo obtiene de su dueño en el momento de usarlo. Toda excepción se declara en el contrato y la aprueba la Arquitecta. \\
+Productor & Solo el publicador de la bandeja produce. Productor idempotente con confirmación de todas las réplicas. Marca como publicado solo lo que el broker confirmó. \\
+Consumidor & Un grupo por servicio consumidor. Confirma la posición después de aplicar el efecto. Idempotente (entrada 94). Tolera campos desconocidos en el mensaje, como DS-09 exige a los adaptadores de salida. \\
+Fallos & Reintento no bloqueante y tema de mensajes muertos (entrada 95). Un evento en mensajes muertos genera alerta y se registra como defecto en el backlog. Nunca se descarta en silencio. \\
+\end{longtable}
+
+\subsection{Integración y despliegue continuo}
+\label{sec:cicd}
+
+\begin{longtable}{L{3.9cm} L{10.7cm}}
+\caption{Lineamientos de integración y despliegue continuo.}\label{tab:cicd}\\
+\toprule
+\textbf{Etapa} & \textbf{Lineamiento} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Etapa} & \textbf{Lineamiento} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+Integración continua & Cada repositorio define su flujo. En todo Pull Request: compilación, análisis estático, detección de secretos y pruebas; en los repositorios que producen imagen, construcción y escaneo. En \texttt{redvital-infra}, validación del archivo de orquestación y de los invariantes de la topología. \\
+Contratos de eventos & En los repositorios productores, la integración continua valida cada contrato AsyncAPI y compara su esquema con el de la rama \texttt{main}: un cambio incompatible sin subir la versión mayor del evento bloquea la fusión (entrada 93). \\
+Pruebas con contenedores & Las pruebas de integración de los repositorios que producen o consumen eventos levantan PostgreSQL y Kafka con Testcontainers dentro del ejecutor de GitHub Actions (entrada 69). \\
+Gateway & En \texttt{redvital-gateway}, la integración continua valida el archivo declarativo de APISIX contra su esquema y ejecuta las pruebas de rutas y de la compuerta contra una instancia efímera. \\
+Acciones de terceros & Fijadas por identificador de commit; binarios verificados por suma de comprobación. \\
+Publicación de imágenes & Solo al fusionar en \texttt{main}. \\
+Presupuesto de la cadena & Se conservan tres etiquetas por imagen; el consumo se revisa en cada cierre de sprint (RT-01). \\
+Ambientes & Desarrollo, en la máquina de cada integrante, con trece contenedores. QA, en la máquina virtual institucional, con quince; es donde se miden los escenarios y el único que se muestra al cliente. Producción, declarada y no construida. \\
+Pila de medición & Las pruebas de carga se ejecutan sobre una pila de medición separada, nunca sobre la instancia de demostración. \\
+Despliegue & Descarga de imágenes etiquetadas y recreación con Compose. El trabajo de inicialización de Kafka se ejecuta en cada despliegue, antes que los servicios que consumen. \\
+Base de datos & Los cambios de esquema, incluidas las tablas de bandeja y de eventos procesados, los aplica el trabajo de migración. \\
+Reversión & Se redespliega la etiqueta anterior. La reversión no borra temas ni eventos: un consumidor revertido sigue leyendo desde su última posición confirmada. \\
+\end{longtable}
+
+\subsection{Observabilidad}
+\label{sec:observabilidad}
+
+\begin{itemize}
+\item Todo servicio y el gateway exponen métricas y salud en su puerto de gestión 8081, que el gateway no enruta y que solo Prometheus raspa. El broker expone sus métricas por la entrada 88.
+\item Se instrumentan como mínimo: latencia y tasa de error por ruta; estado del conjunto de conexiones; accesos denegados por jurisdicción; denegaciones del gateway no entregadas a la bitácora; \textbf{eventos pendientes en cada bandeja de salida y antigüedad del más viejo; retraso de cada grupo de consumidores; eventos en temas de mensajes muertos; y salud del broker}.
+\item Alertas nuevas en QA: un evento pendiente en una bandeja con más de cinco minutos de antigüedad; un grupo de consumidores con retraso creciente durante diez minutos; cualquier evento en un tema de mensajes muertos; broker no sano durante más de un minuto.
+\item Toda petición lleva el identificador de correlación que genera el gateway, y ese identificador viaja en la cabecera de todo evento que la petición origine.
+\item Kafbat UI es instrumento de diagnóstico, no de operación: no se usa para corregir datos ni para publicar eventos a mano en QA.
+\item Ningún tablero, métrica, registro ni evento desagrega información hasta identificar a un donante ni expone la causa clínica (RN-01).
+\end{itemize}
+
+\subsection{Seguridad operativa}
+\label{sec:seguridad}
+
+\begin{itemize}
+\item El proxy de borde es el único componente alcanzable desde fuera del anfitrión. No tiene rutas hacia el broker, Kafbat UI ni la administración de APISIX.
+\item La autenticación, la compuerta por ruta y rol y la limitación de tasa en sus dos escalas se resuelven en el gateway (entrada 86). APISIX opera en modo autónomo con su API de administración deshabilitada: su configuración solo cambia por Pull Request y redespliegue. El filtrado fino por jurisdicción se resuelve además en cada servicio.
+\item El gateway falla cerrado: sin claves públicas de Identidad rechaza toda ruta que exija sesión y sigue atendiendo las rutas públicas. Nunca enruta rutas \texttt{/internal/}, la publicación de claves ni el puerto 8081. Son responsabilidades de ADR-007 que ADR-019 hereda y que la prueba de concepto verifica.
+\item El token lo emite únicamente el Servicio de Identidad, firmado con RS256, y se valida contra sus claves públicas (entrada 29).
+\item \textbf{Cada servicio se conecta al broker con su propia credencial} (SASL/SCRAM), montada como secreto, y con permisos mínimos: un productor solo escribe en sus temas; un consumidor solo lee los temas a los que se suscribe y solo usa su grupo. Nadie tiene permiso de administración salvo el trabajo de inicialización. La misma configuración rige en Desarrollo y en QA, por paridad de entornos; en Producción se añade cifrado de transporte.
+\item Ningún evento contiene causa clínica, credenciales, tokens ni datos personales distintos de identificadores, salvo excepción aprobada en su contrato (Sección \ref{sec:eventos}).
+\item Todo intento de acceso denegado se registra en la serie de auditoría correspondiente (ADR-016); la vía por la que APISIX entrega las suyas la fija la enmienda de ADR-016.
+\item Las credenciales se gestionan como secretos en \texttt{/run/secrets}, nunca en variables de entorno, en el código ni en el historial del repositorio.
+\item La clave de firma del token se rota en cada sprint con solapamiento. Las credenciales de Kafka se rotan ante exposición y al retirarse un integrante con acceso a QA.
+\item Cada base tiene tres roles y ningún servicio usa superusuario.
+\item Ninguna plataforma fuera de su ventana de soporte permanece en \emph{Adoptar}.
+\item El acceso administrativo a la máquina de QA, y por tanto el túnel hacia Kafbat UI, se limita a DevOps y un suplente, por clave.
+\item Se revisan las alertas de dependencias y los hallazgos del escaneo de imágenes, y su atención se registra en el backlog.
+\end{itemize}
+
+\subsection{Trazabilidad entre artefactos}
+\label{sec:trazabilidad}
+
+Toda unidad de trabajo debe poder rastrearse en ambos sentidos: del requerimiento al artefacto desplegado, y del artefacto desplegado al requerimiento que lo justifica.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[
+  node distance=0.40cm,
+  caja/.style={draw=vinotinto!60, fill=vinotinto!6, rounded corners=2pt, align=center, font=\scriptsize, inner sep=4pt, minimum height=1.0cm, text width=1.95cm},
+  flecha/.style={-{Stealth}, draw=vinotinto!70, thick}
+]
+\node[caja] (a) {Requerimiento\\(RF / RNF / RD)};
+\node[caja, right=of a] (b) {Épica\\(módulo)};
+\node[caja, right=of b] (c) {Historia\\(HU-nnn)};
+\node[caja, right=of c] (d) {Rama y\\commits};
+\node[caja, right=of d] (e) {Pull Request\\revisado};
+\node[caja, right=of e] (f) {Imagen\\etiquetada};
+\draw[flecha] (a) -- (b);
+\draw[flecha] (b) -- (c);
+\draw[flecha] (c) -- (d);
+\draw[flecha] (d) -- (e);
+\draw[flecha] (e) -- (f);
+\end{tikzpicture}
+\caption{Cadena de trazabilidad entre artefactos del proyecto.}
+\label{fig:trazabilidad}
+\end{figure}
+
+% =====================================================================
+%  8. BACKLOG
+% =====================================================================
+\section{Gestión del backlog y métricas}
+\label{sec:backlog}
+
+\subsection{Herramienta y estructura}
+
+El backlog se administra en GitHub Projects, sobre los Issues de los repositorios de la organización.
+
+\begin{longtable}{L{3.9cm} L{10.7cm}}
+\caption{Estructura y reglas del backlog.}\label{tab:backlog}\\
+\toprule
+\textbf{Elemento} & \textbf{Lineamiento} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Elemento} & \textbf{Lineamiento} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+Épicas & Las funcionales corresponden uno a uno con los módulos del SRS; existen además épicas de gestión. \\
+Correspondencia con el código & Nombre y número del módulo coinciden entre SRS, épica y directorio del código. \\
+Alcance del backlog & Todo el trabajo, conforme a RD-07, incluida la actualización documental que exige cada ADR aprobado. \\
+Etiquetas obligatorias & Clase, componente, prioridad MoSCoW y requerimiento de origen; \texttt{eventos} cuando la historia publica o consume. \\
+Estimación & Puntos de historia, igual para el trabajo técnico. \\
+Historia entre repositorios & Se registra una sola vez y se referencia desde los Pull Request de los demás. \\
+\end{longtable}
+
+\subsection{Definición de listo y definición de terminado}
+
+\begin{longtable}{L{3.9cm} L{10.7cm}}
+\caption{Definición de listo (DoR) y definición de terminado (DoD).}\label{tab:dordod}\\
+\toprule
+\textbf{Criterio} & \textbf{Condiciones} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Criterio} & \textbf{Condiciones} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+\textbf{Listo} — una historia puede entrar a un sprint cuando & Tiene requerimiento de origen, prioridad, componente y criterios de aceptación verificables. Está estimada y cumple INVEST. Si toca datos de donante, pasó la revisión de confidencialidad. Si depende de un contrato entre servicios, ese contrato ya está especificado. \textbf{Si publica o consume un evento, la interacción está clasificada (entrada 92) y su contrato AsyncAPI está aprobado.} Si otorga o describe un reconocimiento al donante, pasó la revisión de RN-02. \\
+\textbf{Terminado} — una historia se cierra cuando & Código fusionado por Pull Request aprobado; verificación automática en verde; imagen construida; criterios de aceptación comprobados; documentación y diagramas afectados actualizados en el mismo sprint, siguiendo la convención de la Tabla \ref{tab:convencion}. \textbf{Si produce eventos, sale por la bandeja de salida; si los consume, tiene sus pruebas de duplicado y de mensaje inválido.} \\
+\end{longtable}
+
+\subsection{Métricas de flujo}
+\label{sec:metricas}
+
+GitHub Projects no produce por sí solo la velocidad, la gráfica de trabajo pendiente ni el flujo acumulado con la desagregación que exige el Informe de Evaluación de Sprint. El Scrum Master mantiene en \texttt{redvital-docs} una tabla versionada con el estado diario del sprint, de la que se calculan los indicadores; su actualización es criterio de cierre de sprint.
+
+\begin{longtable}{L{3.9cm} L{10.7cm}}
+\caption{Indicadores de flujo del proyecto y su fuente.}\label{tab:indicadores}\\
+\toprule
+\textbf{Indicador} & \textbf{Definición y fuente} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Indicador} & \textbf{Definición y fuente} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+Velocidad & Puntos terminados por sprint según la definición de terminado. \\
+Trabajo pendiente & Puntos restantes por día contra la línea ideal. \\
+Flujo acumulado & Historias por estado y por día. \\
+Capacidad comprometida & Puntos comprometidos frente a 126 horas de capacidad (RT-08). \\
+Equivalencia del punto de historia & Horas registradas entre puntos terminados, calculada al cierre de cada sprint. \\
+Deuda documental & \nueva{} Hallazgos abiertos del Anexo \ref{anx:coherencia} al cierre del sprint. Un ADR aprobado cuyos documentos dependientes siguen sin actualizar es trabajo comprometido no terminado. \\
+\end{longtable}
+
+% =====================================================================
+%  9. GOBIERNO
+% =====================================================================
+\section{Gobierno del documento}
+\label{sec:gobierno}
+
+\begin{longtable}{L{3.9cm} L{10.7cm}}
+\caption{Reglas de gobierno de este documento.}\label{tab:gobierno}\\
+\toprule
+\textbf{Aspecto} & \textbf{Regla} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Aspecto} & \textbf{Regla} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+Responsable & La Arquitecta de Software, del contenido; el Scrum Master, de que la versión vigente esté publicada y conocida. \\
+Frecuencia de revisión & Al cierre de cada sprint, junto con el registro de riesgos. \\
+Verificación de vigencia & Ninguna entrada en \emph{Adoptar} fuera de su ventana de soporte; todo disparador de \emph{Evaluar} sigue alcanzable. \\
+Quién puede cambiar un anillo & Solo la Mesa de Arquitectura, con el ADR o el acta que lo sustente. \\
+Cómo se incorpora una herramienta nueva & Propuesta en Mesa, entrada nueva y, si tiene consecuencias estructurales, ADR. \\
+Conflicto con otro documento & Si contradice al contexto maestro o al SRS en una restricción, prevalece el contexto maestro. Si contradice a un ADR, prevalece el ADR. \\
+Vigencia & El documento caduca con el proyecto. \\
+\end{longtable}
+
+% =====================================================================
+%  ANEXOS
+% =====================================================================
+\appendix
+
+\section{Matriz de cumplimiento de restricciones}
+\label{anx:matriz}
+
+Los \textbf{instrumentos} son las entradas que cumplen la restricción. Las \textbf{fronteras} son las entradas en anillo \emph{Evitar} que existen porque esa restricción, o la decisión que la realiza, las excluye.
+
+\begin{longtable}{L{1.1cm} L{3.6cm} L{3.8cm} L{2.1cm} L{2.6cm}}
+\caption{Matriz de cumplimiento de las restricciones de diseño y normativas.}\label{tab:matriz}\\
+\toprule
+\textbf{ID} & \textbf{Restricción} & \textbf{Instrumentos} & \textbf{Fronteras} & \textbf{Política} \\
+\midrule
+\endfirsthead
+\multicolumn{5}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{ID} & \textbf{Restricción} & \textbf{Instrumentos} & \textbf{Fronteras} & \textbf{Política} \\
+\midrule
+\endhead
+\contnota{5}
+\endfoot
+\bottomrule
+\endlastfoot
+RD-01 & Solución distribuida, no monolito modular & 26, 58, 65, 78, 85, 92, 93, 94 & 71, 72, 96, 97 & Secciones \ref{sec:fases}, \ref{sec:devops} y \ref{sec:eventos} \\
+RD-02 & Mínimo un componente Java y uno .NET & 1--10, 12, 20, 22, 82, 83 & — & Sección \ref{sec:q1} \\
+RD-03 & Todo contenerizado & 27, 28, 33, 34, 59, 60, 69, 74, 81, 85, 86 & 39, 42, 43 & Sección \ref{sec:contenedores} \\
+RD-04 & Documentación en Markdown con Mermaid & 48, 61, 93 & 53 & Secciones \ref{sec:plantillas} y \ref{sec:fases} \\
+RD-05 & GitFlow & 55, 56, 57 & 73 & Sección \ref{sec:gitflow} \\
+RD-06 & Múltiples repositorios en una organización & 45, 46, 57, 65, 93 & — & Sección \ref{sec:devops} \\
+RD-07 & Todo el trabajo en el backlog & 45, 64, 67 & 52 & Sección \ref{sec:backlog} \\
+RD-08 & Seguridad como atributo de primer orden & 1, 2, 4, 8, 26, 29, 31, 47, 68, 74, 76, 77, 81, 85, 86, 94 & 11, 40, 41, 79, 91 & Secciones \ref{sec:contenedores}, \ref{sec:eventos}, \ref{sec:observabilidad} y \ref{sec:seguridad} \\
+RN-01 & Confidencialidad clínica & 32, 68, 93 & — & Secciones \ref{sec:fases}, \ref{sec:eventos} y \ref{sec:observabilidad} \\
+RN-02 & Prohibición de remuneración & 68 & — & Sección \ref{sec:fases}, Fase 3 \\
+RN-03 & Procedimientos de la cadena transfusional & 26, 30, 78 & 44, 97 & Secciones \ref{sec:fases} y \ref{sec:cicd} \\
+RN-04 & ISO/IEC 25010:2023 & 21, 62, 66, 67, 80 & — & Secciones \ref{sec:plantillas} y \ref{sec:fases} \\
+\end{longtable}
+
+\vspace{0.2cm}
+\noindent\textbf{Verificación inversa.} Las 67 entradas en anillo \emph{Adoptar} se rastrearon hasta una restricción, una condición o un ADR. Las de la plataforma de eventos (82, 83, 85, 87, 88, 92 a 95) no responden a una restricción del cliente sino a ADR-018, y así se declara: RD-01 no exige Kafka, y su sustento es la decisión de la Mesa. Las entradas 49 y 50 responden a CP-03 y a la necesidad de producir entregables.
+
+\section{Coherencia entre ADR y documentos controlados}
+\label{anx:coherencia}
+
+Revisión de los ADR 007 a 019 y de los documentos controlados contra las decisiones de ADR-017, ADR-018 y ADR-019, hecha para esta versión. Cada hallazgo tiene dueño natural y entrega. Este anexo no corrige esos documentos: los señala, porque la regla de gobierno impide que este documento decida por ellos.
+
+\begingroup\small
+\begin{longtable}{L{0.9cm} L{2.1cm} L{5.0cm} L{3.85cm} L{2.0cm}}
+\caption{Hallazgos de coherencia y acción requerida.}\label{tab:coherencia}\\
+\toprule
+\textbf{ID} & \textbf{Documento} & \textbf{Hallazgo} & \textbf{Acción} & \textbf{Dueño} \\
+\midrule
+\endfirsthead
+\multicolumn{5}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{ID} & \textbf{Documento} & \textbf{Hallazgo} & \textbf{Acción} & \textbf{Dueño} \\
+\midrule
+\endhead
+\contnota{5}
+\endfoot
+\bottomrule
+\endlastfoot
+CO-01 & ADR del gateway (archivo \texttt{ADR-API-\bk GATEWAY}) & Se titula «ADR-19» sin tres dígitos; el campo Estado conserva las cuatro opciones de la plantilla sin elegir ninguna; faltan restricciones aplicables, vigencia, responsable y fecha de revisión; no dice que reemplaza a ADR-007. & Normalizar como ADR-019, Estado «Aceptada», «Reemplaza a ADR-007», y completar los campos de la plantilla (Tabla \ref{tab:adr}). & DevOps \\
+CO-02 & ADR-019 & No declara qué hereda de ADR-007: rutas públicas, fallo cerrado sin claves, dos escalas de tasa con sus umbrales, plazo de 5~s, rutas \texttt{/internal/} nunca enrutadas, correlación y entrega de denegaciones. Sin esa declaración, esas garantías quedan sin ADR vigente. & Añadir la sección de herencia; la prueba de concepto T-410 rehecha la verifica. & DevOps, Arquitecta \\
+CO-03 & ADR-019 & Menciona competencias en Kubernetes, que está en \emph{Evitar}, y Redis para cuotas globales, que está en \emph{Evaluar}. & Acotar esas consecuencias a la topología de Producción. & DevOps \\
+CO-04 & ADR-007 & Sigue con estado «Aceptada». & Marcar «Reemplazada por ADR-019», sin borrarlo. & Arquitecta \\
+CO-05 & ADR-016, punto 4 & La entrega asíncrona de denegaciones (cola en memoria de mil eventos, token de servicio) está diseñada para un gateway programable en .NET. & Enmienda: entrega por registro HTTP por lotes de APISIX o por un tema de Kafka consumido por Identidad. La segunda es coherente con ADR-018, pero hace a Identidad consumidor; decide la Mesa. & Arquitecta \\
+CO-06 & ADR-014 & La Sección 6 (bandeja expuesta por contrato) y la arista 13 quedan reemplazadas por ADR-018; faltan las aristas entre servicios y broker y su red; la regla de reparto de plataforma sitúa el gateway en .NET. & Enmienda de ADR-014 o declaración expresa en ADR-018 de las secciones que reemplaza. Necesaria antes de Infraestructura V2. & Arquitecta \\
+CO-07 & ADR-014-E1 & Sigue en «Propuesta». Este documento asume su criterio también para el broker: ningún servicio espera a Kafka para arrancar. & Decidir en Mesa. Si se rechaza, la Sección \ref{sec:contenedores} se corrige. & Arquitecta \\
+CO-08 & ADR-017, contexto & Afirma que el Tech Radar V3 clasificaba los microservicios como enfoque a adoptar. La V3 adoptaba la «arquitectura distribuida por contextos acotados» y tenía los «microservicios de grano fino» en \emph{Evitar}. & Corregir la redacción para que no cite ante el cliente un hecho inexacto. La entrada 58 ya refleja ADR-017. & Arquitecta \\
+CO-09 & ADR-018, eventos iniciales & \texttt{transfusion.completed} no corresponde a ningún estado ni operación del DD V2: la unidad termina en \texttt{despachada} y RedVital no registra la transfusión. & Retirarlo o sustituirlo por un evento de unidad despachada, en el DD V3. & Arquitecta \\
+CO-10 & ADR-018, ejemplo & Muestra a Campañas consumiendo \texttt{donation.completed}, pero ADR-014 establece que Campañas no conoce donantes y no declara para qué lo usa. & Definir en el DD V3 el uso y el contenido del evento, sin datos del donante. & Arquitecta, PO \\
+CO-11 & ADR-013 & Descartó la coreografía por eventos (opción D) porque RabbitMQ estaba en \emph{Evaluar}. La premisa cambió, la decisión no: la orquestación sigue en Donación. & Nota en ADR-013; sin reabrirlo. Solo la convocatoria y sus avisos pasan a eventos. & Arquitecta \\
+CO-12 & Nombres de eventos & ADR-018 nombra en inglés; el DD y el modelo nombran en español. & Adoptada la convención de la Fase 3; registrar en el DD V3. & Arquitecta \\
+CO-13 & SAD V2 & La deuda declarada dice «No hay intermediario de mensajería»; el registro de ADR termina en ADR-016; el gateway es YARP; las aristas y el \emph{benchmark} de notificaciones son de la versión anterior. & SAD V3, Semana 10. & Arquitecta \\
+CO-14 & SDD V1.1 & C4 nivel 2 sin broker; secuencia de la bandeja por HTTP; componentes del gateway como cadena YARP; protocolo de la prueba de concepto para YARP; comparación de notificaciones con RabbitMQ en \emph{Evaluar}. & SDD V2, Semana 10, con la convención de la Tabla \ref{tab:convencion}. & Arquitecta y desarrolladores \\
+CO-15 & Infraestructura V1 & Redes, aristas, operaciones internas (\texttt{/internal/v1/bandeja}), sonda de Notificaciones, presupuesto de recursos, requisito de 8~GiB, sondas del gateway .NET y \texttt{CICLO\_\allowbreak VENCIMIENTO} (RDS-13). & Infraestructura V2, Semana 10. & DevOps \\
+CO-16 & DD V2 & \texttt{evento\_\allowbreak notificacion} se especifica como bandeja expuesta; no existen la tabla de eventos procesados ni los contratos de eventos. & DD V3, Semana 10: bandeja como \emph{outbox}, eventos procesados y contratos AsyncAPI de los eventos iniciales. & Arquitecta \\
+CO-17 & Contexto maestro y Estado del trabajo & Describen cinco servicios «de grano grueso», YARP, bandeja expuesta, doce y catorce contenedores y el catálogo de 81 entradas. El texto literal de RD-01 se conserva. & Actualizar tras la entrega de la Semana 10. & Scrum Master \\
+\end{longtable}
+\endgroup
+
+\vspace{0.4cm}
+\noindent{\footnotesize\textcolor{grisTexto}{Este documento describe el instrumental de un sistema académico que opera exclusivamente sobre datos sintéticos. Las versiones y fechas de soporte de terceros se verificaron el 6 de octubre de 2026 y se revisan en cada cierre de sprint.}}
+
+\end{document}

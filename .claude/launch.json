@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "redvital-web",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "FrontEnd/frontend-main", "run", "dev", "--", "--host", "127.0.0.1", "--strictPort"],
+      "port": 5173,
+      "url": "http://localhost:5173"
+    }
+  ]
+}

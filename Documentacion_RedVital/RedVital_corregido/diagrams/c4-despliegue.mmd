@@ -1,0 +1,128 @@
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: NETWORK_SIMPLEX
+    forceNodeModelOrder: true
+    considerModelOrder: NODES_AND_EDGES
+---
+flowchart TB
+
+  classDef persona fill:#08427b,stroke:#052e56,color:#ffffff
+  classDef sistema fill:#1168bd,stroke:#0b4884,color:#ffffff
+  classDef externo fill:#8a8a8a,stroke:#5e5e5e,color:#ffffff
+  classDef borde fill:#d62038,stroke:#9b1527,color:#ffffff
+  classDef web fill:#2aa0d8,stroke:#1b78a3,color:#ffffff
+  classDef ident fill:#d6247b,stroke:#9b1a58,color:#ffffff
+  classDef identdb fill:#e58ab8,stroke:#9b1a58,color:#000000
+  classDef inst fill:#13955a,stroke:#0d6b40,color:#ffffff
+  classDef instdb fill:#7fd1a8,stroke:#0d6b40,color:#000000
+  classDef camp fill:#ff8000,stroke:#b35a00,color:#000000
+  classDef campdb fill:#ffc27a,stroke:#b35a00,color:#000000
+  classDef don fill:#00b5b5,stroke:#007f7f,color:#000000
+  classDef dondb fill:#7fe0e0,stroke:#007f7f,color:#000000
+  classDef notif fill:#ffd966,stroke:#bf9000,color:#000000
+  classDef kafka fill:#d62038,stroke:#9b1527,color:#ffffff
+  classDef tools fill:#6a00ff,stroke:#4400a8,color:#ffffff
+  classDef gh fill:#1f6feb,stroke:#0b4aa8,color:#ffffff
+
+  subgraph EXT["Actores y sistemas externos"]
+    ADM(["Administrador<br/>(soporte)"]):::persona
+    INET(["Internet<br/>Usuarios"]):::persona
+    GH["GitHub · GitHub Actions<br/>Repositorios y pipeline"]:::gh
+  end
+
+  subgraph NUBE["Nube Javeriana"]
+    subgraph VM1["VM1 · Tools (compartida)"]
+      RUN["GitHub Actions Runner<br/>[self-hosted]"]:::tools
+      PROM["Prometheus"]:::tools
+      GRAF["Grafana"]:::tools
+      KBT["Kafbat<br/>[inspección de Kafka]"]:::tools
+      BKP["Utilidades de respaldo<br/>[scripts · pg_dump]"]:::tools
+    end
+
+  subgraph AENV["Ambiente QA"]
+    subgraph AVMD["VM2 · Datos QA"]
+      ADBID[("db_identidad")]:::identdb
+      ADBCAMP[("db_campana")]:::campdb
+      ADBDON[("db_donacion")]:::dondb
+      ADBINST[("db_institucional")]:::instdb
+    end
+    subgraph AVMS["VM3 · Servicios QA"]
+      AID{{"Servicio de Identidad<br/>[.NET 10]"}}:::ident
+      ACAMP{{"Servicio de Campañas<br/>[.NET 10]"}}:::camp
+      ADON{{"Servicio de Donación<br/>[Java 25 · Spring Boot]"}}:::don
+      AKAFKA[["Apache Kafka 4.3.1<br/>+ kafka-init"]]:::kafka
+      AINST{{"Servicio Institucional<br/>[.NET 10 · prevista]<br/>pendiente"}}:::inst
+      ANOT{{"Servicio de Notificaciones<br/>[Java 25 · prevista]<br/>pendiente"}}:::notif
+    end
+    subgraph AVMB["VM4 · Borde QA"]
+      ACADDY["Caddy 2<br/>TLS · frontend web"]:::borde
+      AAPISIX["Apache APISIX 3.19<br/>API Gateway"]:::borde
+    end
+  end
+  INET -->|"HTTPS 443 (80 redirige)"| ACADDY
+  ACADDY -->|"/api/*"| AAPISIX
+  AAPISIX -->|"HTTP 8080 · 8082 · 8083<br/>según servicio"| AID
+  AAPISIX --> ACAMP
+  AAPISIX --> ADON
+  AAPISIX -.-> AINST
+  AID -->|"PostgreSQL TLS<br/>(puerto según composición)"| ADBID
+  ACAMP --> ADBCAMP
+  ADON --> ADBDON
+  AINST -.-> ADBINST
+  ACAMP <-->|"Kafka 9094"| AKAFKA
+  ADON <-->|"Kafka 9094"| AKAFKA
+  AKAFKA -.-> ANOT
+  RUN -->|"Despliegue automático"| AENV
+  PROM -.->|"Métricas 9100 · 9180 · 9404"| AENV
+  style AINST stroke-dasharray: 6 4,stroke-width:2px
+  style ANOT stroke-dasharray: 6 4,stroke-width:2px
+  style ADBINST stroke-dasharray: 6 4,stroke-width:2px
+
+
+  subgraph BENV["Ambiente Producción"]
+    subgraph BVMD["VM5 · Datos Producción"]
+      BDBID[("db_identidad")]:::identdb
+      BDBCAMP[("db_campana")]:::campdb
+      BDBDON[("db_donacion")]:::dondb
+      BDBINST[("db_institucional")]:::instdb
+    end
+    subgraph BVMS["VM6 · Servicios Producción"]
+      BID{{"Servicio de Identidad<br/>[.NET 10]"}}:::ident
+      BCAMP{{"Servicio de Campañas<br/>[.NET 10]"}}:::camp
+      BDON{{"Servicio de Donación<br/>[Java 25 · Spring Boot]"}}:::don
+      BKAFKA[["Apache Kafka 4.3.1<br/>+ kafka-init"]]:::kafka
+      BINST{{"Servicio Institucional<br/>[.NET 10 · prevista]<br/>pendiente"}}:::inst
+      BNOT{{"Servicio de Notificaciones<br/>[Java 25 · prevista]<br/>pendiente"}}:::notif
+    end
+    subgraph BVMB["VM7 · Borde Producción"]
+      BCADDY["Caddy 2<br/>TLS · frontend web"]:::borde
+      BAPISIX["Apache APISIX 3.19<br/>API Gateway"]:::borde
+    end
+  end
+  INET -->|"HTTPS 443 (80 redirige)"| BCADDY
+  BCADDY -->|"/api/*"| BAPISIX
+  BAPISIX -->|"HTTP 8080 · 8082 · 8083<br/>según servicio"| BID
+  BAPISIX --> BCAMP
+  BAPISIX --> BDON
+  BAPISIX -.-> BINST
+  BID -->|"PostgreSQL TLS<br/>(puerto según composición)"| BDBID
+  BCAMP --> BDBCAMP
+  BDON --> BDBDON
+  BINST -.-> BDBINST
+  BCAMP <-->|"Kafka 9094"| BKAFKA
+  BDON <-->|"Kafka 9094"| BKAFKA
+  BKAFKA -.-> BNOT
+  RUN -->|"Despliegue con aprobación"| BENV
+  PROM -.->|"Métricas 9100 · 9180 · 9404"| BENV
+  style BINST stroke-dasharray: 6 4,stroke-width:2px
+  style BNOT stroke-dasharray: 6 4,stroke-width:2px
+  style BDBINST stroke-dasharray: 6 4,stroke-width:2px
+
+  end
+
+  GH -->|"Jobs"| RUN
+  ADM -->|"SSH 22 (túnel)"| VM1
+  PROM --> GRAF

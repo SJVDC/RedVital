@@ -1,0 +1,64 @@
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: NETWORK_SIMPLEX
+    forceNodeModelOrder: true
+    considerModelOrder: NODES_AND_EDGES
+---
+flowchart TB
+
+  classDef persona fill:#08427b,stroke:#052e56,color:#ffffff
+  classDef sistema fill:#1168bd,stroke:#0b4884,color:#ffffff
+  classDef externo fill:#8a8a8a,stroke:#5e5e5e,color:#ffffff
+  classDef borde fill:#d62038,stroke:#9b1527,color:#ffffff
+  classDef web fill:#2aa0d8,stroke:#1b78a3,color:#ffffff
+  classDef ident fill:#d6247b,stroke:#9b1a58,color:#ffffff
+  classDef identdb fill:#e58ab8,stroke:#9b1a58,color:#000000
+  classDef inst fill:#13955a,stroke:#0d6b40,color:#ffffff
+  classDef instdb fill:#7fd1a8,stroke:#0d6b40,color:#000000
+  classDef camp fill:#ff8000,stroke:#b35a00,color:#000000
+  classDef campdb fill:#ffc27a,stroke:#b35a00,color:#000000
+  classDef don fill:#00b5b5,stroke:#007f7f,color:#000000
+  classDef dondb fill:#7fe0e0,stroke:#007f7f,color:#000000
+  classDef notif fill:#ffd966,stroke:#bf9000,color:#000000
+  classDef kafka fill:#d62038,stroke:#9b1527,color:#ffffff
+  classDef tools fill:#6a00ff,stroke:#4400a8,color:#ffffff
+  classDef gh fill:#1f6feb,stroke:#0b4aa8,color:#ffffff
+
+  GW["Apache APISIX<br/>[API Gateway]<br/>Enruta solicitudes, valida tokens<br/>y aplica control por ruta y rol"]:::borde
+  K[["Apache Kafka 4.3.1"]]:::kafka
+
+  subgraph SC["Servicio de Campañas [.NET 10]"]
+    API["API de Campañas<br/>[ASP.NET Core]<br/>Consultar, publicar, cerrar y<br/>obtener el detalle de campañas"]:::camp
+    GEST["Gestor de Campañas<br/>Coordina consulta, publicación, cierre<br/>y ciclo de vida de las campañas"]:::camp
+    DET["Consulta de Detalle de Campaña<br/>Detalle de una campaña para<br/>usuarios autorizados (vía API)"]:::camp
+    PUB["Control de Publicación y Cierre<br/>Valida y ejecuta las transiciones<br/>de publicación y cierre"]:::camp
+    RES["Gestor de Cupos y Reservas (RF-15)<br/>Esquema disponible; sin operación<br/>expuesta en el incremento"]:::camp
+    FIL["Filtro de Rol y Jurisdicción<br/>Filtra campañas según el rol<br/>y la jurisdicción del sujeto"]:::camp
+    AUD["Registro de Auditoría de Campañas<br/>Publicación y cierre (append-only)"]:::camp
+    REPO["Repositorio de Campañas<br/>[Entity Framework Core]<br/>Campañas, reservas y auditoría"]:::camp
+    OUT["Publicador de Eventos<br/>[Kafka Producer · Outbox]<br/>Eventos de dominio de campañas"]:::camp
+    CONS["Consumidor de Eventos<br/>[Kafka Consumer]<br/>Eventos relevantes para campañas"]:::camp
+  end
+  DB[("db_campana<br/>[PostgreSQL 16]")]:::campdb
+
+  GW -->|"Invoca operaciones de campañas [HTTP/JSON]"| API
+  API -->|"Delega operaciones"| GEST
+  GEST -->|"Solicita información de campaña"| DET
+  GEST -->|"Solicita transición de estado"| PUB
+  GEST -.->|"Cupos y reservas"| RES
+  GEST -->|"Valida alcance de acceso"| FIL
+  GEST -->|"Lee y actualiza campañas"| REPO
+  DET -->|"Consulta información"| REPO
+  RES -.->|"Lee y actualiza reservas"| REPO
+  FIL -->|"Consulta información para filtrado"| REPO
+  PUB -->|"Registra publicación o cierre"| AUD
+  PUB -->|"Registra evento en el Outbox<br/>(misma transacción)"| OUT
+  AUD -->|"Persiste eventos de auditoría"| REPO
+  REPO -->|"Lee y escribe [SQL]"| DB
+  OUT -->|"Publica eventos de dominio [Kafka]"| K
+  K -->|"Entrega eventos relevantes [Kafka]"| CONS
+  CONS -->|"Solicita procesamiento del evento"| GEST
+  style RES stroke-dasharray: 6 4,stroke-width:2px

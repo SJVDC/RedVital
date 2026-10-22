@@ -1,0 +1,59 @@
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: NETWORK_SIMPLEX
+    forceNodeModelOrder: true
+    considerModelOrder: NODES_AND_EDGES
+---
+flowchart TB
+
+  classDef persona fill:#08427b,stroke:#052e56,color:#ffffff
+  classDef sistema fill:#1168bd,stroke:#0b4884,color:#ffffff
+  classDef externo fill:#8a8a8a,stroke:#5e5e5e,color:#ffffff
+  classDef borde fill:#d62038,stroke:#9b1527,color:#ffffff
+  classDef web fill:#2aa0d8,stroke:#1b78a3,color:#ffffff
+  classDef ident fill:#d6247b,stroke:#9b1a58,color:#ffffff
+  classDef identdb fill:#e58ab8,stroke:#9b1a58,color:#000000
+  classDef inst fill:#13955a,stroke:#0d6b40,color:#ffffff
+  classDef instdb fill:#7fd1a8,stroke:#0d6b40,color:#000000
+  classDef camp fill:#ff8000,stroke:#b35a00,color:#000000
+  classDef campdb fill:#ffc27a,stroke:#b35a00,color:#000000
+  classDef don fill:#00b5b5,stroke:#007f7f,color:#000000
+  classDef dondb fill:#7fe0e0,stroke:#007f7f,color:#000000
+  classDef notif fill:#ffd966,stroke:#bf9000,color:#000000
+  classDef kafka fill:#d62038,stroke:#9b1527,color:#ffffff
+  classDef tools fill:#6a00ff,stroke:#4400a8,color:#ffffff
+  classDef gh fill:#1f6feb,stroke:#0b4aa8,color:#ffffff
+
+  GW["Apache APISIX<br/>[API Gateway]<br/>Enruta solicitudes, valida tokens<br/>y aplica control por ruta y rol"]:::borde
+
+  subgraph SI["Servicio de Identidad [.NET 10]"]
+    API["API de Sesiones<br/>[ASP.NET Core]<br/>Inicio, renovación y cierre de sesión"]:::ident
+    AUT["Autenticador de Credenciales<br/>Valida credenciales sin revelar<br/>cuál dato de autenticación falló"]:::ident
+    SES["Gestor de Sesiones<br/>Crea, renueva, revoca y finaliza<br/>sesiones (máximo 8 horas)"]:::ident
+    TOK["Emisor de Tokens<br/>[JWT · RS256]<br/>Tokens de acceso (15 min) y de servicio"]:::ident
+    KEY["Gestor de Claves<br/>[RSA]<br/>Firma y rotación de claves"]:::ident
+    JWKS["Publicador JWKS<br/>Publica las claves públicas<br/>para validar los tokens"]:::ident
+    ROL["Gestor de Roles y Jurisdicciones<br/>Roles y ámbitos para las claims;<br/>asignación de jurisdicción (RF-22)"]:::ident
+    AUD["Registro de Auditoría<br/>Autenticación, sesión, revocación<br/>y denegaciones (append-only)"]:::ident
+    REPO["Repositorio de Identidad<br/>[Entity Framework Core]<br/>Cuentas, sesiones, roles y auditoría"]:::ident
+  end
+  DB[("db_identidad<br/>[PostgreSQL 16]")]:::identdb
+
+  GW -->|"Invoca operaciones de sesión [HTTP/JSON]"| API
+  GW -->|"Obtiene claves públicas [HTTPS/JWKS]"| JWKS
+  GW -->|"Registra denegaciones mediante<br/>operación interna [HTTP]"| AUD
+  API -->|"Solicita validación de credenciales"| AUT
+  API -->|"Crea, renueva o termina la sesión"| SES
+  AUT -->|"Consulta cuenta y credenciales"| REPO
+  SES -->|"Lee y actualiza sesiones"| REPO
+  SES -->|"Solicita emisión de token"| TOK
+  SES -->|"Registra renovación, revocación<br/>y reutilización"| AUD
+  TOK -->|"Obtiene clave activa para firmar [RS256]"| KEY
+  TOK -->|"Obtiene rol y jurisdicción para las claims"| ROL
+  JWKS -->|"Obtiene claves públicas vigentes"| KEY
+  ROL -->|"Consulta roles y jurisdicciones"| REPO
+  AUD -->|"Persiste eventos de auditoría"| REPO
+  REPO -->|"Lee y escribe [SQL]"| DB

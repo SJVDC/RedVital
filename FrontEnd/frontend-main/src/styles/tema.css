@@ -1,0 +1,286 @@
+@import 'tailwindcss';
+
+/*
+  Sistema visual de RedVital.
+
+  Paleta institucional: redvital-docs/docs/contexto/ui-prototipos.md
+  Tipografia: Atkinson Hyperlegible, disenada para maxima legibilidad. El
+  donante puede ser cualquier persona, de cualquier nivel educativo, y el
+  contexto es salud publica.
+
+  El vinotinto se eligio para NO parecer una alerta de error. Hay dos familias
+  separadas que nunca se mezclan:
+    vino / ladrillo -> identidad, acciones, alertas operativas del negocio
+    error           -> fallos reales del sistema, y nada mas
+*/
+
+@theme {
+  /* --- Marca ------------------------------------------------------------ */
+  --color-vino-50: #fbf3f3;
+  --color-vino-100: #f5e8e8;
+  --color-vino-200: #e7cbcd;
+  --color-vino-300: #d6a8ab;
+  --color-vino-400: #b04242;
+  --color-vino-500: #9c2f35;
+  --color-vino-600: #8b1a24;
+  --color-vino-700: #74151e;
+  --color-vino-800: #571017;
+  --color-vino-900: #3b0b10;
+
+  --color-ladrillo: #b04242;
+  --color-fondo-suave: #f5e8e8;
+  --color-crema: #fdfaf8;
+  --color-texto-gris: #5a5a5a;
+  --color-texto-tenue: #857c7c;
+
+  /* --- Semanticos ------------------------------------------------------- */
+  --color-error-500: #c0392b;
+  --color-error-50: #fdecea;
+  --color-exito-600: #2f6f4f;
+  --color-exito-500: #3f8a64;
+  --color-exito-50: #e8f3ed;
+  --color-aviso-600: #8a6100;
+  --color-aviso-50: #fdf4e0;
+
+  /* --- Tipografia ------------------------------------------------------- */
+  --font-sans:
+    'Atkinson Hyperlegible', 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+  /* --- Radios ----------------------------------------------------------- */
+  --radius-suave: 0.625rem;
+  --radius-tarjeta: 1rem;
+  --radius-panel: 1.5rem;
+
+  /*
+    Sombras tenidas con el vinotinto, no con negro. Una sombra negra sobre un
+    fondo calido se ve sucia; tenirla con el color de marca la integra.
+  */
+  --shadow-nivel-1: 0 1px 2px rgba(87, 16, 23, 0.05), 0 1px 3px rgba(87, 16, 23, 0.04);
+  --shadow-nivel-2: 0 4px 14px -3px rgba(87, 16, 23, 0.09), 0 2px 6px -2px rgba(87, 16, 23, 0.05);
+  --shadow-nivel-3: 0 14px 36px -10px rgba(87, 16, 23, 0.16), 0 5px 14px -6px rgba(87, 16, 23, 0.08);
+  --shadow-elevada: 0 28px 68px -20px rgba(87, 16, 23, 0.24), 0 8px 22px -10px rgba(87, 16, 23, 0.12);
+  --shadow-interior: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+
+  /* --- Curvas de movimiento --------------------------------------------- */
+  --ease-salida: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-suave: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-resorte: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  /* --- Animaciones ------------------------------------------------------ */
+  --animate-aparecer: aparecer 0.6s var(--ease-salida) both;
+  --animate-subir: subir 0.7s var(--ease-salida) both;
+  --animate-latido: latido 2.4s ease-in-out infinite;
+  --animate-enroscar: enroscar 2.6s var(--ease-suave) infinite;
+  --animate-enroscar-ambiente: enroscar-ambiente 12s var(--ease-suave) infinite;
+  --animate-anillo: anillo 2.6s var(--ease-suave) infinite;
+  --animate-brillo: brillo 2.2s linear infinite;
+  --animate-entrar-panel: entrar-panel 0.4s var(--ease-salida) both;
+}
+
+/*
+  Duraciones como variables sueltas: las usan los componentes via style o
+  clases arbitrarias. No hay una duracion universal — el movimiento largo es
+  para entradas, el corto para respuesta al toque.
+*/
+:root {
+  --dur-toque: 120ms;
+  --dur-rapida: 180ms;
+  --dur-media: 280ms;
+  --dur-lenta: 460ms;
+  --dur-entrada: 720ms;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1.75rem, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Latido lento del isotipo. Evoca el pulso sin dramatizarlo. */
+@keyframes latido {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  12% {
+    transform: scale(1.055);
+  }
+  24% {
+    transform: scale(1);
+  }
+  36% {
+    transform: scale(1.03);
+  }
+  48% {
+    transform: scale(1);
+  }
+}
+
+/*
+  La serpiente del isotipo se enrosca sola alrededor del marcador. Se usa en
+  las pantallas de carga.
+
+  El recorrido esta normalizado a 100 con `pathLength`, asi que el desfase va
+  de 101 — con la serpiente aun fuera del dibujo — a 0, con el logotipo
+  completo. El reposo del final deja ver la marca terminada antes de repetir.
+*/
+@keyframes enroscar {
+  0% {
+    stroke-dashoffset: 108;
+  }
+  62% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/*
+  Cadencia lenta para la portada, donde el isotipo esta siempre a la vista y
+  no acompana ninguna espera. Va y viene sin corte: el tramo visible del
+  recorrido es [-desfase, 100-desfase], asi que en 108 queda por detras del
+  inicio y en -108 ya paso el final. Como el ciclo empieza y termina vacio, el
+  empalme no se nota y la serpiente parece recorrer el marcador sin fin en
+  lugar de reiniciarse de golpe.
+
+  Los 8 de margen sobre 100 no son adorno. El remate redondo del trazo
+  sobresale media anchura — 12 unidades de dibujo, que sobre un recorrido real
+  de 174 son 6.9 de las 100 normalizadas —, asi que con 101 el trazo todavia
+  alcanzaria a pintar un disco sobre la cabeza justo antes de cerrar el ciclo
+  y ese disco desapareceria de golpe.
+
+  El reposo del centro es deliberado: la marca tiene que leerse entera durante
+  varios segundos, no solo de paso.
+*/
+@keyframes enroscar-ambiente {
+  0% {
+    stroke-dashoffset: 108;
+  }
+  30% {
+    stroke-dashoffset: 0;
+  }
+  72% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -108;
+  }
+}
+
+@keyframes anillo {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.55;
+  }
+  70% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes brillo {
+  from {
+    transform: translate3d(-100%, 0, 0);
+  }
+  to {
+    transform: translate3d(200%, 0, 0);
+  }
+}
+
+@keyframes entrar-panel {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.5rem, 0) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+/* ---------------------------------------------------------------- base --- */
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background-color: var(--color-crema);
+  color: var(--color-texto-gris);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* El foco visible es requisito de accesibilidad, no decoracion. */
+:focus-visible {
+  outline: 3px solid var(--color-vino-500);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Todo elemento accionable lo declara con el cursor. */
+button:not(:disabled),
+[role='button']:not([aria-disabled='true']),
+summary,
+select:not(:disabled) {
+  cursor: pointer;
+}
+
+::selection {
+  background-color: var(--color-vino-200);
+  color: var(--color-vino-900);
+}
+
+/* Barra de desplazamiento discreta, en el tono de marca. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-vino-200) transparent;
+}
+
+/*
+  Preferencia de movimiento reducido. Severidad alta en la guia de UX: no es
+  opcional. Se anula toda animacion decorativa y se deja el estado final.
+*/
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,934 @@
+% =====================================================================
+%  RedVital — Especificación de Requerimientos de Software (SRS) V4.0
+%  Arkhé Software S.A.S.
+%  Compilar con pdfLaTeX (Overleaf: pdfLaTeX)
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+
+% ---------- Codificación e idioma ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noshorthands,es-tabla]{babel}
+\usepackage{lmodern}
+
+% ---------- Página ----------
+\usepackage[a4paper,top=2.7cm,bottom=2.7cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+% ---------- Tablas ----------
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage[table]{xcolor}
+\usepackage{ragged2e}
+
+% ---------- Gráficos ----------
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc}
+
+% ---------- Varios ----------
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+
+% =====================================================================
+%  Identidad visual
+% =====================================================================
+\definecolor{vinotinto}{RGB}{139,26,36}
+\definecolor{vinoclaro}{RGB}{190,90,95}
+\definecolor{grisTexto}{RGB}{90,90,90}
+
+% ---------- Encabezado y pie ----------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\textcolor{grisTexto}{RedVital — Especificación de Requerimientos (SRS) V4.0}}
+\fancyhead[R]{\footnotesize\textcolor{grisTexto}{Arkhé Software S.A.S.}}
+\fancyfoot[C]{\footnotesize\textcolor{grisTexto}{Página \thepage{} de \pageref{LastPage}}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{vinotinto}\leaders\hrule height \headrulewidth\hfill}}
+
+% ---------- Títulos ----------
+\titleformat{\section}{\normalfont\Large\bfseries\color{vinotinto}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries\color{vinotinto}}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\normalfont\normalsize\bfseries}{\thesubsubsection}{0.6em}{}
+
+\setlist[itemize]{leftmargin=1.2em,itemsep=2.5pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=1.5em,itemsep=2.5pt,topsep=4pt}
+
+\captionsetup{font=small,labelfont={bf,color=vinotinto}}
+
+% ---------------------------------------------------------------------
+%  Tipos de columna. Caja de texto útil: 16 cm.
+% ---------------------------------------------------------------------
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\Centering\arraybackslash}p{#1}}
+\renewcommand{\arraystretch}{1.28}
+
+\newcommand{\contnota}[1]{\midrule \multicolumn{#1}{r}{\footnotesize\itshape Continúa en la página siguiente}\\}
+
+% Estado de la especificación de un requerimiento
+\newcommand{\rvig}{Vigente}
+\newcommand{\rmod}{\textcolor{vinoclaro}{Modificado}}
+\newcommand{\rnue}{\textcolor{vinotinto}{\textbf{Nuevo}}}
+\newcommand{\rflb}{\textcolor{grisTexto}{Fuera de línea base}}
+
+\begin{document}
+
+% =====================================================================
+%  PORTADA
+% =====================================================================
+\begin{titlepage}
+\centering
+\thispagestyle{empty}
+\vspace*{1.8cm}
+
+% \includegraphics[width=0.15\textwidth]{isotipo-redvital.png}\\[1.1cm]
+
+{\Huge\bfseries\color{vinotinto} REDVITAL}\\[0.5cm]
+{\large\color{vinotinto} Plataforma Nacional para la Gestión Integral del Ciclo de Vida\\ de la Donación de Sangre}\\[1.7cm]
+
+{\color{vinotinto}\rule{0.45\textwidth}{1.2pt}}\\[1.7cm]
+
+{\LARGE\bfseries ESPECIFICACIÓN DE}\\[0.4cm]
+{\LARGE\bfseries REQUERIMIENTOS — SRS}\\[2.0cm]
+
+{\large\bfseries Arkhé Software S.A.S.}\\[0.3cm]
+{\itshape De la raíz a la red}\\[1.9cm]
+
+\begin{tabular}{r l}
+\textbf{Curso:} & Arquitectura de Software Empresarial \\
+\textbf{Cliente:} & Profesor de la asignatura, en el rol simulado de \\
+ & Ministerio de Salud y Protección Social \\
+\textbf{Entrega:} & Review Sprint 3 y Planning Sprint 4 — Semana 10 \\
+\textbf{Versión:} & 4.0 \\
+\textbf{Estado:} & Para aprobación del Product Owner \\
+\textbf{Fecha:} & 6 de octubre de 2026 \\
+\end{tabular}
+
+\vfill
+{\small\color{grisTexto} Pontificia Universidad Javeriana — Bogotá, Colombia}
+\end{titlepage}
+
+% =====================================================================
+%  CONTROL DE VERSIONES
+% =====================================================================
+\section*{Control de versiones}
+\addcontentsline{toc}{section}{Control de versiones}
+
+\begin{longtable}{L{1.4cm} L{1.8cm} L{2.2cm} L{8.4cm}}
+\toprule
+\textbf{Versión} & \textbf{Fecha} & \textbf{Autor} & \textbf{Descripción del cambio} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Versión} & \textbf{Fecha} & \textbf{Autor} & \textbf{Descripción del cambio} \\
+\midrule
+\endhead
+\contnota{4}
+\endfoot
+\bottomrule
+\endlastfoot
+1.0 & 16/08/2026 & Equipo Arkhé & Versión inicial. Identificación de usuarios y preocupaciones, catálogo de módulos funcionales, matriz de usuarios contra módulos, requerimientos funcionales y no funcionales, restricciones y matriz de trazabilidad hacia el Backlog V1. \\
+2.0 & 30/08/2026 & Equipo Arkhé & Depuración del catálogo de módulos conforme al criterio de contexto acotado y propiedad de datos: la gamificación y la extensibilidad del dominio dejan de tratarse como módulos, y la administración territorial se separa del control de acceso. Asignación explícita de cada módulo al servicio propietario, exigida por la arquitectura distribuida. Requerimientos funcionales redactados en sintaxis controlada EARS y descompuestos hasta cumplir el criterio de singularidad. Requerimientos no funcionales reclasificados conforme a ISO/IEC 25010:2023 y expresados como escenarios de seis partes con medida de respuesta. Incorporación de las restricciones de diseño del cliente y actualización del marco normativo aplicable. \\
+3.0 & 22/09/2026 & Equipo Arkhé & Incorporación de RF-22, administración de la jurisdicción de un usuario, que hace administrable el alcance territorial de datos especificado en RNF-02 y surte efecto en el siguiente token de acceso emitido, conforme a ADR-008. Incorporación de RF-23 y RF-24, inicio y término de la sesión, que dan requerimiento de origen a las pantallas de sesión. Asignación de los módulos y de los servicios transversales a los cinco servicios que fija ADR-014: M2 pasa al Servicio de Campañas, ST1 al trabajador de Notificaciones alimentado por la bandeja de salida del Servicio de Donación, y la emisión de identidad al Servicio de Identidad. ST2 se describe con almacenamiento en cuatro contextos y consulta compuesta, conforme a ADR-016. Reclasificación de RNF-05 a Flexibilidad---Adaptabilidad conforme a ISO/IEC 25010:2023 y a ADR-012, con declaración de su prioridad MoSCoW en la Sección \ref{sec:fuera}, y de RNF-11 a Flexibilidad---Instalabilidad. RNF-06 se reformula sobre la bandeja de salida. La reserva de cupo, RF-15, pasa de M1 a M2, porque el cupo y sus reservas pertenecen al Servicio de Campañas; los donantes escriben en M2 al reservar. La matriz de usuarios contra módulos se declara vista derivada de la matriz de autorización por grupo de operaciones del Documento de Diseño, que ADR-011 establece como especificación normativa única del control de acceso, y se ajustan en consecuencia los alcances de lectura de U6 y de U7. \\
+4.0 & 06/10/2026 & Equipo Arkhé & Historia HU-324. \textbf{T-324.1:} la matriz de usuarios contra módulos se vuelve a derivar operación por operación de la matriz normativa del DD V3.0; cambian tres celdas ---U1 en M2, U3 en M4 y U4 en M1--- y la Tabla \ref{tab:sincronizacion} justifica cada una. \textbf{T-324.2:} el alta de cuentas de U3 a U7 se declara fuera de la línea base de la versión 1 (Sección \ref{sec:fuera}). \textbf{T-324.3:} terminología de ADR-017, que formaliza los cinco servicios como microservicios; RD-01 se conserva literal y su consecuencia explica por qué la adopción no contradice al cliente. ST1, ST2, ST3, la asignación de módulos y RNF-06 se reescriben conforme a ADR-018 (comunicación híbrida HTTP y eventos sobre Apache Kafka con bandeja de salida transaccional) y ADR-019 (API Gateway con Apache APISIX). \textbf{T-324.4:} cada requerimiento funcional declara el estado de su especificación (Tabla \ref{tab:estados}). Se incorpora RF-25, seguimiento de resultados de campaña, que da requerimiento a la decisión D-09 del DD V3.0 y a la responsabilidad de M2 que ningún RF cubría. Se precisan RF-02, RF-03 y RF-22 para que coincidan con el DD. Se añade RI-05 y RNF-01 extiende su medida a los eventos. \\
+\end{longtable}
+
+\section*{Aprobaciones}
+\addcontentsline{toc}{section}{Aprobaciones}
+
+\begin{longtable}{L{4.2cm} L{4.8cm} L{4.6cm}}
+\toprule
+\textbf{Rol} & \textbf{Responsable} & \textbf{Firma / Fecha} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Product Owner & Alexander Aponte & \\
+Scrum Master / Project Manager & Carlos Santiago Pinzón & \\
+Arquitecta de Software & Sara & \\
+QA / Tester & Tomás & \\
+\end{longtable}
+
+\vspace{0.2cm}
+{\small La aprobación del Product Owner acredita que el alcance funcional aquí especificado corresponde a lo acordado con el cliente, en particular RF-25 y la exclusión del alta de cuentas institucionales. La de la Arquitecta de Software acredita la coherencia entre los módulos y la arquitectura registrada en los ADR. La de QA acredita que todo requerimiento es verificable.}
+
+\newpage
+
+% =====================================================================
+%  ÍNDICES
+% =====================================================================
+\tableofcontents
+\newpage
+\listoftables
+\newpage
+
+% =====================================================================
+%  1. INTRODUCCIÓN
+% =====================================================================
+\section{Introducción}
+
+\subsection{Propósito}
+
+Este documento especifica los requerimientos del sistema RedVital: quiénes lo usan y qué les preocupa, en qué módulos se organiza la solución, qué debe hacer el sistema y con qué nivel de calidad debe hacerlo.
+
+Constituye la fuente única de verdad sobre el alcance funcional del sistema. El backlog se deriva de este documento, y toda historia de usuario debe poder rastrearse hasta un requerimiento aquí especificado o hasta una restricción de la Sección \ref{sec:restricciones}, conforme a la matriz de la Sección \ref{sec:trazabilidad}.
+
+\subsection{Alcance}
+
+RedVital cubre de extremo a extremo el ciclo de vida operativo de la donación de sangre en Colombia: desde la captación y motivación del donante, pasando por la trazabilidad de cada unidad y la gestión del inventario, hasta la disposición final de las unidades no aptas. Incorpora además la coordinación entre bancos de sangre y la supervisión diferenciada por nivel territorial.
+
+El sistema opera bajo un principio de escalamiento en dos niveles: ante una necesidad de un componente sanguíneo, privilegia primero la redistribución entre bancos de la red con excedente disponible, y solo escala a la movilización de donantes cuando la red interna no cubre el requerimiento.
+
+Quedan fuera del alcance la gestión clínica del receptor, la práctica transfusional en el punto de atención y el resultado individualizado de las pruebas de tamizaje, que el sistema conoce únicamente como veredicto de aptitud.
+
+\subsection{Definiciones}
+
+\begin{longtable}{L{3.6cm} L{11.0cm}}
+\caption{Definiciones de los términos empleados en este documento.}\label{tab:definiciones}\\
+\toprule
+\textbf{Término} & \textbf{Definición} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Término} & \textbf{Definición} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+Bandeja de salida & Registro de eventos que el servicio productor escribe en la misma transacción que el hecho que los origina, y que un publicador del mismo servicio lleva a la plataforma de eventos. Ningún otro servicio la lee. \\
+Característica & Capacidad que enriquece un módulo pero que no posee datos propios ni usuarios que trabajen exclusivamente en ella. No constituye módulo. \\
+Componente sanguíneo & Fracción obtenida del fraccionamiento de una donación: glóbulos rojos, plasma o plaquetas. \\
+Contexto acotado & Frontera dentro de la cual un modelo de dominio es coherente y cada término tiene un único significado. Determina dónde se corta un servicio. \\
+EARS & \emph{Easy Approach to Requirements Syntax}. Sintaxis controlada para redactar requerimientos en lenguaje natural. \\
+Elegibilidad & Condición de un donante para donar en un momento dado, determinada por el intervalo transcurrido desde su última donación. \\
+Estado de la especificación & Situación de un requerimiento en esta versión del documento: vigente, modificado, nuevo o fuera de línea base (Tabla \ref{tab:estados}). No es el avance de su construcción, que se sigue en el backlog. \\
+Evento & Mensaje que comunica un hecho ya ocurrido en el servicio que lo produce. Quien lo publica no espera respuesta ni sabe quién lo consume. \\
+Jurisdicción & Ámbito territorial (nacional, departamental, municipal o institucional) sobre el cual un usuario tiene visibilidad. \\
+Microservicio & Servicio desplegable de forma independiente, dueño exclusivo de su base de datos y alineado con uno o más contextos acotados. RedVital se compone de cinco, conforme a ADR-014 y ADR-017. \\
+Módulo funcional & Agrupación cohesiva de funcionalidad que posee datos propios y cuenta con usuarios que trabajan dentro de ella. \\
+Plataforma de eventos & Componente que recibe los eventos de los productores y los entrega a cada consumidor interesado. En RedVital es Apache Kafka (ADR-018). \\
+Servicio propietario & Servicio desplegable que es dueño exclusivo de los datos de un módulo y única vía de acceso a ellos. \\
+Servicio transversal & Capacidad técnica consumida por varios módulos, que no constituye un módulo funcional por sí misma. \\
+Sesión & Periodo, de ocho horas como máximo, durante el cual un usuario autenticado obtiene tokens de acceso de quince minutos de vigencia sin volver a presentar sus credenciales. \\
+Tamizaje & Conjunto de pruebas aplicadas a la sangre donada para determinar su aptitud transfusional. \\
+Unidad & Ejemplar individual de un componente sanguíneo, identificable y trazable de forma única. \\
+Unidad no apta & Unidad que, tras el tamizaje, no puede destinarse a transfusión y debe seguir el protocolo de disposición final. \\
+\end{longtable}
+
+\subsection{Referencias}
+
+\begin{longtable}{L{1.3cm} L{13.3cm}}
+\caption{Documentos y normas que este documento aplica o de los que depende.}\label{tab:referencias}\\
+\toprule
+\textbf{Ref.} & \textbf{Fuente} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Ref.} & \textbf{Fuente} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+{[}1{]} & Documento de Proyecto V2. Formulación, objetivos, alcance y limitaciones del proyecto. \\
+{[}2{]} & Documento de Herramientas, Políticas y Lineamientos V4.0. Tech Radar, restricciones de diseño y políticas de construcción, incluida la política de eventos. \\
+{[}3{]} & ADR-003. Arquitectura distribuida de servicios de grano grueso por contexto acotado. \\
+{[}4{]} & ADR-014. Descomposición del sistema en cinco servicios de grano grueso y topología por zonas de confianza. Reemplaza a ADR-004. Se cita por su título; ADR-017 formaliza esos cinco servicios como microservicios. \\
+{[}5{]} & ADR-005. Base de datos relacional con esquema independiente por servicio. \\
+{[}6{]} & ISO/IEC/IEEE 29148:2018. \emph{Systems and software engineering — Life cycle processes — Requirements engineering.} \\
+{[}7{]} & ISO/IEC 25010:2023. \emph{Systems and software engineering — SQuaRE — Product quality model.} \\
+{[}8{]} & Mavin, A., Wilkinson, P., Harwood, A. y Novak, M. \emph{Easy Approach to Requirements Syntax (EARS)}, IEEE RE'09, 2009. \\
+{[}9{]} & Bass, L., Clements, P. y Kazman, R. \emph{Software Architecture in Practice}. Técnica de escenarios de atributos de calidad. \\
+{[}10{]} & Congreso de la República de Colombia. Ley 1581 de 2012, protección de datos personales. \\
+{[}11{]} & Presidencia de la República de Colombia. Decreto 1377 de 2013, reglamentario de la Ley 1581 de 2012. \\
+{[}12{]} & Presidencia de la República de Colombia. Decreto 1571 de 1993, funcionamiento de bancos de sangre. \\
+{[}13{]} & Ministerio de Salud. Resolución 901 de 1996, Manual de Normas Técnicas, Administrativas y de Procedimientos para Bancos de Sangre. \\
+{[}14{]} & Ministerio de Salud y Protección Social. Resolución 1676 de 2023, que modifica la Resolución 901 de 1996 y deroga la Resolución 3212 de 2018. \\
+{[}15{]} & Instituto Nacional de Salud. Circular Externa 026 de 2017, sobre ingreso, administración y tratamiento de datos en SIHEVI-INS. \\
+{[}16{]} & Instituto Nacional de Salud. \emph{Informe Nacional de Bancos de Sangre 2024}. \\
+{[}17{]} & W3C. \emph{Web Content Accessibility Guidelines (WCAG) 2.2}, nivel AA. \\
+{[}18{]} & ADR-008. Emisión y validación del token de sesión con firma asimétrica. \\
+{[}19{]} & ADR-011. Matriz de autorización por grupo de operaciones como especificación normativa del control de acceso. \\
+{[}20{]} & ADR-012. Clasificación de la extensibilidad del dominio en ISO/IEC 25010:2023. \\
+{[}21{]} & ADR-016. Bitácora de auditoría distribuida en cuatro contextos con consulta compuesta. \\
+{[}22{]} & ADR-017. Arquitectura de microservicios. \\
+{[}23{]} & ADR-018. Estrategia de comunicación entre microservicios y adopción de Apache Kafka. \\
+{[}24{]} & ADR-019. API Gateway con Apache APISIX. Reemplaza a ADR-007. \\
+{[}25{]} & Documento de Diseño DD V3.0. Matriz normativa de autorización, contratos y catálogo de eventos. \\
+\end{longtable}
+
+% =====================================================================
+%  2. USUARIOS Y PREOCUPACIONES
+% =====================================================================
+\section{Usuarios y preocupaciones}
+
+\subsection{Identificación de usuarios}
+
+Se identifican siete tipos de usuario. La distinción entre ellos no es cosmética: cada uno tiene un alcance de datos distinto, lo que condiciona directamente el diseño del control de acceso especificado en RNF-02.
+
+\begin{longtable}{L{0.9cm} L{2.8cm} L{5.4cm} L{4.6cm}}
+\caption{Tipos de usuario del sistema y su alcance de datos.}\label{tab:usuarios}\\
+\toprule
+\textbf{ID} & \textbf{Usuario} & \textbf{Descripción} & \textbf{Alcance de datos} \\
+\midrule
+\endfirsthead
+\multicolumn{4}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{ID} & \textbf{Usuario} & \textbf{Descripción} & \textbf{Alcance de datos} \\
+\midrule
+\endhead
+\contnota{4}
+\endfoot
+\bottomrule
+\endlastfoot
+U1 & Donante anónimo & Persona que se registra sin entregar datos de identificación personal. & Solo el registro de su propia donación, sin perfil persistente asociado a su identidad. \\
+U2 & Donante registrado & Persona con perfil completo y autorización explícita de tratamiento de datos sensibles. & Su propio perfil, historial de donación, elegibilidad y reconocimientos. \\
+U3 & Operador de banco de sangre & Personal que opera el día a día: registra donaciones, aplica el resultado de tamizaje y gestiona unidades. & Unidades, donaciones e inventario de su propia institución. \\
+U4 & Administrador de banco de sangre & Responsable de la institución: configura umbrales, publica campañas y aprueba transferencias. & Todo lo de su institución, más su configuración y sus indicadores. \\
+U5 & Coordinador territorial & Dirección territorial o distrital de salud que supervisa los bancos de su departamento o municipio. & Datos agregados y por institución, restringidos a su jurisdicción territorial. \\
+U6 & Administrador nacional & Instituto Nacional de Salud y Ministerio de Salud, en su rol de rectoría de la Red Nacional. & Todo el territorio nacional, en vista agregada. \\
+U7 & Auditor & Rol de verificación de cumplimiento sobre la bitácora del sistema. & Bitácora de auditoría. Solo lectura, sin capacidad de modificación. \\
+\end{longtable}
+
+\subsection{Preocupaciones por usuario}
+
+Las preocupaciones expresan qué le importa a cada usuario y qué teme que salga mal. Son el insumo directo de los requerimientos no funcionales de la Sección \ref{sec:rnf}.
+
+\begin{longtable}{L{0.9cm} L{3.0cm} L{7.4cm} L{2.4cm}}
+\caption{Preocupaciones de los usuarios y requerimientos que las atienden.}\label{tab:preocupaciones}\\
+\toprule
+\textbf{ID} & \textbf{Usuario} & \textbf{Preocupación} & \textbf{Atiende} \\
+\midrule
+\endfirsthead
+\multicolumn{4}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{ID} & \textbf{Usuario} & \textbf{Preocupación} & \textbf{Atiende} \\
+\midrule
+\endhead
+\contnota{4}
+\endfoot
+\bottomrule
+\endlastfoot
+P1 & U1 Donante anónimo & Que registrarse sea rápido y no le exijan entregar datos personales como condición para donar. & RNF-03, RF-01 \\
+P2 & U2 Donante registrado & Que sus datos de salud no se divulguen ni se usen para fines distintos de los autorizados. & RNF-01, RF-02, RF-23, RF-24 \\
+P3 & U2 Donante registrado & Saber cuándo vuelve a ser elegible, sin tener que calcularlo por su cuenta. & RF-02, RF-12, RF-17 \\
+P4 & U2 Donante registrado & Que su contribución sea reconocida de alguna forma, sin que eso se convierta en un pago. & RF-11 \\
+P5 & U3 Operador de banco & Poder marcar una unidad como no apta sin quedar expuesto a divulgar un diagnóstico. & RNF-01, RF-05 \\
+P6 & U3 Operador de banco & Que ninguna unidad vencida siga apareciendo como disponible para transfusión. & RNF-08, RF-18, RF-20 \\
+P7 & U3 Operador de banco & Que registrar una donación no falle porque un servicio externo no responde. & RNF-06, RF-03 \\
+P8 & U4 Administrador de banco & Enterarse a tiempo de una escasez, antes de que se vuelva crítica. & RF-19, RF-12 \\
+P9 & U4 Administrador de banco & Cubrir un déficit sin tener que montar una campaña nueva cada vez. & RF-10, RF-14 \\
+P10 & U4 Administrador de banco & Consultar el inventario de su institución sin esperas que interrumpan la operación. & RNF-04, RF-07 \\
+P11 & U5 Coordinador territorial & Ver el estado de los bancos de su jurisdicción sin acceder a información que no le corresponde. & RNF-02, RF-09, RF-22, RF-23 \\
+P12 & U5 Coordinador territorial & Contar con indicadores comparables entre los bancos que supervisa. & RF-13 \\
+P13 & U6 Administrador nacional & Tener una vista nacional consolidada, hoy inexistente, del estado de la red. & RF-09, RF-13 \\
+P14 & U6 Administrador nacional & Que la plataforma admita en el futuro otros tipos de donación sin rehacerse. & RNF-05 \\
+P15 & U7 Auditor & Que toda operación sobre una unidad quede registrada con autor y marca temporal. & RNF-09, RF-04, RF-06 \\
+P16 & U7 Auditor & Que los intentos de acceso indebido queden registrados, no solo bloqueados. & RNF-02, RNF-09 \\
+P17 & U7 Auditor & Poder examinar la bitácora sin que su propia consulta pueda alterarla. & RF-21, RNF-09 \\
+P18 & U1, U2 Donantes & Que la interfaz sea utilizable por personas con limitaciones visuales o motrices. & RNF-10, RF-01 \\
+P19 & U4 Administrador de banco & Saber si una campaña funcionó, para decidir si repetirla. & RF-25 \\
+\end{longtable}
+
+% =====================================================================
+%  3. MÓDULOS FUNCIONALES
+% =====================================================================
+\section{Módulos funcionales}
+\label{sec:modulos}
+
+\subsection{Criterio de modularización}
+
+Un módulo funcional del sistema debe satisfacer de forma simultánea tres condiciones:
+
+\begin{enumerate}
+\item \textbf{Propiedad de datos.} Es dueño exclusivo de al menos una entidad del dominio. Si su información pertenece a otro módulo, no es un módulo.
+\item \textbf{Usuario que trabaja en él.} Existe al menos un tipo de usuario que escribe o consulta dentro de su frontera como parte de su labor.
+\item \textbf{Coherencia de modelo.} Sus términos y reglas conforman un contexto acotado: dentro de su frontera cada término tiene un único significado.
+\end{enumerate}
+
+Lo que no satisface las tres condiciones es una \emph{característica} de un módulo, un \emph{servicio transversal} o un \emph{atributo de calidad}, y se especifica como tal. Este criterio determina tres clasificaciones del catálogo que conviene declarar de forma explícita, porque se apartan de la organización de la versión anterior:
+
+\begin{itemize}
+\item El \textbf{reconocimiento no monetario al donante} no posee entidad propia, pues las insignias son un atributo derivado del historial de donación, y ningún usuario las administra. Es una característica de M1 y se especifica en RF-11.
+\item La \textbf{extensibilidad del modelo de dominio} no tiene usuarios ni funcionalidad de cara al usuario: describe una propiedad del modelo. Se especifica como atributo de calidad en RNF-05 y como restricción de diseño interna en RI-01.
+\item La \textbf{restricción de visibilidad por jurisdicción} no es funcionalidad sino la aplicación de un atributo de calidad. Se especifica en RNF-02 y se implementa en el servicio transversal ST3. El módulo M6 conserva únicamente lo que sí es funcionalidad: mantener la jerarquía territorial y el registro de instituciones.
+\end{itemize}
+
+\subsection{Catálogo de módulos}
+
+\begin{longtable}{L{0.9cm} L{3.2cm} L{7.4cm} L{2.2cm}}
+\caption{Catálogo de módulos funcionales del sistema.}\label{tab:catalogo}\\
+\toprule
+\textbf{ID} & \textbf{Módulo} & \textbf{Responsabilidad} & \textbf{Prioridad} \\
+\midrule
+\endfirsthead
+\multicolumn{4}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{ID} & \textbf{Módulo} & \textbf{Responsabilidad} & \textbf{Prioridad} \\
+\midrule
+\endhead
+\contnota{4}
+\endfoot
+\bottomrule
+\endlastfoot
+M1 & Gestión de Donantes & Registro voluntario y anónimo, perfil, cálculo de elegibilidad, historial de donación y reconocimiento no monetario. & Must \\
+M2 & Gestión de Campañas & Planificación, publicación, cupos y reservas de cupo, y seguimiento de resultados de campañas de donación. & Must \\
+M3 & Trazabilidad y Ciclo de Vida de la Unidad & Origen, estados de la unidad, veredicto de tamizaje y disposición final. & Must \\
+M4 & Inventario y Alertas & Existencias por componente y tipo de sangre, umbrales configurables, alertas de escasez y de vencimiento próximo, y exclusión de unidades vencidas. & Must \\
+M5 & Red de Transferencias entre Bancos & Sugerencia y gestión de la redistribución de unidades entre bancos, con flujo de aprobación, y movilización de donantes cuando la red no cubre el déficit. & Should \\
+M6 & Administración Institucional y Territorial & Mantenimiento de la jerarquía nacional, departamental y municipal, y del registro de las instituciones adscritas a cada nivel. & Must \\
+M7 & Analítica e Indicadores & Tableros de captación, vencimiento, unidades no aptas y cobertura territorial, agregados al nivel de jurisdicción del usuario. & Should \\
+\end{longtable}
+
+\vspace{0.2cm}
+\noindent M7 no posee datos propios: agrega información de M3, M4 y M6. Se conserva como módulo porque cuenta con usuarios que trabajan exclusivamente en él, U5 y U6, y con un entregable identificable. Su condición de módulo de solo lectura es una restricción de diseño: ninguna operación de M7 modifica el estado de las entidades que agrega.
+
+\subsection{Correspondencia de identificadores}
+
+El backlog y los ADR emitidos antes de esta versión referencian los identificadores del catálogo anterior. La correspondencia es la siguiente.
+
+\begin{longtable}{L{2.4cm} L{5.0cm} L{7.2cm}}
+\caption{Correspondencia entre los identificadores de módulo de la versión anterior y los vigentes.}\label{tab:correspondencia}\\
+\toprule
+\textbf{Anterior} & \textbf{Denominación anterior} & \textbf{Vigente} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Anterior} & \textbf{Denominación anterior} & \textbf{Vigente} \\
+\midrule
+\endhead
+\contnota{3}
+\endfoot
+\bottomrule
+\endlastfoot
+M1 & Gestión de Donantes & M1, con el reconocimiento no monetario incorporado como característica. \\
+M2 & Motivación y Gamificación & Suprimido como módulo. Su funcionalidad se especifica en RF-11, dentro de M1. \\
+M3 & Gestión de Campañas & M2. \\
+M4 & Trazabilidad y Ciclo de Vida & M3. \\
+M5 & Inventario y Alertas & M4, con la exclusión automática de unidades vencidas incorporada. \\
+M6 & Red de Transferencias & M5, con la movilización de donantes incorporada. \\
+M7 & Administración Territorial & M6, acotado a la administración de la jerarquía y del registro institucional. La restricción de visibilidad se traslada a RNF-02 y a ST3. \\
+M8 & Analítica e Indicadores & M7. \\
+M9 & Extensibilidad de Dominio & Suprimido como módulo. Se especifica en RNF-05 y en RI-01. \\
+\end{longtable}
+
+\subsection{Servicios transversales}
+
+Además de los módulos funcionales, el sistema define capacidades técnicas consumidas por varios módulos. No constituyen módulos de negocio: ningún usuario las utiliza de forma directa, sino los módulos que las invocan.
+
+\begin{longtable}{L{0.9cm} L{3.2cm} L{10.4cm}}
+\caption{Servicios transversales y sus consumidores.}\label{tab:transversales}\\
+\toprule
+\textbf{ID} & \textbf{Servicio} & \textbf{Responsabilidad y consumidores} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{ID} & \textbf{Servicio} & \textbf{Responsabilidad y consumidores} \\
+\midrule
+\endhead
+\contnota{3}
+\endfoot
+\bottomrule
+\endlastfoot
+ST1 & Notificaciones & Entrega asíncrona de mensajes al donante y a los bancos. Consumido por M1 (elegibilidad recuperada y reconocimientos), M2 (campañas en la jurisdicción del donante), M4 (alertas de escasez y de vencimiento) y M5 (convocatorias y sugerencias de transferencia). Reside en el trabajador de Notificaciones, que no tiene base de datos propia: consume de la plataforma de eventos los avisos que el Servicio de Donación decide emitir y que publica a través de su bandeja de salida, y resuelve el contacto del destinatario en el servicio dueño de ese dato en el momento de entregar. Los avisos de campaña los genera el Servicio de Donación cuando recibe el evento de campaña publicada del Servicio de Campañas (ADR-018). \\
+ST2 & Auditoría & Registro inmutable de toda operación que cambie el estado de una unidad, de toda acción administrativa y de todo acceso denegado. Consumido por M1 a M6 y por ST3. Cada servicio con base escribe los registros de las entidades que posee; el API Gateway entrega los accesos que deniega al Servicio de Identidad, por la vía que fije la enmienda de ADR-016. La consulta del auditor la sirve el Servicio Institucional, que compone las cuatro series. \\
+ST3 & Autenticación y autorización & Verificación de identidad y aplicación del alcance territorial de datos. Consumido por todos los módulos. La emisión de sesiones y de tokens reside en el Servicio de Identidad; la compuerta de autorización, en el API Gateway, que es Apache APISIX conforme a ADR-019; el filtrado por jurisdicción a nivel de registro, en cada servicio propietario. \\
+\end{longtable}
+
+\subsection{Asignación de módulos a servicios}
+
+La arquitectura del sistema es distribuida y ningún servicio accede a la base de datos de otro. En consecuencia, cada módulo tiene un servicio propietario declarado, que es el dueño exclusivo de sus datos y la única vía de acceso a ellos.
+
+El sistema se compone de cinco microservicios, conforme a ADR-014 y ADR-017: Identidad, Institucional y Campañas sobre .NET, y Donación y Notificaciones sobre Java. Identidad y Notificaciones alojan servicios transversales, ST3 en su parte de emisión y ST1 respectivamente, y no son propietarios de ningún módulo funcional.
+
+Las dependencias entre contextos son de dos clases, conforme a ADR-018. Una \textbf{consulta} es una petición HTTP con respuesta, que se usa solo cuando el servicio que pregunta necesita la respuesta para continuar, y que tiene plazo de espera y degradación declarados. Un \textbf{evento} comunica un hecho ya ocurrido: el productor lo publica sin esperar a nadie y cada consumidor lo procesa cuando puede. Una dependencia por evento no detiene al productor si el consumidor no está disponible, y esa diferencia es la que la Tabla \ref{tab:asignacion} hace visible.
+
+\begin{longtable}{L{0.9cm} L{3.8cm} L{4.2cm} L{5.2cm}}
+\caption{Servicio propietario de cada módulo y dependencias entre contextos, por consulta o por evento.}\label{tab:asignacion}\\
+\toprule
+\textbf{ID} & \textbf{Módulo} & \textbf{Servicio propietario} & \textbf{Dependencias con otros contextos} \\
+\midrule
+\endfirsthead
+\multicolumn{4}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{ID} & \textbf{Módulo} & \textbf{Servicio propietario} & \textbf{Dependencias con otros contextos} \\
+\midrule
+\endhead
+\contnota{4}
+\endfoot
+\bottomrule
+\endlastfoot
+M1 & Gestión de Donantes & Servicio de Donación (Java) & Recibe de M2 el evento de campaña publicada, del que derivan los avisos de campaña. Consulta a M2 las campañas del municipio del donante para el aviso de elegibilidad recuperada. \\
+M2 & Gestión de Campañas & Servicio de Campañas (.NET) & Consulta a M6, en el Servicio Institucional, para la sede y la jurisdicción de la campaña. Publica el evento de campaña publicada. Recibe de M3 el evento de donación registrada, con el que cuenta los resultados de cada campaña (RF-25). \\
+M3 & Trazabilidad y Ciclo de Vida & Servicio de Donación (Java) & Consulta a M6 para la institución custodia de la unidad, y a M2 para confirmar la campaña al registrar una donación. Publica el evento de donación registrada. \\
+M4 & Inventario y Alertas & Servicio de Donación (Java) & Consulta a M6 para la institución propietaria de las existencias. \\
+M5 & Red de Transferencias & Servicio de Donación (Java) & Consulta a M6 para las instituciones cedente y receptora. \\
+M6 & Administración Institucional y Territorial & Servicio Institucional (.NET) & Ninguna. Es el contexto de referencia territorial del sistema. \\
+M7 & Analítica e Indicadores & Servicio Institucional (.NET) & Consulta a M3 y M4, en el Servicio de Donación, para las series que agrega. No escribe en ellos. \\
+\end{longtable}
+
+\vspace{0.2cm}
+\noindent La tabla dice qué depende de qué, no cómo se implementa. El catálogo de eventos, sus temas y su contenido son del DD V3.0; esta especificación solo fija que ningún evento transporta datos personales ni la causa clínica (RI-05).
+
+% =====================================================================
+%  4. USUARIOS CONTRA MÓDULOS
+% =====================================================================
+\section{Usuarios contra módulos}
+
+La matriz siguiente es una \textbf{vista de lectura}, derivada de la matriz de autorización por grupo de operaciones del DD V3.0, que es la especificación normativa única del control de acceso del sistema conforme a ADR-011. Se ofrece porque la agrupación por módulo facilita la lectura funcional; ante cualquier discrepancia, gana la matriz del DD, y es contra ella que se prueba el escenario de RNF-02. Se usa \textbf{E} cuando el usuario escribe o modifica información, \textbf{L} cuando solo la consulta, y celda vacía cuando no tiene acceso.
+
+\textbf{Regla de derivación.} Los grupos de operaciones del DD no coinciden uno a uno con los módulos: un mismo grupo puede tocar dos módulos, y un perfil con lectura en un grupo puede no tener ninguna operación concreta sobre uno de ellos. Por eso la celda de un módulo no se deriva del grupo sino de las operaciones del DD que pertenecen a ese módulo: es E si el perfil tiene al menos una operación de escritura sobre datos del módulo, L si solo tiene operaciones de lectura, y vacía si no tiene ninguna. La bitácora no es un módulo sino ST2, y su acceso, exclusivo de U7, se especifica en RF-21.
+
+\begin{longtable}{L{4.4cm} C{1.3cm} C{1.3cm} C{1.3cm} C{1.3cm} C{1.3cm} C{1.3cm} C{1.3cm}}
+\caption{Matriz de usuarios contra módulos funcionales.}\label{tab:matrizum}\\
+\toprule
+\textbf{Usuario} & \textbf{M1} & \textbf{M2} & \textbf{M3} & \textbf{M4} & \textbf{M5} & \textbf{M6} & \textbf{M7} \\
+\midrule
+\endfirsthead
+\multicolumn{8}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Usuario} & \textbf{M1} & \textbf{M2} & \textbf{M3} & \textbf{M4} & \textbf{M5} & \textbf{M6} & \textbf{M7} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+U1 — Donante anónimo & E & L & & & & & \\
+U2 — Donante registrado & E & E & & & & & \\
+U3 — Operador de banco & L & L & E & L & L & & \\
+U4 — Administrador de banco & & E & L & E & E & L & L \\
+U5 — Coordinador territorial & & L & L & L & L & E & L \\
+U6 — Administrador nacional & & L & L & L & L & E & L \\
+U7 — Auditor & & & L & & & L & \\
+\end{longtable}
+
+\vspace{0.2cm}
+\noindent La matriz de la V3.0 difería de la normativa en tres celdas. Se corrigen en esta versión (T-324.1):
+
+\begin{longtable}{L{1.8cm} L{1.4cm} L{1.4cm} L{9.6cm}}
+\caption{Celdas corregidas al sincronizar con la matriz normativa del DD V3.0.}\label{tab:sincronizacion}\\
+\toprule
+\textbf{Celda} & \textbf{V3.0} & \textbf{V4.0} & \textbf{Operaciones del DD que lo determinan} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Celda} & \textbf{V3.0} & \textbf{V4.0} & \textbf{Operaciones del DD que lo determinan} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+U1 en M2 & E & L & U1 solo consulta el listado público de campañas. La reserva de cupo exige sesión y es de U2; el donante anónimo no tiene cuenta. \\
+U3 en M4 & E & L & U3 consulta inventario, umbrales y alertas, pero no configura umbrales ni atiende alertas, que son de U4. Las existencias cambian como consecuencia de las transiciones de la unidad que U3 ejecuta en M3, y ese efecto indirecto no es una escritura en M4. \\
+U4 en M1 & L & --- & Ninguna operación de M1 admite a U4. La búsqueda del donante presente es del operador, y los datos del donante solo los ve el propio donante. U4 conoce las donaciones de su institución por M3, sin datos personales del donante. \\
+\end{longtable}
+
+\vspace{0.2cm}
+\noindent Lecturas relevantes de la matriz:
+
+\begin{itemize}
+\item M3, Trazabilidad, es el módulo más consultado, con acceso de cinco de los siete usuarios. Solo U3 escribe en él: el registro del ciclo de vida de una unidad es responsabilidad exclusiva del operador del banco que la custodia.
+\item Ningún donante accede a M3, M4, M5, M6 ni M7. La separación es deliberada: el donante nunca ve información de inventario ni de otras instituciones. Su acceso a M2 se limita a consultar las campañas publicadas y, si tiene cuenta, a reservar cupo en ellas.
+\item De los perfiles institucionales, solo U3 accede a M1, y solo en lectura: busca al donante presente por su documento al registrar una donación y recibe lo mínimo para identificarlo. El perfil completo del donante solo lo ve el propio donante. Es la aplicación en el control de acceso de la Ley 1581 de 2012.
+\item U7 es el único usuario sin ninguna capacidad de escritura en el sistema, y su alcance de lectura se limita a lo que necesita para reconstruir la historia de una unidad: trazabilidad, jerarquía institucional y la bitácora de auditoría. No accede a inventario ni a transferencias, porque su alcance de datos declarado en la Tabla \ref{tab:usuarios} es la bitácora y no la operación. La ausencia de escritura es una restricción de diseño, no una omisión: un auditor que pueda modificar aquello que audita invalida la auditoría.
+\item U6 no escribe en M7. La analítica es de solo lectura sobre los datos que agrega, conforme a RI-03; su vista nacional consolidada es una lectura agregada y no una capacidad de edición. Escribe únicamente en M6, donde mantiene la jerarquía territorial y el registro de instituciones.
+\item U5 y U6 escriben únicamente en M6, porque la administración de la jerarquía territorial y del registro institucional es su labor propia. Sobre los módulos operativos su acceso es de solo consulta.
+\end{itemize}
+
+% =====================================================================
+%  5. REQUERIMIENTOS FUNCIONALES
+% =====================================================================
+\section{Requerimientos funcionales}
+\label{sec:rf}
+
+\subsection{Convención de redacción}
+
+Los requerimientos funcionales se redactan en sintaxis controlada EARS, que restringe la estructura de la frase para eliminar ambigüedad y hacer verificable cada enunciado. El orden de las cláusulas es fijo: primero la precondición de estado, después el disparador, después el sistema y por último la respuesta. Cada requerimiento enuncia una sola capacidad, conforme al criterio de singularidad de ISO/IEC/IEEE 29148:2018.
+
+\begin{longtable}{L{2.8cm} L{5.4cm} L{6.4cm}}
+\caption{Patrones EARS empleados y su forma en español.}\label{tab:ears}\\
+\toprule
+\textbf{Patrón} & \textbf{Plantilla} & \textbf{Cuándo se emplea} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Patrón} & \textbf{Plantilla} & \textbf{Cuándo se emplea} \\
+\midrule
+\endhead
+\contnota{3}
+\endfoot
+\bottomrule
+\endlastfoot
+Ubicuo & El sistema deberá \emph{‹respuesta›}. & Capacidad permanente, sin condición que la active. \\
+Dirigido por evento & Cuando \emph{‹disparador›}, el sistema deberá \emph{‹respuesta›}. & La capacidad se activa ante un suceso discreto. \\
+Dirigido por estado & Mientras \emph{‹estado›}, el sistema deberá \emph{‹respuesta›}. & La capacidad rige durante todo el tiempo que dure una condición. \\
+Comportamiento no deseado & Si \emph{‹condición›}, entonces el sistema deberá \emph{‹respuesta›}. & La capacidad responde a una condición indeseada o excepcional. \\
+Complejo & Combinación de las anteriores en el orden canónico. & La capacidad requiere estado y disparador simultáneos. \\
+\end{longtable}
+
+\vspace{0.2cm}
+\noindent El verbo modal de obligación es siempre ``deberá''. El texto que no constituye requerimiento no lo emplea.
+
+\subsection{Estado de la especificación}
+
+Cada requerimiento declara el estado de su especificación en esta versión (T-324.4). El estado describe el enunciado, no el avance de su construcción, que se sigue en el backlog; RF-12, por ejemplo, sigue vigente aunque ADR-018 cambia la forma en que se entregan los avisos, porque lo que el sistema debe hacer no cambió.
+
+\begin{longtable}{L{2.6cm} L{6.4cm} L{5.6cm}}
+\caption{Estados de la especificación de un requerimiento y consecuencia sobre el backlog.}\label{tab:estados}\\
+\toprule
+\textbf{Estado} & \textbf{Significado} & \textbf{Consecuencia sobre el backlog} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Estado} & \textbf{Significado} & \textbf{Consecuencia sobre el backlog} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+\rvig & El enunciado es el mismo de la V3.0. & Ninguna. \\
+\rmod & El enunciado cambió en esta versión. & Las historias que lo implementan revisan sus criterios de aceptación. \\
+\rnue & El requerimiento no existía en la V3.0. & Debe crearse al menos una historia en el Backlog V4. \\
+\rflb & Especificado, pero no comprometido para la versión 1 del producto. & No se planifica mientras conserve el estado (Sección \ref{sec:fuera}). \\
+\end{longtable}
+
+\vspace{0.2cm}
+\noindent De los veinticuatro requerimientos funcionales, dieciocho están vigentes, tres modificados, uno es nuevo y dos están fuera de la línea base.
+
+\subsection{Catálogo de requerimientos funcionales}
+
+\begingroup\small
+\begin{longtable}{L{1.1cm} L{2.6cm} L{5.2cm} L{1.0cm} L{1.65cm} L{1.85cm}}
+\caption{Catálogo de requerimientos funcionales y estado de su especificación.}\label{tab:rf}\\
+\toprule
+\textbf{ID} & \textbf{Requerimiento} & \textbf{Enunciado} & \textbf{Mód.} & \textbf{MoSCoW} & \textbf{Estado} \\
+\midrule
+\endfirsthead
+\multicolumn{6}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{ID} & \textbf{Requerimiento} & \textbf{Enunciado} & \textbf{Mód.} & \textbf{MoSCoW} & \textbf{Estado} \\
+\midrule
+\endhead
+\contnota{6}
+\endfoot
+\bottomrule
+\endlastfoot
+RF-01 & Registro voluntario de donante & Cuando una persona solicite registrarse como donante, el sistema deberá ofrecer una modalidad anónima sin campos obligatorios de identificación personal y una modalidad con perfil completo. & M1 & Must & \rvig \\
+RF-02 & Cálculo de elegibilidad & El sistema deberá calcular el estado de elegibilidad de cada donante registrado a partir de la fecha de su última donación registrada y de los criterios de edad vigentes, sin emplear el veredicto de tamizaje de sus unidades. & M1 & Must & \rmod \\
+RF-03 & Registro de donación & Cuando un operador de banco registre una donación efectuada, el sistema deberá asociarla al donante, al banco y a la campaña correspondientes, y generar una unidad por cada componente declarado. & M3 & Must & \rmod \\
+RF-04 & Trazabilidad de origen & El sistema deberá conservar, para cada unidad, su origen, su fecha de captación y la secuencia completa de estados por los que ha pasado, con autor y marca temporal de cada cambio. & M3 & Must & \rvig \\
+RF-05 & Marcado de unidad no apta & Cuando el veredicto de tamizaje de una unidad sea no apto, el sistema deberá marcarla como no apta sin registrar la causa clínica en ningún campo del modelo de datos. & M3 & Must & \rvig \\
+RF-06 & Protocolo de disposición final & Mientras una unidad esté marcada como no apta o vencida, el sistema deberá mantenerla en el flujo de disposición final y bloquear su despacho hasta que se registre su desecho. & M3 & Must & \rvig \\
+RF-07 & Consulta de existencias & El sistema deberá presentar al usuario las existencias de unidades disponibles por componente sanguíneo y tipo de sangre, dentro de su alcance de datos. & M4 & Must & \rvig \\
+RF-08 & Publicación de campañas & Cuando un administrador de banco publique una campaña, el sistema deberá hacerla visible con su fecha, sede y cupo disponible a los donantes cuya jurisdicción coincida con la de la sede. & M2 & Must & \rvig \\
+RF-09 & Administración de la jerarquía territorial & El sistema deberá mantener la jerarquía territorial nacional, departamental y municipal, y el registro de las instituciones adscritas a cada nivel. & M6 & Must & \rvig \\
+RF-10 & Transferencia entre bancos & Cuando un banco registre un déficit de un componente sanguíneo y otro banco de la red disponga de excedente compatible, el sistema deberá sugerir una transferencia y someterla a la aprobación del administrador del banco cedente. & M5 & Should & \rvig \\
+RF-11 & Reconocimiento no monetario & Cuando un donante registrado complete una donación aceptada, el sistema deberá actualizar sus insignias y su nivel de progresión sin otorgar contraprestación económica de ninguna clase. & M1 & Should & \rvig \\
+RF-12 & Notificación al donante & Cuando un donante recupere su elegibilidad, se publique una campaña en su jurisdicción o alcance un nuevo reconocimiento, el sistema deberá enviarle una notificación. & ST1 & Should & \rvig \\
+RF-13 & Tablero de indicadores & El sistema deberá presentar indicadores de captación, vencimiento, unidades no aptas y cobertura territorial, agregados al nivel de jurisdicción del usuario. & M7 & Should & \rvig \\
+RF-14 & Movilización de donantes & Si la red de bancos no dispone de excedente compatible para cubrir un déficit registrado, entonces el sistema deberá convocar a los donantes compatibles y elegibles de la jurisdicción afectada. & M5 & Could & \rflb \\
+RF-15 & Reserva de cupo con expiración & Mientras una reserva de cupo esté vigente, cuando transcurra el plazo de expiración sin confirmación del donante, el sistema deberá liberar el cupo y ponerlo nuevamente a disposición. & M2 & Could & \rflb \\
+RF-17 & Consulta de historial propio & El sistema deberá presentar a cada donante registrado su propio historial de donaciones y su estado de elegibilidad vigente. & M1 & Must & \rvig \\
+RF-18 & Exclusión de unidades vencidas & Cuando una unidad supere su fecha de vencimiento, el sistema deberá retirarla del inventario disponible y derivarla al flujo de disposición final sin intervención manual. & M4 & Must & \rvig \\
+RF-19 & Alerta de escasez & Cuando las existencias de un componente sanguíneo y tipo de sangre desciendan por debajo del umbral configurado por la institución, el sistema deberá generar una alerta de escasez dirigida al administrador del banco. & M4 & Must & \rvig \\
+RF-20 & Alerta de vencimiento próximo & Cuando una unidad alcance el umbral de días previos a su vencimiento configurado por la institución, el sistema deberá generar una alerta de vencimiento próximo. & M4 & Must & \rvig \\
+RF-21 & Consulta de bitácora & El sistema deberá presentar al auditor la bitácora de auditoría en modo de solo lectura, sin ofrecer ninguna operación que la modifique. & ST2 & Must & \rvig \\
+RF-22 & Asignación de jurisdicción de usuario & Cuando un administrador nacional asigne o modifique la jurisdicción de un usuario institucional o territorial, el sistema deberá registrar el ámbito asignado, aplicarlo a partir del siguiente token de acceso emitido para ese usuario y dejar constancia del cambio en la bitácora de auditoría. & M6 & Must & \rmod \\
+RF-23 & Inicio de sesión & Cuando un usuario registrado presente credenciales válidas, el sistema deberá iniciar una sesión con vigencia máxima de ocho horas y emitirle un token de acceso que transporte su rol y su jurisdicción. & ST3 & Must & \rvig \\
+RF-24 & Término de sesión & Cuando un usuario cierre su sesión o esta alcance su vigencia máxima, el sistema deberá revocarla y exigir de nuevo las credenciales para toda operación que requiera sesión. & ST3 & Must & \rvig \\
+RF-25 & Seguimiento de resultados de campaña & Cuando se registre una donación asociada a una campaña, el sistema deberá actualizar el número de donaciones registradas en esa campaña y presentarlo al administrador del banco organizador junto al cupo, sin vincularlo a ningún donante. & M2 & Should & \rnue \\
+\end{longtable}
+\endgroup
+
+\vspace{0.2cm}
+\noindent Los umbrales de RF-19 y RF-20 son configurables por institución, conforme a la responsabilidad de U4 declarada en la Tabla \ref{tab:usuarios}. RF-23 y RF-24 alcanzan a los perfiles U2 a U7; el donante anónimo, U1, no inicia sesión. La respuesta ante credenciales incorrectas no indica cuál de los datos presentados falló, y las vigencias de ocho horas para la sesión y de quince minutos para el token de acceso son las que fija ADR-008. El identificador RF-16, que en la versión anterior especificaba la extensión a otros tipos de donación, no figura en este catálogo: por no describir una capacidad ejecutable, su contenido se especifica en RNF-05 y en RI-01.
+
+\subsection{Cambios de esta versión}
+
+\begin{longtable}{L{1.3cm} L{13.3cm}}
+\caption{Requerimientos funcionales modificados o nuevos en la V4.0 y su razón.}\label{tab:cambiosrf}\\
+\toprule
+\textbf{ID} & \textbf{Cambio y razón} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ID} & \textbf{Cambio y razón} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+RF-02 & Se retira el tipo de sangre como insumo del cálculo, que no lo usa, y se declaran los dos insumos que sí usa: la fecha de la última donación registrada y los criterios de edad. Se hace explícito que el cálculo no emplea el veredicto de tamizaje: si lo empleara, la elegibilidad mostrada al donante revelaría indirectamente el resultado de sus pruebas (DD V3.0, decisión D-01). \\
+RF-03 & «La unidad resultante» pasa a «una unidad por cada componente declarado». Una donación de sangre total produce varias unidades, y así lo modela el DD desde la V2.0. \\
+RF-22 & «Usuario territorial» pasa a «usuario institucional o territorial». La jurisdicción de un operador o de un administrador de banco es su institución, y también la asigna el administrador nacional. \\
+RF-25 & Nuevo. El catálogo de módulos asignaba a M2 el «seguimiento de resultados de campañas» sin que ningún requerimiento lo especificara. RF-25 lo especifica en su forma mínima ---un conteo de donaciones por campaña--- y da respaldo a la decisión D-09 del DD V3.0. La cláusula final es la condición que lo hace admisible: el Servicio de Campañas no conoce donantes (ADR-014), y el conteo no puede convertirse en una vía para saber quién donó. \\
+\end{longtable}
+
+% =====================================================================
+%  6. REQUERIMIENTOS NO FUNCIONALES
+% =====================================================================
+\section{Requerimientos no funcionales}
+\label{sec:rnf}
+
+Los atributos de calidad se clasifican conforme a ISO/IEC 25010:2023, en su revisión de nueve características, y se especifican mediante la técnica de escenario de atributo de calidad. Cada escenario declara la fuente del estímulo, el estímulo, el artefacto afectado, el entorno, la respuesta esperada y una medida de respuesta que hace verificable el requerimiento.
+
+\begin{longtable}{L{1.2cm} L{2.5cm} L{6.4cm} L{2.6cm} L{1.4cm}}
+\caption{Catálogo de requerimientos no funcionales, con su escenario y su medida de respuesta.}\label{tab:rnf}\\
+\toprule
+\textbf{ID} & \textbf{Característica} & \textbf{Escenario} & \textbf{Medida de respuesta} & \textbf{Origen} \\
+\midrule
+\endfirsthead
+\multicolumn{5}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{ID} & \textbf{Característica} & \textbf{Escenario} & \textbf{Medida de respuesta} & \textbf{Origen} \\
+\midrule
+\endhead
+\contnota{5}
+\endfoot
+\bottomrule
+\endlastfoot
+
+RNF-01 & Seguridad — Confidencialidad & Un operador o administrador de banco consulta una unidad marcada como no apta en el Servicio de Donación, durante operación normal; el sistema presenta el veredicto de aptitud sin revelar la causa clínica ni información diagnóstica del donante. & Ningún campo del modelo de datos, de la interfaz, del registro de aplicación, de las métricas ni de los eventos admite la causa clínica. Verificable por inspección del modelo y de los contratos de eventos, y por prueba de todas las respuestas de la API. & P2, P5 \\
+
+RNF-02 & Seguridad — Control de acceso & Un usuario adscrito a una entidad territorial departamental solicita información de un banco fuera de su jurisdicción al API Gateway, durante operación normal; el sistema deniega el acceso y registra el intento en la bitácora de auditoría. & 100\% de las solicitudes fuera de jurisdicción denegadas y registradas. La respuesta no confirma la existencia del recurso ni nombra la jurisdicción ajena. & P11, P16 \\
+
+RNF-03 & Capacidad de interacción — Operabilidad & Un donante sin experiencia previa inicia el registro anónimo en la Aplicación Web, desde un dispositivo móvil y sin asistencia; el sistema le permite completar el proceso. & El registro se completa en tres pasos o menos, sin ningún campo obligatorio de identificación personal. & P1 \\
+
+RNF-04 & Eficiencia de desempeño — Comportamiento temporal & Un administrador de banco consulta el inventario consolidado de su institución al Servicio de Donación, en condiciones normales de operación; el sistema devuelve el resultado. & Tiempo de respuesta inferior a 3 segundos en el percentil 95 de las consultas. & P10 \\
+
+RNF-05 & Flexibilidad — Adaptabilidad & Un desarrollador incorpora un tipo de donación distinto de la sangre al modelo de dominio del Servicio de Donación, en tiempo de desarrollo; el sistema admite la extensión. & La incorporación no exige modificar las entidades ni la lógica de trazabilidad e inventario existentes. Verificable por revisión del cambio. & P14 \\
+
+RNF-06 & Fiabilidad — Tolerancia a fallos & La plataforma de eventos o el trabajador de notificaciones no están disponibles mientras un operador de banco registra una donación en el Servicio de Donación; el sistema completa la operación principal y conserva el evento en la bandeja de salida del Servicio de Donación. & La donación queda registrada en el 100\% de los casos. El evento se registra en la misma transacción que la donación, se publica al restablecerse la plataforma y se entrega al restablecerse el trabajador, sin pérdida; una entrega repetida no produce un segundo efecto. & P7 \\
+
+RNF-07 & Compatibilidad — Interoperabilidad & El Instituto Nacional de Salud requiere el reporte de donaciones y eventos adversos a SIHEVI-INS; el sistema expone los datos exigidos a través de un punto de integración documentado. & El reporte se produce sin modificar el modelo de dominio ni la lógica de los módulos que originan los datos. & P13 \\
+
+RNF-08 & Adecuación funcional — Corrección funcional & El reloj del sistema alcanza la fecha de vencimiento de una unidad disponible en el Servicio de Donación, sin intervención de ningún usuario; el sistema la excluye del inventario disponible. & Ninguna unidad vencida figura como disponible en una consulta posterior a su fecha de vencimiento. & P6 \\
+
+RNF-09 & Seguridad — Responsabilidad & Un usuario ejecuta una operación que cambia el estado de una unidad, o intenta un acceso fuera de su jurisdicción, en cualquier módulo; el sistema deja constancia del hecho en la bitácora de auditoría. & El registro contiene autor, operación, jurisdicción solicitada y marca temporal, es inmutable y no incluye el dato al que se intentó acceder. & P15, P16, P17 \\
+
+RNF-10 & Capacidad de interacción — Inclusividad & Una persona con limitación visual o motriz opera la Aplicación Web mediante lector de pantalla o únicamente con teclado, durante operación normal; el sistema le permite completar las tareas de su perfil. & Conformidad con WCAG 2.2 nivel AA en contraste, foco visible, navegación por teclado y tamaño de objetivo táctil. Ninguna información se transmite solo por color. & P18 \\
+
+RNF-11 & Flexibilidad — Instalabilidad & Un integrante del equipo despliega el sistema completo en un entorno distinto de aquel donde se construyó, a partir de las imágenes publicadas; el sistema arranca y opera. & El despliegue no exige modificar las imágenes: toda diferencia entre entornos se expresa como variable de entorno. & RD-03 \\
+
+\end{longtable}
+
+\vspace{0.2cm}
+\noindent Dos requerimientos no funcionales cambian en esta versión. RNF-01 extiende su medida a los eventos que los servicios intercambian por la plataforma de eventos, que en la V3.0 no existían. RNF-06 cambia su estímulo y su medida porque la bandeja de salida ya no la lee el trabajador de notificaciones sino un publicador del propio servicio (ADR-018): el escenario añade la indisponibilidad de la plataforma, y «sin duplicado» se precisa como «una entrega repetida no produce un segundo efecto», que es lo que el sistema puede garantizar con entrega al menos una vez y consumidores idempotentes.
+
+% =====================================================================
+%  7. RESTRICCIONES
+% =====================================================================
+\section{Restricciones}
+\label{sec:restricciones}
+
+\subsection{Restricciones de diseño del cliente}
+
+El cliente formuló ocho restricciones de diseño, de obligatorio cumplimiento y sin negociación técnica. Se transcriben literalmente, en los mismos términos en que figuran en el contexto maestro del proyecto y en el Documento de Herramientas, Políticas y Lineamientos.
+
+\begin{longtable}{L{1.2cm} L{6.0cm} L{7.0cm}}
+\caption{Restricciones de diseño impuestas por el cliente.}\label{tab:rd}\\
+\toprule
+\textbf{ID} & \textbf{Restricción} & \textbf{Consecuencia sobre la especificación} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{ID} & \textbf{Restricción} & \textbf{Consecuencia sobre la especificación} \\
+\midrule
+\endhead
+\contnota{3}
+\endfoot
+\bottomrule
+\endlastfoot
+RD-01 & La solución debe ser distribuida. Queda explícitamente prohibido el monolito modular. Distribuido no equivale a microservicios. & Cada módulo declara un servicio propietario único y ninguna dependencia entre módulos se resuelve por acceso directo a datos ajenos. ADR-017 adopta microservicios como la forma concreta de esa distribución. No contradice la restricción: el cliente establece que distribuir no obliga a usar microservicios, no que los prohíba. La elección se justifica en ADR-017 por sus propios méritos, no como exigencia del cliente. \\
+RD-02 & El stack incluye como mínimo un componente en Java y como mínimo uno en .NET. & El reparto de módulos entre los servicios sigue la frontera de contexto acotado, no la conveniencia de implementación. ADR-014 lo realiza con tres servicios sobre .NET y dos sobre Java. \\
+RD-03 & Todo contenerizado. & Sustenta RNF-11 y condiciona la especificación de los entornos de operación. \\
+RD-04 & Documentación técnica en Markdown con Mermaid. & Los modelos que acompañan a esta especificación se versionan como texto en el repositorio de documentación. \\
+RD-05 & Control de versiones con GitFlow. & Toda historia derivada de un requerimiento de este documento se implementa en su propia rama y se integra por revisión. \\
+RD-06 & Múltiples repositorios bajo una organización de GitHub. & La trazabilidad de la Sección \ref{sec:trazabilidad} debe conservarse cuando un requerimiento se implementa en más de un repositorio. \\
+RD-07 & Todo el trabajo, técnico y funcional, va al backlog. & Las historias técnicas se rastrean hasta una restricción de esta sección cuando no derivan de un requerimiento funcional. \\
+RD-08 & La seguridad es atributo de calidad de primer orden: el sistema maneja datos personales y sensibles. & Sustenta RNF-01, RNF-02 y RNF-09, que son de cumplimiento obligatorio en toda entrega. \\
+\end{longtable}
+
+\subsection{Restricciones de diseño internas}
+
+\begin{longtable}{L{1.2cm} L{4.4cm} L{8.6cm}}
+\caption{Restricciones de diseño adoptadas por el equipo.}\label{tab:ri}\\
+\toprule
+\textbf{ID} & \textbf{Restricción} & \textbf{Fundamento} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{ID} & \textbf{Restricción} & \textbf{Fundamento} \\
+\midrule
+\endhead
+\contnota{3}
+\endfoot
+\bottomrule
+\endlastfoot
+RI-01 & El modelo de dominio representa la donación de forma genérica, sin acoplar la trazabilidad ni el inventario al tipo de material donado. & Habilita la incorporación futura de otros tipos de donación sin rehacer los módulos existentes. Sustenta RNF-05 y atiende P14. \\
+RI-02 & Ningún campo del modelo de datos admite la causa clínica por la cual una unidad fue marcada como no apta. & La confidencialidad se implementa en el modelo y no en la interfaz: lo que no se modela no puede exponerse por descuido. Sustenta RNF-01. \\
+RI-03 & El módulo M7 es de solo lectura sobre los datos que agrega. & Preserva la propiedad exclusiva de datos de los módulos de origen y evita que la analítica introduzca escritura fuera de su contexto. \\
+RI-04 & El perfil de auditor no dispone de ninguna operación de escritura en el sistema. & Un auditor que pueda modificar aquello que audita invalida la auditoría. Sustenta RF-21 y RNF-09. \\
+RI-05 & Ningún evento intercambiado entre servicios contiene la causa clínica ni datos personales distintos de identificadores. & La plataforma de eventos retiene cada evento durante un periodo en el que no puede suprimirse uno a uno a petición del titular; lo que no entra en un evento no hay que suprimirlo de él. Un servicio que necesita un dato personal lo pide a su dueño en el momento de usarlo. Sustenta RNF-01 y aplica la Ley 1581 de 2012. \\
+\end{longtable}
+
+\subsection{Restricciones normativas}
+
+\begin{longtable}{L{4.4cm} L{10.2cm}}
+\caption{Marco normativo aplicable y restricción que impone.}\label{tab:normas}\\
+\toprule
+\textbf{Norma} & \textbf{Restricción que impone} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Norma} & \textbf{Restricción que impone} \\
+\midrule
+\endhead
+\contnota{2}
+\endfoot
+\bottomrule
+\endlastfoot
+Ley 1581 de 2012 y Decreto 1377 de 2013 & Los datos de salud son datos sensibles. Su tratamiento está prohibido salvo autorización explícita, previa e informada del titular, quien puede revocarla. Su divulgación está restringida. Sustenta RNF-01 y condiciona el registro del donante en RF-01. \\
+Decreto 1571 de 1993 & La donación de sangre es un deber de solidaridad social y no puede ser remunerada bajo ninguna modalidad. Restringe RF-11 a reconocimiento sin contraprestación económica, directa ni indirecta, y excluye del sistema toda integración con pasarelas de pago o programas de puntos canjeables. \\
+Resolución 901 de 1996, modificada por la Resolución 1676 de 2023 & Define los procedimientos de captación, tamizaje, almacenamiento y disposición final que el modelo de trazabilidad debe reflejar sin pérdida de información. Los criterios de selección y diferimiento de donantes se aplican conforme al Manual vigente y a los lineamientos técnicos del Instituto Nacional de Salud. \\
+Circular Externa 026 de 2017 del Instituto Nacional de Salud & El reporte a SIHEVI-INS es obligatorio para los integrantes de la Red Nacional de Bancos de Sangre y Servicios de Transfusión. Sustenta RNF-07 y determina el contenido mínimo que el sistema debe poder entregar. \\
+\end{longtable}
+
+\subsection{Restricciones de proyecto}
+
+\begin{itemize}
+\item Horizonte de cinco sprints de dos semanas, con cierre del proyecto en la semana 16 del curso.
+\item Equipo de siete integrantes de perfil junior, con una dedicación estimada de nueve horas semanales por persona, equivalente a 126 horas de capacidad por sprint.
+\item El sistema opera exclusivamente sobre datos sintéticos. No se tratan datos reales de salud de personas, y el origen sintético de la información es evidente en la propia interfaz.
+\item La interlocución con el cliente se canaliza únicamente a través del Product Owner.
+\item El alcance del sistema se circunscribe al territorio colombiano y a su división político-administrativa.
+\item El presupuesto de desembolso es cero: toda herramienta empleada opera en nivel gratuito, licencia de código abierto o licencia educativa.
+\end{itemize}
+
+% =====================================================================
+%  8. VERIFICACIÓN
+% =====================================================================
+\section{Verificación}
+
+Todo requerimiento de este documento declara su método de verificación. Ningún requerimiento se considera satisfecho sin evidencia producida por el método que le corresponde.
+
+\begin{longtable}{L{3.0cm} L{6.0cm} L{5.6cm}}
+\caption{Métodos de verificación y requerimientos a los que se aplican.}\label{tab:verificacion}\\
+\toprule
+\textbf{Método} & \textbf{En qué consiste} & \textbf{Se aplica a} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{Método} & \textbf{En qué consiste} & \textbf{Se aplica a} \\
+\midrule
+\endhead
+\contnota{3}
+\endfoot
+\bottomrule
+\endlastfoot
+Prueba funcional & Ejecución del sistema contra los criterios de aceptación de las historias que implementan el requerimiento, sobre datos sintéticos. & RF-01 a RF-25. \\
+Prueba de integración & Ejecución contra bases de datos y plataforma de eventos reales en contenedores efímeros, deteniendo la plataforma o el consumidor y repitiendo la entrega de un mismo evento. & RNF-06, RF-25. \\
+Prueba de seguridad & Ejecución de escenarios de acceso denegado y de exposición de datos, con verificación de la bitácora resultante. & RNF-01, RNF-02, RNF-09, RF-23, RF-24. \\
+Medición & Instrumentación del sistema y recolección de métricas bajo la carga descrita en el escenario. & RNF-04. \\
+Inspección & Revisión del modelo de datos, de los contratos de eventos, del código y de los artefactos de despliegue frente a lo especificado. & RNF-01, RNF-05, RNF-11, RI-01 a RI-05. \\
+Auditoría de conformidad & Verificación con herramienta automática y revisión manual contra el criterio de accesibilidad declarado. & RNF-10. \\
+Demostración & Ejecución guiada ante el cliente del escenario completo, de extremo a extremo. & RNF-03, RNF-07, RNF-08. \\
+\end{longtable}
+
+% =====================================================================
+%  9. TRAZABILIDAD
+% =====================================================================
+\section{Matriz de trazabilidad}
+\label{sec:trazabilidad}
+
+La trazabilidad es bidireccional. Hacia atrás, toda historia del backlog se rastrea hasta un requerimiento de este documento o hasta una restricción de la Sección \ref{sec:restricciones}. Hacia adelante, todo requerimiento cuenta con al menos una historia que lo implementa y con un método de verificación asignado.
+
+\begin{longtable}{L{1.2cm} L{4.2cm} L{3.0cm} L{1.2cm} L{4.0cm}}
+\caption{Matriz de trazabilidad entre requerimientos, historias, módulos y preocupaciones.}\label{tab:matriztraza}\\
+\toprule
+\textbf{ID} & \textbf{Requerimiento} & \textbf{Historias} & \textbf{Mód.} & \textbf{Preocupación} \\
+\midrule
+\endfirsthead
+\multicolumn{5}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{ID} & \textbf{Requerimiento} & \textbf{Historias} & \textbf{Mód.} & \textbf{Preocupación} \\
+\midrule
+\endhead
+\contnota{5}
+\endfoot
+\bottomrule
+\endlastfoot
+RF-01 & Registro voluntario de donante & HU-01 & M1 & P1, P18 \\
+RF-02 & Cálculo de elegibilidad & HU-02, HU-03 & M1 & P2, P3 \\
+RF-03 & Registro de donación & HU-05 & M3 & P7 \\
+RF-04 & Trazabilidad de origen & HU-06 & M3 & P15 \\
+RF-05 & Marcado de unidad no apta & HU-07 & M3 & P5 \\
+RF-06 & Protocolo de disposición final & HU-08 & M3 & P15 \\
+RF-07 & Consulta de existencias & HU-09 & M4 & P10 \\
+RF-08 & Publicación de campañas & HU-15, HU-16 & M2 & P9 \\
+RF-09 & Administración de la jerarquía territorial & HU-13, HU-14 & M6 & P11, P13 \\
+RF-10 & Transferencia entre bancos & HU-17, HU-18 & M5 & P9 \\
+RF-11 & Reconocimiento no monetario & HU-19, HU-20 & M1 & P4 \\
+RF-12 & Notificación al donante & HU-21, HU-22 & ST1 & P3, P8 \\
+RF-13 & Tablero de indicadores & HU-23 & M7 & P12, P13 \\
+RF-14 & Movilización de donantes & HU-24 & M5 & P9 \\
+RF-15 & Reserva de cupo con expiración & HU-25 & M2 & P1 \\
+RF-17 & Consulta de historial propio & HU-04 & M1 & P3 \\
+RF-18 & Exclusión de unidades vencidas & HU-12 & M4 & P6 \\
+RF-19 & Alerta de escasez & HU-10 & M4 & P8 \\
+RF-20 & Alerta de vencimiento próximo & HU-11 & M4 & P6 \\
+RF-21 & Consulta de bitácora & HU-27 & ST2 & P17 \\
+RNF-05 & Adaptabilidad del modelo de dominio & HU-26 & Transversal & P14 \\
+RF-22 & Asignación de jurisdicción de usuario & HU-28 & M6 & P11, P16 \\
+RF-23 & Inicio de sesión & HU-29 & ST3 & P2, P11 \\
+RF-24 & Término de sesión & HU-30 & ST3 & P2 \\
+RF-25 & Seguimiento de resultados de campaña & Por crear en el Backlog V4 & M2 & P19 \\
+\end{longtable}
+
+\vspace{0.2cm}
+\noindent \textbf{Estado de la trazabilidad.} Veintitrés de los veinticuatro requerimientos funcionales y el requerimiento no funcional que origina trabajo de modelado quedan cubiertos por al menos una historia, y toda historia del backlog queda respaldada por un requerimiento o por una restricción. HU-26 no deriva de un requerimiento funcional sino de RNF-05 y de RI-01, y se clasifica en el backlog como historia técnica, conforme a RD-07. \textbf{RF-25 es el único elemento sin historia}: es nuevo en esta versión, y su historia debe crearse en el Backlog V4 antes del Planning del Sprint 4. Hasta entonces, la trazabilidad hacia adelante no está completa, y este documento lo declara en lugar de ocultarlo. Las historias de sprint del Backlog V4 que implementan cada requerimiento se rastrean desde el backlog hacia esta matriz.
+
+% =====================================================================
+%  10. FUERA DE LA LÍNEA BASE
+% =====================================================================
+\section{Requerimientos fuera de la línea base}
+\label{sec:fuera}
+
+Los siguientes requerimientos están especificados pero no comprometidos para la primera versión del producto. Se documentan para dejar constancia de que fueron considerados y priorizados de forma deliberada, no omitidos.
+
+\begin{longtable}{L{1.2cm} L{4.4cm} L{8.6cm}}
+\caption{Requerimientos especificados y no comprometidos para la versión 1 del producto.}\label{tab:fuera}\\
+\toprule
+\textbf{ID} & \textbf{Requerimiento} & \textbf{Razón de la exclusión} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{l}{\footnotesize\itshape Tabla \thetable{} — continuación}\\
+\toprule
+\textbf{ID} & \textbf{Requerimiento} & \textbf{Razón de la exclusión} \\
+\midrule
+\endhead
+\contnota{3}
+\endfoot
+\bottomrule
+\endlastfoot
+RF-14 & Movilización de donantes & Clasificado Could. Depende de que el escalamiento de dos niveles esté operativo, lo que a su vez requiere RF-10 completo. \\
+RF-15 & Reserva de cupo con expiración & Clasificado Could. Introduce manejo de concurrencia, sin experiencia previa del equipo en la materia. \\
+RNF-07 & Interoperabilidad con SIHEVI-INS & El sistema construye y documenta el punto de integración, pero no ejecuta el reporte efectivo, que exige credenciales institucionales y especificación técnica del Instituto Nacional de Salud. \\
+RNF-05 & Administración de tipos de donación distintos de la sangre & Clasificado \emph{Won't} para la versión 1. El modelo de dominio se construye de forma que la incorporación futura no exija rehacer la trazabilidad ni el inventario, conforme a RI-01, y esa propiedad sí se verifica en esta versión; la funcionalidad de administrar un tipo nuevo no se construye. \\
+--- & Alta de cuentas institucionales, perfiles U3 a U7 & Clasificado \emph{Won't} para la versión 1 (T-324.2). Las cuentas institucionales existen porque las crea el conjunto sintético de referencia, con su rol y su jurisdicción; RF-22 permite modificar la jurisdicción de una cuenta existente, pero ningún requerimiento permite crear una desde la interfaz. Construirla exigiría operaciones nuevas en el Servicio de Identidad, un flujo de entrega segura de la credencial inicial y su auditoría, para una capacidad que el cliente no ha pedido y que la demostración no necesita, porque opera sobre datos sintéticos. Si el cliente la exige, entra como requerimiento funcional en la siguiente versión, con su prioridad y su impacto en el DD. \\
+\end{longtable}
+
+\label{LastPage}
+\end{document}

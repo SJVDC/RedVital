@@ -1,0 +1,47 @@
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: NETWORK_SIMPLEX
+    forceNodeModelOrder: true
+    considerModelOrder: NODES_AND_EDGES
+---
+flowchart TB
+
+  classDef persona fill:#08427b,stroke:#052e56,color:#ffffff
+  classDef sistema fill:#1168bd,stroke:#0b4884,color:#ffffff
+  classDef externo fill:#8a8a8a,stroke:#5e5e5e,color:#ffffff
+  classDef borde fill:#d62038,stroke:#9b1527,color:#ffffff
+  classDef web fill:#2aa0d8,stroke:#1b78a3,color:#ffffff
+  classDef ident fill:#d6247b,stroke:#9b1a58,color:#ffffff
+  classDef identdb fill:#e58ab8,stroke:#9b1a58,color:#000000
+  classDef inst fill:#13955a,stroke:#0d6b40,color:#ffffff
+  classDef instdb fill:#7fd1a8,stroke:#0d6b40,color:#000000
+  classDef camp fill:#ff8000,stroke:#b35a00,color:#000000
+  classDef campdb fill:#ffc27a,stroke:#b35a00,color:#000000
+  classDef don fill:#00b5b5,stroke:#007f7f,color:#000000
+  classDef dondb fill:#7fe0e0,stroke:#007f7f,color:#000000
+  classDef notif fill:#ffd966,stroke:#bf9000,color:#000000
+  classDef kafka fill:#d62038,stroke:#9b1527,color:#ffffff
+  classDef tools fill:#6a00ff,stroke:#4400a8,color:#ffffff
+  classDef gh fill:#1f6feb,stroke:#0b4aa8,color:#ffffff
+
+  U1["Donante anónimo (U1)<br/>Se registra sin datos personales de<br/>identificación y consulta campañas publicadas"]:::persona
+  U2["Donante registrado (U2)<br/>Consulta su información, elegibilidad,<br/>historial de donaciones y campañas"]:::persona
+  U3["Operador de banco de sangre (U3)<br/>Registra y gestiona donaciones,<br/>unidades de sangre e inventario"]:::persona
+  U4["Administrador de banco de sangre (U4)<br/>Administra la información y las<br/>configuraciones de su institución"]:::persona
+  U5["Coordinador territorial (U5)<br/>Supervisa información e indicadores<br/>de los bancos de su jurisdicción"]:::persona
+  U6["Administrador nacional (U6)<br/>Administra la estructura institucional y<br/>territorial y consulta información nacional"]:::persona
+  U7["Auditor (U7)<br/>Consulta trazabilidad, jerarquía institucional<br/>y bitácora de auditoría (solo lectura)"]:::persona
+  RV["RedVital<br/>[Sistema de software]<br/>Plataforma para gestionar donantes, donaciones,<br/>unidades de sangre, inventario, campañas<br/>y supervisión territorial"]:::sistema
+  SIH["SIHEVI-INS<br/>[Sistema externo]<br/>Reporte de donaciones y eventos adversos<br/>al Instituto Nacional de Salud"]:::externo
+
+  U1 -->|"Se registra de forma anónima<br/>y consulta campañas"| RV
+  U2 -->|"Consulta información personal, elegibilidad,<br/>historial y campañas"| RV
+  U3 -->|"Gestiona donaciones, unidades e inventario"| RV
+  U4 -->|"Administra la institución y sus configuraciones"| RV
+  U5 -->|"Consulta información e indicadores<br/>de su jurisdicción"| RV
+  U6 -->|"Administra estructura institucional<br/>y consulta información nacional"| RV
+  U7 -->|"Consulta trazabilidad y registros de auditoría"| RV
+  RV -.->|"Punto de integración documentado<br/>(el reporte efectivo no se ejecuta en la V1 - RNF-07)"| SIH

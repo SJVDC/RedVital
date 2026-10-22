@@ -1,0 +1,72 @@
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: NETWORK_SIMPLEX
+    forceNodeModelOrder: true
+    considerModelOrder: NODES_AND_EDGES
+---
+flowchart TB
+
+  classDef persona fill:#08427b,stroke:#052e56,color:#ffffff
+  classDef sistema fill:#1168bd,stroke:#0b4884,color:#ffffff
+  classDef externo fill:#8a8a8a,stroke:#5e5e5e,color:#ffffff
+  classDef borde fill:#d62038,stroke:#9b1527,color:#ffffff
+  classDef web fill:#2aa0d8,stroke:#1b78a3,color:#ffffff
+  classDef ident fill:#d6247b,stroke:#9b1a58,color:#ffffff
+  classDef identdb fill:#e58ab8,stroke:#9b1a58,color:#000000
+  classDef inst fill:#13955a,stroke:#0d6b40,color:#ffffff
+  classDef instdb fill:#7fd1a8,stroke:#0d6b40,color:#000000
+  classDef camp fill:#ff8000,stroke:#b35a00,color:#000000
+  classDef campdb fill:#ffc27a,stroke:#b35a00,color:#000000
+  classDef don fill:#00b5b5,stroke:#007f7f,color:#000000
+  classDef dondb fill:#7fe0e0,stroke:#007f7f,color:#000000
+  classDef notif fill:#ffd966,stroke:#bf9000,color:#000000
+  classDef kafka fill:#d62038,stroke:#9b1527,color:#ffffff
+  classDef tools fill:#6a00ff,stroke:#4400a8,color:#ffffff
+  classDef gh fill:#1f6feb,stroke:#0b4aa8,color:#ffffff
+
+  GW["Apache APISIX<br/>[API Gateway]<br/>Enruta solicitudes, valida tokens<br/>y aplica control por ruta y rol"]:::borde
+  K[["Apache Kafka 4.3.1"]]:::kafka
+
+  subgraph SD["Servicio de Donación [Java 25 · Spring Boot]"]
+    API["API de Donación<br/>[Spring Boot]<br/>Registrar donaciones, existencias, tamizaje,<br/>despacho y disposición final"]:::don
+    REG["Gestor de Registro de Donación<br/>Registra la donación y la unidad resultante;<br/>valida la campaña asociada"]:::don
+    TAM["Gestor de Tamizaje<br/>Ingreso a tamizaje y veredicto<br/>apto / no apto (sin causa clínica)"]:::don
+    INV["Gestor de Inventario<br/>Existencias por componente, tipo<br/>de sangre e institución autorizada"]:::don
+    DES["Gestor de Despacho y Disposición<br/>Despacho y disposición final con<br/>las validaciones requeridas"]:::don
+    PRO["Proyección de Campañas<br/>[modelo de lectura local]<br/>Campañas conocidas por Donación"]:::don
+    CCO["Consumidor de Eventos de Campañas<br/>[Kafka Consumer]<br/>Mantiene la proyección"]:::don
+    MOT["Motor de Transiciones<br/>Valida y ejecuta las transiciones<br/>del ciclo de vida de las unidades"]:::don
+    VEN["Proceso de Vencimiento<br/>[programado · cada 5 min · UTC]<br/>Vence unidades (actor sistema)"]:::don
+    ALE["Gestor de Alertas, Transferencias<br/>y Escalamiento (pendiente)"]:::don
+    AUD["Registro de Auditoría de Donación<br/>Cambios de estado, despachos y<br/>disposición final (append-only)"]:::don
+    REPO["Repositorio de Donación<br/>[Spring Data / Java]<br/>Donaciones, unidades, inventario,<br/>estados y auditoría"]:::don
+    OUT["Outbox de Eventos<br/>Evento registrado en la misma<br/>transacción que el cambio"]:::don
+    PUBL["Publicador de Eventos<br/>[Kafka Producer]<br/>Publica los eventos pendientes del Outbox"]:::don
+  end
+  DB[("db_donacion<br/>[PostgreSQL 16]")]:::dondb
+
+  GW -->|"Invoca operaciones de donación [HTTP/JSON]"| API
+  API -->|"Delega registro"| REG
+  API -->|"Delega tamizaje"| TAM
+  API -->|"Consulta de existencias"| INV
+  API -->|"Delega despacho o disposición"| DES
+  REG -->|"Consulta campaña asociada<br/>(proyección local)"| PRO
+  REG -->|"Solicita alta de unidad"| MOT
+  TAM -->|"Solicita transición por tamizaje"| MOT
+  INV -->|"Consulta existencias"| REPO
+  DES -->|"Solicita transición"| MOT
+  VEN -->|"Solicita vencimiento de unidades"| MOT
+  ALE -.->|"Consulta existencias y estados"| REPO
+  MOT -->|"Lee y actualiza estados"| REPO
+  MOT -->|"Registra transición o intento"| AUD
+  MOT -->|"Registra evento (misma transacción)"| OUT
+  AUD -->|"Persiste auditoría"| REPO
+  OUT -->|"Entrega eventos pendientes"| PUBL
+  REPO -->|"Lee y escribe [SQL]"| DB
+  PUBL -->|"Publica eventos de dominio [Kafka]"| K
+  K -->|"Entrega eventos de campañas [Kafka]"| CCO
+  CCO -->|"Actualiza"| PRO
+  style ALE stroke-dasharray: 6 4,stroke-width:2px

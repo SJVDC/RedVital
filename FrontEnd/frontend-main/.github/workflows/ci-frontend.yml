@@ -1,0 +1,38 @@
+name: CI - Frontend
+
+on: 
+  pull_request:
+    branches: ["main", "develop"]
+    paths-ignore:
+      - '*.md'
+      - '.github/workflows/**'
+      - 'docs/**'
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar el codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: instalar dependencias
+        run: npm ci
+
+      - name: Construir la aplicacion Vite
+        run: npm run build
+
+      - name: Guardar el código listo para producción
+        uses: actions/upload-artifact@v4
+        with:
+          name: redvital-frontend-dist
+          path: dist/
+          retention-days: 1
+    

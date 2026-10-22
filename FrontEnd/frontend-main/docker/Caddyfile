@@ -1,0 +1,30 @@
+# Servidor de archivos estáticos de la web. Sin TLS ni cabeceras de
+# seguridad: eso lo hace el Caddy de borde, único punto expuesto.
+{
+	admin off
+	auto_https off
+	persist_config off
+}
+
+:8080 {
+	@salud path /salud
+	respond @salud "ok" 200
+
+	root * /srv
+	encode zstd gzip
+
+	# Los recursos llevan huella en el nombre: se guardan un año.
+	@recursos path /assets/*
+	header @recursos Cache-Control "public, max-age=31536000, immutable"
+	@documento not path /assets/*
+	header @documento Cache-Control "no-cache"
+
+	# Rutas de la SPA: todo lo que no es un archivo es index.html.
+	try_files {path} /index.html
+	file_server
+
+	log {
+		output stdout
+		format json
+	}
+}

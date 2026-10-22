@@ -1,0 +1,47 @@
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: NETWORK_SIMPLEX
+    forceNodeModelOrder: true
+    considerModelOrder: NODES_AND_EDGES
+---
+flowchart TB
+
+  classDef persona fill:#08427b,stroke:#052e56,color:#ffffff
+  classDef sistema fill:#1168bd,stroke:#0b4884,color:#ffffff
+  classDef externo fill:#8a8a8a,stroke:#5e5e5e,color:#ffffff
+  classDef borde fill:#d62038,stroke:#9b1527,color:#ffffff
+  classDef web fill:#2aa0d8,stroke:#1b78a3,color:#ffffff
+  classDef ident fill:#d6247b,stroke:#9b1a58,color:#ffffff
+  classDef identdb fill:#e58ab8,stroke:#9b1a58,color:#000000
+  classDef inst fill:#13955a,stroke:#0d6b40,color:#ffffff
+  classDef instdb fill:#7fd1a8,stroke:#0d6b40,color:#000000
+  classDef camp fill:#ff8000,stroke:#b35a00,color:#000000
+  classDef campdb fill:#ffc27a,stroke:#b35a00,color:#000000
+  classDef don fill:#00b5b5,stroke:#007f7f,color:#000000
+  classDef dondb fill:#7fe0e0,stroke:#007f7f,color:#000000
+  classDef notif fill:#ffd966,stroke:#bf9000,color:#000000
+  classDef kafka fill:#d62038,stroke:#9b1527,color:#ffffff
+  classDef tools fill:#6a00ff,stroke:#4400a8,color:#ffffff
+  classDef gh fill:#1f6feb,stroke:#0b4aa8,color:#ffffff
+
+  K[["Apache Kafka 4.3.1"]]:::kafka
+
+  subgraph SN["Servicio de Notificaciones [Java 25 · prevista] (pendiente de implementación · sin base de negocio)"]
+    CON["Consumidor de Eventos<br/>[Por definir · Kafka Consumer]<br/>Consume eventos que requieren<br/>una notificación al usuario"]:::notif
+    DUP["Control de Duplicados<br/>[Por definir]<br/>Deduplicación por identificador de evento"]:::notif
+    PRC["Procesador de Notificaciones<br/>[Por definir]<br/>Determina qué notificación generar<br/>y para qué destinatario"]:::notif
+    GEN["Generador de Mensajes<br/>[Por definir]<br/>Construye el contenido según<br/>el tipo de evento"]:::notif
+    ADA["Adaptador de Entrega<br/>[Por definir]<br/>Encapsula el canal de envío"]:::notif
+    REI["Gestor de Reintentos<br/>[Por definir]<br/>Fallos temporales y reintentos"]:::notif
+  end
+
+  K -->|"Entrega eventos para notificación [Kafka]"| CON
+  CON -->|"Verifica evento ya procesado"| DUP
+  CON -->|"Procesa evento recibido"| PRC
+  PRC -->|"Solicita construcción del mensaje"| GEN
+  GEN -->|"Entrega mensaje para envío"| ADA
+  PRC -->|"Gestiona fallos de procesamiento"| REI
+  ADA -->|"Gestiona fallos de entrega"| REI

@@ -1,0 +1,51 @@
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: NETWORK_SIMPLEX
+    forceNodeModelOrder: true
+    considerModelOrder: NODES_AND_EDGES
+---
+flowchart TB
+
+  classDef persona fill:#08427b,stroke:#052e56,color:#ffffff
+  classDef sistema fill:#1168bd,stroke:#0b4884,color:#ffffff
+  classDef externo fill:#8a8a8a,stroke:#5e5e5e,color:#ffffff
+  classDef borde fill:#d62038,stroke:#9b1527,color:#ffffff
+  classDef web fill:#2aa0d8,stroke:#1b78a3,color:#ffffff
+  classDef ident fill:#d6247b,stroke:#9b1a58,color:#ffffff
+  classDef identdb fill:#e58ab8,stroke:#9b1a58,color:#000000
+  classDef inst fill:#13955a,stroke:#0d6b40,color:#ffffff
+  classDef instdb fill:#7fd1a8,stroke:#0d6b40,color:#000000
+  classDef camp fill:#ff8000,stroke:#b35a00,color:#000000
+  classDef campdb fill:#ffc27a,stroke:#b35a00,color:#000000
+  classDef don fill:#00b5b5,stroke:#007f7f,color:#000000
+  classDef dondb fill:#7fe0e0,stroke:#007f7f,color:#000000
+  classDef notif fill:#ffd966,stroke:#bf9000,color:#000000
+  classDef kafka fill:#d62038,stroke:#9b1527,color:#ffffff
+  classDef tools fill:#6a00ff,stroke:#4400a8,color:#ffffff
+  classDef gh fill:#1f6feb,stroke:#0b4aa8,color:#ffffff
+
+  GW["Apache APISIX<br/>[API Gateway]<br/>Enruta solicitudes, valida tokens<br/>y aplica control por ruta y rol"]:::borde
+
+  subgraph SI["Servicio Institucional [.NET 10 · prevista] (pendiente de implementación)"]
+    API["API Institucional<br/>[Por definir]<br/>Consultar y administrar instituciones,<br/>bancos de sangre, territorios y jurisdicciones"]:::inst
+    GT["Gestor Territorial<br/>[Por definir]<br/>Territorios, jerarquías<br/>territoriales y jurisdicciones"]:::inst
+    GI["Gestor de Instituciones<br/>[Por definir]<br/>Instituciones, bancos de sangre<br/>y sus relaciones"]:::inst
+    RJ["Resolutor de Jurisdicción<br/>[Por definir]<br/>Relación territorial de instituciones<br/>y bancos"]:::inst
+    CMP["Consulta compuesta de auditoría (ST2) e<br/>indicadores de solo lectura (M7)<br/>[Por definir · mecanismo de datos pendiente]"]:::inst
+    REPO["Repositorio Institucional<br/>[Por definir]<br/>Acceso a datos institucionales<br/>y territoriales"]:::inst
+  end
+  DB[("db_institucional<br/>[PostgreSQL 16]")]:::instdb
+
+  GW -->|"Invoca operaciones institucionales [HTTP/JSON]"| API
+  API -->|"Delega operaciones territoriales"| GT
+  API -->|"Delega operaciones institucionales"| GI
+  API -.->|"Delega consultas compuestas"| CMP
+  GI -->|"Consulta relaciones territoriales"| RJ
+  GT -->|"Lee y actualiza territorios"| REPO
+  GI -->|"Lee y actualiza instituciones"| REPO
+  RJ -->|"Consulta relaciones territoriales"| REPO
+  REPO -->|"Lee y escribe [SQL]"| DB
+  style CMP stroke-dasharray: 6 4,stroke-width:2px

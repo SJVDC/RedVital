@@ -1,0 +1,75 @@
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: NETWORK_SIMPLEX
+    forceNodeModelOrder: true
+    considerModelOrder: NODES_AND_EDGES
+---
+flowchart TB
+
+  classDef persona fill:#08427b,stroke:#052e56,color:#ffffff
+  classDef sistema fill:#1168bd,stroke:#0b4884,color:#ffffff
+  classDef externo fill:#8a8a8a,stroke:#5e5e5e,color:#ffffff
+  classDef borde fill:#d62038,stroke:#9b1527,color:#ffffff
+  classDef web fill:#2aa0d8,stroke:#1b78a3,color:#ffffff
+  classDef ident fill:#d6247b,stroke:#9b1a58,color:#ffffff
+  classDef identdb fill:#e58ab8,stroke:#9b1a58,color:#000000
+  classDef inst fill:#13955a,stroke:#0d6b40,color:#ffffff
+  classDef instdb fill:#7fd1a8,stroke:#0d6b40,color:#000000
+  classDef camp fill:#ff8000,stroke:#b35a00,color:#000000
+  classDef campdb fill:#ffc27a,stroke:#b35a00,color:#000000
+  classDef don fill:#00b5b5,stroke:#007f7f,color:#000000
+  classDef dondb fill:#7fe0e0,stroke:#007f7f,color:#000000
+  classDef notif fill:#ffd966,stroke:#bf9000,color:#000000
+  classDef kafka fill:#d62038,stroke:#9b1527,color:#ffffff
+  classDef tools fill:#6a00ff,stroke:#4400a8,color:#ffffff
+  classDef gh fill:#1f6feb,stroke:#0b4aa8,color:#ffffff
+
+  P["Personas (U1 a U7)<br/>Donantes, operadores y administradores de banco,<br/>coordinadores territoriales, administrador nacional y auditor"]:::persona
+
+  subgraph RV["RedVital [límite del sistema]"]
+    WEB["Aplicación web<br/>[React 19 · TypeScript · Vite]<br/>SPA única con navegación por perfil<br/>(el rol oculta opciones; no autoriza)"]:::web
+    CADDY["Caddy<br/>[Proxy de borde]<br/>TLS, HSTS, CSP, límite de cuerpo y rate limit;<br/>sirve la SPA y reenvía /api/*"]:::borde
+    APISIX["Apache APISIX<br/>[API Gateway]<br/>Enruta, valida tokens RS256 con JWKS,<br/>autoriza por ruta y rol y bloquea /internal"]:::borde
+
+    ID{{"Servicio de Identidad<br/>[.NET 10]<br/>Autenticación, sesiones, roles,<br/>jurisdicción, tokens y claves públicas"}}:::ident
+    DBID[("db_identidad<br/>[PostgreSQL 16]")]:::identdb
+
+    CAMP{{"Servicio de Campañas<br/>[.NET 10]<br/>Campañas, publicación,<br/>cupos y reservas"}}:::camp
+    DBCAMP[("db_campana<br/>[PostgreSQL 16]")]:::campdb
+
+    DON{{"Servicio de Donación<br/>[Java 25 · Spring Boot]<br/>Donantes, donaciones, unidades, inventario,<br/>alertas, transferencias y trazabilidad"}}:::don
+    DBDON[("db_donacion<br/>[PostgreSQL 16]")]:::dondb
+
+    INST{{"Servicio Institucional<br/>[.NET 10 · prevista]<br/>Instituciones, bancos de sangre y territorios<br/>(pendiente de implementación)"}}:::inst
+    DBINST[("db_institucional<br/>[PostgreSQL 16]")]:::instdb
+
+    NOT{{"Servicio de Notificaciones<br/>[Java 25 · prevista]<br/>Consume eventos y entrega notificaciones<br/>(pendiente · sin base de negocio)"}}:::notif
+
+    KAFKA[["Apache Kafka 4.3.1<br/>[KRaft · SASL/SCRAM · ACL]<br/>Integración asíncrona entre servicios"]]:::kafka
+  end
+
+  P -->|"Usan [HTTPS]"| WEB
+  WEB -->|"Solicitudes API [HTTPS]"| CADDY
+  CADDY -->|"Reenvía /api/* [HTTP/HTTPS]"| APISIX
+  APISIX -->|"Enruta [HTTP/JSON]<br/>y obtiene JWKS"| ID
+  APISIX -->|"Enruta [HTTP/JSON]"| CAMP
+  APISIX -->|"Enruta [HTTP/JSON]"| DON
+  APISIX -.->|"Enruta [HTTP/JSON]"| INST
+
+  ID -->|"Lee y escribe [SQL]"| DBID
+  CAMP -->|"Lee y escribe [SQL]"| DBCAMP
+  DON -->|"Lee y escribe [SQL]"| DBDON
+  INST -.->|"Lee y escribe [SQL]"| DBINST
+
+  DON -->|"Publica eventos de donación<br/>(Outbox) [Kafka]"| KAFKA
+  CAMP -->|"Publica eventos de campaña<br/>(Outbox) [Kafka]"| KAFKA
+  KAFKA -->|"Eventos de campaña<br/>(proyección local) [Kafka]"| DON
+  KAFKA -->|"Eventos relevantes [Kafka]"| CAMP
+  KAFKA -->|"Eventos notificables [Kafka]"| NOT
+
+  style INST stroke-dasharray: 6 4,stroke-width:2px
+  style DBINST stroke-dasharray: 6 4,stroke-width:2px
+  style NOT stroke-dasharray: 6 4,stroke-width:2px
